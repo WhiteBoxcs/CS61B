@@ -1,6 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
-//import ucb.junit.textui;
+import ucb.junit.textui;
 
 /** Autograder tests for the Year class using the Test61B package.
  *  @author Sarah Kim, P. N. Hilfinger
@@ -37,7 +37,7 @@ public class AGTestYear {
     }
 
     public static void main(String[] args) {
-        //System.exit(textui.runClasses(AGTestYear.class));
+        System.exit(textui.runClasses(AGTestYear.class));
     }
 
 }
