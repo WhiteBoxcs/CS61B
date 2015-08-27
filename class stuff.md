@@ -4,8 +4,8 @@ Piazza: https://piazza.com/class/idpl6lpmso7ws
 ====
 Books:
 * HFJ
-* DSIJ
-* AJR
+* DSIJ https://inst.eecs.berkeley.edu/~cs61b/fa11/book2/data-structures.pdf
+* AJR 
 
 ====
 
