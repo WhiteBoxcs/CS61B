@@ -1,0 +1,121 @@
+Home setup of CS61B tools on Linux and MacOS.
+
+1. PREREQUISITES
+
+You must have the following software installed:
+
+   A. Sun/Oracle Java version 7 as the default Java version.
+
+   B. Python 3.
+
+   C. (On Macs) the Xcode tools.  On Linux, the necessary tools are standard.
+
+   D. Subversion (svn).
+
+If these are in place and on your path, then the following commands should
+all succeed:
+
+    $ java -version
+    # Should print something that begins 'java version "1.7....'
+
+    $ python3 --version
+
+    $ rsync --version
+
+    $ svn --version
+
+
+2. DOWNLOADS
+
+Copy the contents of the home-setup directory from the instructional machines.
+
+    rsync -a LOGIN@torus.cs.berkeley.edu:~cs61b/cs61b-software $HOME
+
+where LOGIN is your login on the instructional machines.
+
+This will copy a directory called cs61b-software into your home
+directory. It will contain subdirectories adm, bin, lib, and 
+testing-files (and this README file).
+
+3. SSH KEYS
+
+To use the repository remotely, you'll need the private SSH key that
+the repository account (cs61b-ta) is expecting from you.  The ssh
+software keeps its information in a file called ~/.ssh.  This is a
+hidden file (starts with a dot), which means that it is not ordinarily
+listed by the 'ls' command.  However, you can try 'ls ~/.ssh' to see
+if it's there.  I suggest the following procedure, executed on your
+home machine:
+
+   A. If you do not have a directory $HOME/.ssh, create one using, for 
+      example,
+          $ ssh cs61b@torus.cs.berkeley.edu
+      (This will fail, but first will create a .ssh directory for you).
+
+   B. Copy your private key from the instructional machines with:
+          $ rsync -a LOGIN@torus.cs.berkeley.edu:.ssh/id_rsa ~/.ssh/id_rsa_cs61b
+      replacing LOGIN with your login.
+
+   C. Create the file .ssh/config (if you don't already have one) and add the
+      line
+
+      IdentityFile ~/.ssh/id_rsa_cs61b
+
+   D. Test your setup by issuing the following on your home machine:
+
+       $ ssh -n cs61b-ta@torus.cs.berkeley.edu
+
+      After some messages, you should see something like
+
+         ( success ( 2 2 ( ) ( ... etc.
+
+   E. [Optional] If you'd like to be able to use .ssh to log into your 
+      instructional account from your home computer without the bother of
+      a passphrase, you can so by executing the following command on the
+      instructional server (NOT your home machine):
+
+      $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+      (Yes, that is ">>", meaning "append", not ">", which would 
+      mean "overwrite").  At this point, you should be able to log into 
+      your instructional account from home with
+
+         $  ssh LOGIN@torus.cs.berkeley.edu
+
+      (or some other server or workstation).
+
+4. EMACS
+
+Add the following lines to your $HOME/.emacs file (creating that file if you
+don't already have it) to use gjdb in Emacs:
+
+(load-file "~/cs61b-software/adm/cs61b.el")
+
+This will introduce the command M-x gjdb.  It will take effect the
+next time you start Emacs.
+
+
+5. PATH and CLASSPATH
+
+PATH and CLASSPATH are "environment variables" that are used to find
+executable files and Java classes, respectively.  Their format is
+
+   DIR1:DIR2:...:DIRn
+
+where the DIRs are names of directories (or, for CLASSPATH, JAR (Java
+Archive) files).  These variable are typically set in one or more of
+the files .bashrc, .bash_profile, or .profile.  Unfortunately, there
+has been divergence in practice.  The Debian Wiki (for one version of
+Linux) contains a recommended procedure that has worked for many
+years, but that the Ubuntu wiki "no longer recommends" for no
+discernible reason (probably just one more result of open-source
+software being in the hands of confounded amateurs).
+
+I believe that the following strategy works in general to set both of
+these.  In the file $HOME/.profile (or ~/.profile) include the
+following line.  Also include it in your .bash_profile if you have one
+(and it doesn't already read .profile).  The definitions should take
+effect when you next log into your home machine again:
+
+source $HOME/cs61b-software/adm/login
+

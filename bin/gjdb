@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# An alternative version of gjdb that assumes itself to be in a directory
+# DIR, such that gjdb.jar is in DIR/../lib/gjdb.  It extracts the location
+# of the tools directory (if needed) from the value of the java.home
+# property of the java interpreter found on the current PATH.
+
+here="`(cd \`dirname $0\`; pwd)`"
+
+UCBCLASSES=`dirname $here`/lib/gjdb/gjdb.jar
+apphome=`java -cp ${UCBCLASSES} ucb.gjdb.Javahome`
+
+if [ -f $apphome/../lib/tools.jar ]; then
+    JDICLASSES="`dirname $apphome`/lib/tools.jar"
+else
+    JDICLASSES=
+fi
+
+CLASSPATH=".:${UCBCLASSES}:${JDICLASSES:+:${JDICLASSES}}${CLASSPATH:+:${CLASSPATH}}"
+export CLASSPATH
+
+exec java -Djava.compiler ucb.gjdb.GJDB $*

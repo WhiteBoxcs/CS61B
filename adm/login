@@ -1,0 +1,13 @@
+# Environment variables for CS61B home use (Linux and MacOS with bash shell).
+# Source this from your $HOME/.profile file.
+
+MASTERDIR=$HOME/cs61b-software
+export MASTERDIR
+
+PATH=${PATH}:${MASTERDIR}/bin
+
+CLASSPATH=${CLASSPATH:-.}
+for dir in $MASTERDIR/lib/*.jar; do
+    CLASSPATH=${CLASSPATH}:$dir
+done
+export CLASSPATH
