@@ -46,7 +46,7 @@ public class IntList {
 
     /** Returns true iff X is an IntList containing the same sequence of ints
      *  as THIS. Cannot handle IntLists with cycles. */
-    @Overrride
+    @Override
     public boolean equals(Object x) {
         if (!(x instanceof IntList)) {
             return false;
@@ -140,7 +140,18 @@ public class IntList {
      *  elements of B.  May modify items of A. Don't use 'new'. */
 
     static IntList dcatenate(IntList A, IntList B) {
-        return null; // REPLACE WITH YOUR CODE */
+    	//Edge cases
+    	if(A == null)
+    		return B;
+    	
+    	
+        IntList aTail = A;
+        while(aTail.tail != null) //Traverse the lsit
+        	aTail = aTail.tail;
+        
+        aTail.tail = B;
+        return A;
+        
 
     }
 
