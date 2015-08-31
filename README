@@ -1,16 +1,17 @@
 Home setup of CS61B tools on Linux and MacOS.
 
 1. PREREQUISITES
+================
 
 You must have the following software installed:
 
-   A. Sun/Oracle Java version 7 as the default Java version.
+   A. Sun/Oracle Java version 8 as the default Java version.
 
    B. Python 3.
 
    C. (On Macs) the Xcode tools.  On Linux, the necessary tools are standard.
 
-   D. Subversion (svn).
+   D. Git
 
 If these are in place and on your path, then the following commands should
 all succeed:
@@ -22,30 +23,18 @@ all succeed:
 
     $ rsync --version
 
-    $ svn --version
+    $ git --version
 
 
-2. DOWNLOADS
-
-Copy the contents of the home-setup directory from the instructional machines.
-
-    rsync -a LOGIN@torus.cs.berkeley.edu:~cs61b/cs61b-software $HOME
-
-where LOGIN is your login on the instructional machines.
-
-This will copy a directory called cs61b-software into your home
-directory. It will contain subdirectories adm, bin, lib, and 
-testing-files (and this README file).
-
-3. SSH KEYS
+2. SSH KEYS
 
 To use the repository remotely, you'll need the private SSH key that
 the repository account (cs61b-ta) is expecting from you.  The ssh
 software keeps its information in a file called ~/.ssh.  This is a
 hidden file (starts with a dot), which means that it is not ordinarily
 listed by the 'ls' command.  However, you can try 'ls ~/.ssh' to see
-if it's there.  I suggest the following procedure, executed on your
-home machine:
+if it's there.  I suggest the following procedure, executed ON YOUR
+HOME MACHINE (do NOT do this on your instructional accoout):
 
    A. If you do not have a directory $HOME/.ssh, create one using, for 
       example,
@@ -67,12 +56,13 @@ home machine:
 
       After some messages, you should see something like
 
-         ( success ( 2 2 ( ) ( ... etc.
+         hello <LOGIN>, this is cs61b-ta@torus running gitolite3 v3.6.3-11-g2417156 on git 1.7.12.1
+         <bunch of stuff>
 
    E. [Optional] If you'd like to be able to use .ssh to log into your 
       instructional account from your home computer without the bother of
-      a passphrase, you can so by executing the following command on the
-      instructional server (NOT your home machine):
+      a passphrase, you can so by executing the following command ON THE
+      INSTRUCTIONAL SERVER (NOT on your home machine):
 
       $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
@@ -80,9 +70,22 @@ home machine:
       mean "overwrite").  At this point, you should be able to log into 
       your instructional account from home with
 
-         $  ssh LOGIN@torus.cs.berkeley.edu
+         $  ssh LOGIN@ashby.cs.berkeley.edu
 
       (or some other server or workstation).
+
+2. DOWNLOADS
+============
+
+Copy the contents of the home-setup directory from the instructional machines.
+
+    git clone -b cs61b-software cs61b-ta@ashby.cs.berkeley.edu:shared cs61b-software
+
+where LOGIN is your login on the instructional machines.
+
+This will copy a directory called cs61b-software into your home
+directory. It will contain subdirectories adm, bin, and lib, 
+(and this README file).
 
 4. EMACS
 
@@ -96,6 +99,9 @@ next time you start Emacs.
 
 
 5. PATH and CLASSPATH
+
+5A. Unix and Mac
+----------------
 
 PATH and CLASSPATH are "environment variables" that are used to find
 executable files and Java classes, respectively.  Their format is
@@ -119,3 +125,20 @@ effect when you next log into your home machine again:
 
 source $HOME/cs61b-software/adm/login
 
+5B. Windows
+-----------
+
+On Windows, you'll need to use the Environment Variables button on the Advanced
+tab under Advanced System Settings, which you'll find in various places 
+depending on what version of Windows you're running.  Once there, you'll want
+to add a setting for CLASSPATH with value
+
+    %USERPROFILE%\cs61b-software\lib\*;.
+
+(that's a semicolon, not a colon).  If you already have a CLASSPATH value,
+append 
+
+    ;%USERPROFILE%\cs61b-software\lib\*
+
+to it (being sure to include the semicolon as shown to separate it
+from the stuff already there)

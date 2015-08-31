@@ -7,7 +7,5 @@ export MASTERDIR
 PATH=${PATH}:${MASTERDIR}/bin
 
 CLASSPATH=${CLASSPATH:-.}
-for dir in $MASTERDIR/lib/*.jar; do
-    CLASSPATH=${CLASSPATH}:$dir
-done
+CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/*"
 export CLASSPATH
