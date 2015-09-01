@@ -121,7 +121,7 @@ I believe that the following strategy works in general to set both of
 these.  In the file $HOME/.profile (or ~/.profile) include the
 following line.  Also include it in your .bash_profile if you have one
 (and it doesn't already read .profile).  The definitions should take
-effect when you next log into your home machine again:
+effect when you next log into your home machine:
 
 source $HOME/cs61b-software/adm/login
 
