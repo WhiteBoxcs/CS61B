@@ -1,5 +1,6 @@
-import static org.junit.Assert.*;
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 
 public class CompoundInterestTest {
 
@@ -34,6 +35,6 @@ public class CompoundInterestTest {
 
     /* Run the unit tests in this file. */
     public static void main(String... args) {
-        System.exit(ucb.junit.textui.runClasses(CompoundInterestTest.class));
+       // System.exit(ucb.junit.textui.runClasses(CompoundInterestTest.class));
     }
 }
