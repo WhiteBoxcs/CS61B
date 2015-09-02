@@ -12,3 +12,8 @@
 hs_err_pid*
 /lab1/*.project
 /lab1/*.classpath
+
+*.classpath
+*.project
+*.xml
+Makefile

@@ -32,7 +32,29 @@ public class IntListTest {
 
     @Test
     public void testDcatenate() {
+        IntList one = new IntList(1, null);
+        IntList twoOne = new IntList(2, one);
+        IntList threeTwoOne = new IntList(3, twoOne);
+        
+        
+    	//Edge cases
+        assertEquals(IntList.dcatenate(IntList.list(),IntList.list(3,2,1)), threeTwoOne);
+        assertEquals(IntList.dcatenate(IntList.list(3,2,1),IntList.list()), threeTwoOne);
+        assertEquals(IntList.dcatenate(IntList.list(), IntList.list()), IntList.list());
+        
+        //1 element edge case
+        assertEquals(IntList.dcatenate(IntList.list(2),IntList.list(1)), twoOne);
+    	
+        
+    	//General case
+    	IntList a = IntList.list(3,2);
+    	IntList b = IntList.list(1);
+    	IntList c = IntList.dcatenate(a, b);
+    
+        
+        assertEquals(threeTwoOne, c);
 
+        
     }
 
     /** Tests that subtail works properly. Again, don't use new.
@@ -68,6 +90,6 @@ public class IntListTest {
 
     /* Run the unit tests in this file. */
     public static void main(String... args) {
-        System.exit(ucb.junit.textui.runClasses(IntListTest.class));
+        //System.exit(ucb.junit.textui.runClasses(IntListTest.class));
     }
 }
