@@ -64,7 +64,23 @@ public class IntListTest {
 
     @Test
     public void testSubtail() {
-
+		IntList one = new IntList(1, null);
+		IntList twoOne = new IntList(2, one);
+		IntList threeTwoOne = new IntList(3, twoOne);
+		
+		
+		//Edge cases
+		IntList subT = IntList.subTail(threeTwoOne, -1);
+		assertNull(subT);
+		subT = IntList.subTail(threeTwoOne, 0);
+		assertEquals(threeTwoOne, subT);
+		subT = IntList.subTail(threeTwoOne, 4);
+		assertNull(subT);
+		
+		
+		//General cases.
+		subT = IntList.subTail(threeTwoOne, 1);
+		assertEquals(twoOne, subT);
     }
 
     /** Tests that sublist works properly. Again, don't use new.
@@ -73,8 +89,26 @@ public class IntListTest {
      */
 
     @Test
-    public void testSublist() {
-
+    public void testSublist() { 
+    	IntList one = new IntList(1, null);
+		IntList twoOne = new IntList(2, one);
+		IntList threeTwoOne = new IntList(3, twoOne);
+		
+		
+		//Edge cases
+		IntList subT = IntList.sublist(threeTwoOne, -1,0);
+		assertNull(subT);
+		subT = IntList.sublist(threeTwoOne, 0,3);
+		assertEquals(threeTwoOne, subT);
+		subT = IntList.sublist(threeTwoOne, 4,10);
+		assertNull(subT);
+		subT = IntList.sublist(threeTwoOne, 0,0);
+		assertNull(subT);
+		
+		
+		//General cases.
+		subT = IntList.sublist(threeTwoOne, 1,2);
+		assertEquals(twoOne, subT);
     }
 
     /** Tests that dSublist works properly. Again, don't use new.
@@ -85,11 +119,43 @@ public class IntListTest {
 
     @Test
     public void testDsublist() {
+    	IntList one = new IntList(1, null);
+		IntList twoOne = new IntList(2, one);
+		IntList threeTwoOne = new IntList(3, twoOne);
+		
+		
+		//Edge cases
+		IntList subT = IntList.dsublist(testSet(), -1,0);
+		assertNull(subT);
+		subT = IntList.dsublist(testSet(), 0,3);
+		assertEquals(threeTwoOne, subT);
+		subT = IntList.dsublist(testSet(), 5,10);
+		assertNull(subT);
+		subT = IntList.dsublist(testSet(), 1,10);
+		assertEquals(testSet().tail, subT);
+		subT = IntList.dsublist(testSet(), 0,0);
+		assertNull(subT);
+		
+		
+		//General cases.
+		subT = IntList.dsublist(testSet(), 1,2);
+		assertEquals(testSet().tail, subT);
+    }
+    
+    /**
+     * Creates a test set of 3,2,1
+     * @return the test set.
+     */
+    private static IntList testSet(){
+    	IntList one = new IntList(1, null);
+		IntList twoOne = new IntList(2, one);
+		IntList threeTwoOne = new IntList(3, twoOne);
+		return threeTwoOne;
     }
 
 
     /* Run the unit tests in this file. */
     public static void main(String... args) {
-        //System.exit(ucb.junit.textui.runClasses(IntListTest.class));
+        System.exit(ucb.junit.textui.runClasses(IntListTest.class));
     }
 }

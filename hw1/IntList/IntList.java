@@ -163,7 +163,15 @@ public class IntList {
       * This method should NOT modify the items in L. */
 
     static IntList subTail(IntList L, int start) {
-        return null; // REPLACE WITH YOUR CODE
+    	
+    	if(start < 0 || L == null)
+    		return null;
+    	else{
+    		if(start == 0)
+    			return new IntList(L.head, subTail(L.tail, start));
+    		else
+    			return subTail(L.tail, start -1); //recurse to the proper starting position.
+    	}
     }
 
 
@@ -179,7 +187,14 @@ public class IntList {
      *  that start and len are always >= 0.
      */
     static IntList sublist(IntList L, int start, int len) {
-        return null;  // REPLACE WITH YOUR SOLUTION
+      	if(start < 0 || L == null || len <= 0) 
+    		return null;
+    	else{
+    		if(start == 0)
+    			return new IntList(L.head, sublist(L.tail, start,len-1));
+    		else
+    			return sublist(L.tail, start -1,len); //recurse to the proper starting position.
+    	}
 
     }
 
@@ -191,8 +206,27 @@ public class IntList {
      *  As with sublist, you can assume the items requested
      *  exist, and that START and LEN are >= 0. */
     static IntList dsublist(IntList L, int start, int len) {
-        return null; // REPLACE WITH YOUR SOLUTION
-
+    	if(start < 0 || L == null || len <= 0) 
+    		return null;
+    	
+    	//Iterate over the list.
+    	for(int i = 0; i < start; i++){
+    		 if(L.tail != null)
+    		 {
+				 L.head = L.tail.head;
+				 L.tail = L.tail.tail;
+    		 }
+			 else
+				 return null;
+    	}
+    	
+    	IntList head = L;
+    	
+    	for(int j = 0; j < len-1 && L.tail != null; j++, L = L.tail);
+		L.tail = null;
+    	
+		return head;
+    	
     }
 
 
