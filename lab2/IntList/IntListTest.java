@@ -33,9 +33,24 @@ public class IntListTest {
      *  can be instantiated, for example, with
      *  IntList empty = IntList.list().
      */
-
-    //TODO:  Create testSquareListRecursive()
-
+    @Test
+    public void testSquareListRecursive() {
+    	//Create a validation set.
+        IntList one = new IntList(1, null);
+        IntList twoOne = new IntList(2, one);
+        IntList threeTwoOne = new IntList(3, twoOne);
+        
+        IntList test = IntList.squareListRecursive(threeTwoOne);
+        
+        //Check equality.
+        assertFalse(test.equals(threeTwoOne));
+        
+        //Validate the squares.
+        assertEquals(test.head, 9);
+        assertEquals(test.tail.head, 4);
+        assertEquals(test.tail.tail.head, 1);
+    }
+    
     /* Run the unit tests in this file. */
     public static void main(String... args) {
         System.exit(ucb.junit.textui.runClasses(IntListTest.class));

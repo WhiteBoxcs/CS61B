@@ -20,7 +20,6 @@ public class IntList {
         /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
-
     /** Returns a list equal to L with all elements squared. Destructive. */
     public static void dSquareList(IntList L) {
         while (L != null) {
@@ -58,23 +57,30 @@ public class IntList {
     @Override
     public boolean equals(Object obj) {
         IntList otherList = (IntList) obj;
-        for (IntList L1 = this, L2 = otherList; L1 != null;
+        
+        
+        IntList L1 = null;
+        IntList L2 = null;
+        for (L1 = this, L2 = otherList; L1 != null && L2 != null;
              L1 = L1.tail, L2 = L2.tail) {
 
             if (L1.head != L2.head) {
                 return false;
             }
-
         }
-        return true;
+        
+        return L1 == L2; //Size check.
     }
 
     /** Test .equals. */
     public static void main(String... ignored) {
         // Write something to test .equals here.
-        IntList L1 = list(1, 2, 3, 4, 5),
-            L2 = list(1, 2, 3);
+        IntList L1 = list(1,2,3),
+            L2 = list(1,2);
         System.out.println(L1.equals(L2));
+        
+        //Fails because there is not a null check
+        //I've added a simple check to the equals method to prevent this.
     }
 
 
