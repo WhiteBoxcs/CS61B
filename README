@@ -143,8 +143,13 @@ to add a setting for CLASSPATH with value
 to it (being sure to include the semicolon as shown to separate it
 from the stuff already there).  
 
-Finally, source the file $HOME/cs61b-software/adm/windows-login.sh from your
-$HOME/.bash_profile to include the directory containing 
+Finally, edit your PATH variable using the same technique you used for CLASSPATH
+(Windpws calls it Path) to add our bin directory.  That is, append 
+
+    ;%USERPROFILE%\cs61b-software\bin
+
+to the end of your Path so that you will be able to run style61b and gjdb 
+directly
 
 WARNING: paths and classpaths on pure Windows use a different convention from
    Unix.  The separator is ";" rather than ":", file names start with a
