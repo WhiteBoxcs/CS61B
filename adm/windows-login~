@@ -1,0 +1,9 @@
+# Environment variables for CS61B home use (Linux and MacOS with bash shell).
+# Source this from your $HOME/.bash_profile and $HOME/.profile files.
+# It assumes the cs61b-software directory is in your home directory.
+
+MASTERDIR=$HOME/cs61b-software
+export MASTERDIR
+
+PATH=${PATH}:${MASTERDIR}/bin
+
