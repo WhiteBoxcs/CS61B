@@ -26,28 +26,79 @@ public class IntDList {
     /** Return value #I in this list, where item 0 is the first, 1 is the
      *  second, ...., -1 is the last, -2 the second to last.... */
     public int get(int i) {
-        return 0;   // Your code here
+
+    	DNode cur = null;
+    	if(i < 0){ //in the case that we must traverse backwards.
+    		cur = _back;
+    		while(cur != null && cur._next != null && i++ != -1)
+    			cur = cur._next;
+    	}
+    	else
+    	{
+    		cur = _front;
+    		while(cur != null && cur._prev != null && i-- != 0)
+    			cur = cur._prev;
+    	}
+    	
+    	if(cur != null)
+			return cur._val;
+    	return -1;
     }
 
     /** The length of this list. */
     public int size() {
-        return 0;   // Your code here
+    	DNode cur = _front;
+    	int size = 0;
+    	
+    	//Iteratively traverses the list.
+    	while(cur != null){
+    		cur = cur._prev;
+    		size++;
+    	}
+    	
+    	return size;
     }
 
     /** Adds D to the front of the IntDList. */
     public void insertFront(int d) {
-        // Your code here 
+        DNode nFront = new DNode(d);
+        DNode oFront = _front;
+        
+        nFront._prev =oFront; 
+        if(oFront != null)
+        	oFront._next=nFront;
+        
+        //Relink the front
+    	_front = nFront;
+    	if(_back == null)
+    		_back = nFront;
     }
-
     /** Adds D to the back of the IntDList. */
     public void insertBack(int d) {
-        // Your code here 
+        DNode nBack = new DNode(d);
+        DNode oBack = _back;
+        
+        nBack._next = oBack;
+        if(oBack != null)
+        	oBack._prev = nBack;
+        _back = nBack;
+        if(_front == null)
+        	_front = nBack;
     }
 
     /** Removes the last item in the IntDList and returns it.
      * This is an extra challenge problem. */
     public int deleteBack() {
-        return 0;   // Your code here
+    	DNode oBack = _back;
+    	if(oBack == null)
+    		return -1;   // Your code here
+    	else
+    	{
+    		_back = oBack._next;
+    		if(_front == oBack)
+    			_front = null;
+    		return oBack._val;
+    	}
 
     }
 
@@ -55,7 +106,18 @@ public class IntDList {
      *  [] (empty list) or [1, 2], etc. 
      * This is an extra challenge problem. */
     public String toString() {
-        return null;   // Your code here
+        String retr = "[";
+        
+        //Collect the DList
+        DNode cur = _front;
+        while(cur != null){
+        	retr  += cur._val + (cur != _back ? ", " : "" );
+        	cur = cur._prev;
+        
+        }
+        
+        
+        return retr + "]";
     }
 
     /* DNode is a "static nested class", because we're only using it inside
