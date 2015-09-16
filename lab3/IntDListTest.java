@@ -63,7 +63,7 @@ public class IntDListTest {
         assertEquals(".get(-1)", 10, d.get(-1));
     }
 
-    /* Uncomment the following methods for challenge problems, if desired: 
+    
     @Test
     public void testDeleteBack() {
         IntDList d = new IntDList(5, 10, 15, 20);
@@ -81,7 +81,7 @@ public class IntDListTest {
         assertEquals(".toString()", "[5, 10, 15, 20]", d.toString());
         assertEquals(".toString() of empty", "[]", new IntDList().toString());
     }
-    */
+    
 
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(IntDListTest.class));
