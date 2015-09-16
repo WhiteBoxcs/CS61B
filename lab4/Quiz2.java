@@ -28,3 +28,24 @@ public class Quiz2 {
 }
 
 // Add any other classes you need here:
+class ClippedSum extends Accum {
+    java.util.List<Integer> elems;
+    int max;
+
+    public ClippedSum(int max){
+        elems = new java.util.ArrayList<Integer>();
+        this.max = max;
+    }
+
+    void accum(int x){
+        elems.add(new Integer(x));
+    }
+
+    int result(){
+        int sum = 0;
+        for(int elem : elems)
+            sum += elem;
+        return Math.max(sum,max);
+    }
+
+}  
