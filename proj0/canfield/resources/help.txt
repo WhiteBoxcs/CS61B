@@ -1,0 +1,25 @@
+Command Summary:
+
+  card, c:
+        Deal cards (up to 3) from the stock to the waste pile, or turn
+        over the waste pile if the stock is empty.
+  resfnd, rf:
+        Move card from reserve to foundation.
+  wstfnd, wf:
+        Move card from waste to foundation.
+  tabfnd T, tf T:
+        Move card from tableau #T to foundation.
+  restab T, rt T
+        Move card from reserve to tableau #T.
+  wsttab T, wt T:
+        Move card from waste pile to tableau #T.
+  tabtab T1 T2, tt T1 T2:
+        Move tableau pile #T1 on top of tableau pile #T2.
+  fndtab F T, ft F T
+        Move card from foundation #F to tableau #T.
+  help, h, ?:
+        This message.
+  quit, q:
+        Exit program.
+
+Foundation and tableau piles are numbered 1 - 4.
