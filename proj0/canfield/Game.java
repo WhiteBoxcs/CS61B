@@ -334,7 +334,7 @@ class Game {
             throw err("no card to add");
         }
         if (card.rank() == _base.rank()) {
-            throw err("%ss must go to the foundation");
+            throw err("%s must go to the foundation", card);
         } else if (t != null && t.isRed() == card.isRed()) {
             throw err("tableau is built down in alternating colors");
         } else if (t != null
