@@ -46,3 +46,4 @@ style:
 clean:
 	$(RM) *~ 
 	$(MAKE) -C $(PACKAGE) clean
+	$(MAKE) -C gui clean
