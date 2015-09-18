@@ -163,12 +163,12 @@ class Game {
      * @param act The action to enact.
      * @return Returns the enacted action.
      */
-    Action apply(Action act){
-    	act.apply(this);
+    Action apply(Action action){
+    	action.act();
     	
     	//It is important that we add the action to the history after it has been applied.
-    	this.history.push(act);
-    	return act;
+    	this.history.push(action);
+    	return action;
     }
     
     /**
@@ -177,112 +177,359 @@ class Game {
      */
     Action undo(){
     	Action lastMove = this.history.pop();
-    	lastMove.inverseApply(this);
+    	lastMove.undo();
     	return lastMove;
     }
 
     /* === Methods that implement possible moves. === */
-
+    
     /** Turn up to 3 cards over from the stock to the waste.  If the stock
      *  is empty, turn over the waste to form a new stock, leaving the waste
-     *  empty. */
+     *  empty. THIS METHOD IS MAINTAINED FOR BACKWARDS COMPATABILITY */
     void stockToWaste() {
-        int num = Math.min(_stock.size(), 3);
-        if (num == 0) {
-            _stock.move(_waste);
-            _stock.turnOver();
-        } else {
-            for (int i = 0; i < num; i += 1) {
-                _waste.move(_stock, 1);
-            }
-        }
+    	this.apply(new StockToWaste());
+    }
+    
+    /**
+     * The wrapper for internal stock to waste action management.
+     * @author MadcowD
+     *
+     */
+    class StockToWaste implements Action{
+
+		@Override
+		public void act() {
+	        int num = Math.min(_stock.size(), 3);
+	        if (num == 0) {
+	            _stock.move(_waste);
+	            _stock.turnOver();
+	        } else {
+	            for (int i = 0; i < num; i += 1) {
+	                _waste.move(_stock, 1);
+	            }
+	        }
+			
+		}
+
+		@Override
+		//TODO: Implement undoing.
+		public void undo() {
+			// TODO Auto-generated method stub
+	        int num = Math.min(_waste.size(), 3);
+	        if (num == 0) {
+	            _stock.move(_waste);
+	            _stock.turnOver();
+	        } else {
+	            for (int i = 0; i < num; i += 1) {
+	                _waste.move(_stock, 1);
+	            }
+	        }
+		}
     }
 
+    //======================================================================\\
+    
     /** Move the top card of the waste to a suitable foundation pile.
      *  Throws IllegalArgumentException if this is not a legal move. */
     void wasteToFoundation() {
-        Pile p = findFoundation(topWaste());
-        checkFoundationAdd(topWaste(), p);
-        p.move(_waste, 1);
+    	this.apply(new WasteToFoundation());
+    }
+    
+    /**
+     * The internal wrapper for waste to foundation action managmeent
+     * @author MadcowD
+     *
+     */
+    class WasteToFoundation implements Action{
+
+		@Override
+		public void act() {
+	        Pile p = findFoundation(topWaste());
+	        checkFoundationAdd(topWaste(), p);
+	        p.move(_waste, 1);
+			
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
     }
 
+    //======================================================================\\
+    
     /** Move the top card of the reserve to a suitable foundation pile.
      *  Throws IllegalArgumentException if this is not a legal move. */
     void reserveToFoundation() {
-        Pile p = findFoundation(topReserve());
-        checkFoundationAdd(topReserve(), p);
-        p.move(_reserve, 1);
+    	this.apply(new ReserveToFoundation());
+    }
+    
+    /**
+     * The internal wrapper for rerve to foundation action mangement.
+     * @author MadcowD
+     *
+     */
+    class ReserveToFoundation implements Action{
+
+		@Override
+		public void act() {
+	        Pile p = findFoundation(topReserve());
+	        checkFoundationAdd(topReserve(), p);
+	        p.move(_reserve, 1);
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
     }
 
+    //======================================================================\\
+    
+    
     /** Move a card from tableau pile #T, 1 <= T <= TABLEAU_SIZE, to
      *  a suitable foundation pile.
      *  Throws IllegalArgumentException if this is not a legal move. */
     void tableauToFoundation(int t) {
-        Pile tableau = tableau(t);
-        if (tableau.isEmpty()) {
-            throw err("No cards in that pile");
-        }
-        Pile foundation = findFoundation(tableau.top());
-        checkFoundationAdd(tableau.top(), foundation);
-        foundation.move(tableau, 1);
-        fillFromReserve(tableau);
+    	this.apply(new TableauToFoundation(t));
     }
+    
+    
+    /**
+     * The internal rapper for tableau to foundation action management.
+     * @author MadcowD
+     *
+     */
+    class TableauToFoundation implements Action{
+    	private int tIndex;
+
+		/**
+    	 * Constructs the action with a tableau index.
+    	 * @param t The tableau index.
+    	 */
+    	TableauToFoundation(int tIndex){
+    		this.tIndex = tIndex;
+    	}
+    	
+		@Override
+		public void act() {
+	        Pile tableau = tableau(tIndex);
+	        if (tableau.isEmpty()) {
+	            throw err("No cards in that pile");
+	        }
+	        Pile foundation = findFoundation(tableau.top());
+	        checkFoundationAdd(tableau.top(), foundation);
+	        foundation.move(tableau, 1);
+	        fillFromReserve(tableau);
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+  //======================================================================\\
 
     /** Move tableau pile #K0 to tableau pile #K1,
      *  where K0, K1 in 1 .. TABLEAU_SIZE. */
     void tableauToTableau(int k0, int k1) {
-        Pile t0 = tableau(k0);
-        Pile t1 = tableau(k1);
-        if (t0 == t1) {
-            throw err("Can't move a pile onto itself");
-        }
-        if (t0.isEmpty()) {
-            throw err("Can't move an empty pile");
-        }
-        if (t1.isEmpty()) {
-            t1.move(t0);
-        } else {
-            checkTableauAdd(t0.bottom(), t1);
-            t1.move(t0);
-        }
-        fillFromReserve(t0);
+    	this.apply(new TableauToTableau(k0,k1));
     }
+    
+    /***
+     * The internal wrapper for the tableau to tableau action.
+     * @author MadcowD
+     *
+     */
+    class TableauToTableau implements Action{
+    	
+    	private int k0;
+		private int k1;
+
+		/** Move tableau pile #K0 to tableau pile #K1,
+         *  where K0, K1 in 1 .. TABLEAU_SIZE. */
+    	TableauToTableau(int k0, int k1){
+    		this.k0 = k0;
+    		this.k1 = k1;
+    	}
+  
+		/** Move tableau pile #K0 to tableau pile #K1,
+         *  where K0, K1 in 1 .. TABLEAU_SIZE. */
+		@Override
+		public void act() {
+	        Pile t0 = tableau(k0);
+	        Pile t1 = tableau(k1);
+	        if (t0 == t1) {
+	            throw err("Can't move a pile onto itself");
+	        }
+	        if (t0.isEmpty()) {
+	            throw err("Can't move an empty pile");
+	        }
+	        if (t1.isEmpty()) {
+	            t1.move(t0);
+	        } else {
+	            checkTableauAdd(t0.bottom(), t1);
+	            t1.move(t0);
+	        }
+	        fillFromReserve(t0);
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+  //======================================================================\\
 
     /** Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to
      *  tableau pile #T, 1 <= T <= TABLEAU_SIZE. */
     void foundationToTableau(int f, int t) {
-        Pile foundation = foundation(f);
-        Pile tableau = tableau(t);
-        if (foundation.isEmpty()) {
-            throw err("Cannot move from empty pile");
-        } else if (tableau.isEmpty()) {
-            throw err("Cannot move card to empty tableau");
-        }
-        checkTableauAdd(foundation.top(), tableau);
-        tableau.move(foundation, 1);
+    	this.apply(new FoundationToTableau(f,t));
     }
+    
+    /**
+     * The internal wrapper for the foudnation to tableau action.
+     * @author MadcowD
+     *
+     */
+    class FoundationToTableau implements Action {
+    	
+        private int f;
+		private int t;
+
+		/** Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to
+         *  tableau pile #T, 1 <= T <= TABLEAU_SIZE. */
+    	FoundationToTableau(int f, int t){
+    		this.f = f;
+    		this.t = t;
+    	}
+    	
+		/** Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to
+         *  tableau pile #T, 1 <= T <= TABLEAU_SIZE. */
+		@Override
+		public void act() {
+	        Pile foundation = foundation(f);
+	        Pile tableau = tableau(t);
+	        if (foundation.isEmpty()) {
+	            throw err("Cannot move from empty pile");
+	        } else if (tableau.isEmpty()) {
+	            throw err("Cannot move card to empty tableau");
+	        }
+	        checkTableauAdd(foundation.top(), tableau);
+	        tableau.move(foundation, 1);
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+  //======================================================================\\
 
     /** Move the top card of the waste to tableau pile #K,
      *  1 <= K <= TABLEAU_SIZE.  Throws IllegalArgumentException if K is
      *  is out of bounds, there is no such card, or the move is illegal */
     void wasteToTableau(int k) {
-        Pile p = tableau(k);
-
-        if (!_reserve.isEmpty() && p.isEmpty()) {
-            throw err("Still cards in reserve");
-        }
-        checkTableauAdd(topWaste(), p);
-        p.move(_waste, 1);
+    	this.apply(new WasteToTableau(k));
     }
+    
+    /**
+     * The internal wrapper for the waste to tableau action.
+     * @author MadcowD
+     *
+     */
+    class WasteToTableau implements Action{
+    	
+    	private int kIndex;
+
+		/**
+    	 * Constructs a WasteToTableau action
+    	 * @param kIndex The kIndex of the action.
+    	 */
+    	WasteToTableau(int kIndex){
+    		this.kIndex = kIndex;
+    	}
+    	
+        /** Move the top card of the waste to tableau pile #K,
+         *  1 <= K <= TABLEAU_SIZE.  Throws IllegalArgumentException if K is
+         *  is out of bounds, there is no such card, or the move is illegal */
+		@Override
+		public void act() {
+	        Pile p = tableau(kIndex);
+
+	        if (!_reserve.isEmpty() && p.isEmpty()) {
+	            throw err("Still cards in reserve");
+	        }
+	        checkTableauAdd(topWaste(), p);
+	        p.move(_waste, 1);
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+  //======================================================================\\
 
     /** Move the top card of the waste to tableau pile #K,
      *  1 <= K <= TABLEAU_SIZE.  Throws IllegalArgumentException if K is
      *  is out of bounds, there is no such card, or the move is illegal */
     void reserveToTableau(int k) {
-        Pile p = tableau(k);
-        checkTableauAdd(topReserve(), p);
-        p.move(_reserve, 1);
+        this.apply(new ReserveToTableau(k));
     }
+    
+    /**
+     * The internal wrapper for the reserve to tableau action,
+     * @author MadcowD
+     *
+     */
+    class ReserveToTableau implements Action{
+    	
+    	private int kIndex;
+
+		/**
+    	 * Constructs a new Reserve to tableau action
+    	 * @param kIndex
+    	 */
+    	ReserveToTableau(int kIndex){
+    		this.kIndex = kIndex;
+    	}
+    	
+        /** Move the top card of the waste to tableau pile #K,
+         *  1 <= K <= TABLEAU_SIZE.  Throws IllegalArgumentException if K is
+         *  is out of bounds, there is no such card, or the move is illegal */
+		@Override
+		public void act() {
+	        Pile p = tableau(kIndex);
+	        checkTableauAdd(topReserve(), p);
+	        p.move(_reserve, 1);
+		}
+
+		@Override
+		public void undo() {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+  //======================================================================\\
 
     /* === Internal methods === */
 
