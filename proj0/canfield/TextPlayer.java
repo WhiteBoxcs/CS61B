@@ -114,6 +114,9 @@ class TextPlayer extends Player {
                         return;
                     }
                     break;
+                case "undo": case "u":
+                	//Perform the undo action.
+                	break;
                 default:
                     throw new IllegalArgumentException("Unknown command");
                 }

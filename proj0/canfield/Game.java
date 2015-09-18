@@ -1,7 +1,9 @@
 package canfield;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.Stack;
 
 import static canfield.Utils.*;
 
@@ -16,9 +18,11 @@ class Game {
     static final int TABLEAU_SIZE = 4;
     /** Score for each foundation card. */
     static final int POINTS_PER_CARD = 5;
+	private Stack<Action> history;
 
     /** A new Game, as yet undealt. */
     Game() {
+    	history = new Stack<Action>();
         _stock = new Pile();
         _waste = new Pile();
         _reserve = new Pile();
@@ -150,6 +154,31 @@ class Game {
         } catch (IndexOutOfBoundsException excp) {
             throw err("no such foundation pile");
         }
+    }
+    
+    
+    /* === Undo Code === */
+    /**
+     * Applies an action and stores it to the history.	
+     * @param act The action to enact.
+     * @return Returns the enacted action.
+     */
+    Action apply(Action act){
+    	act.apply(this);
+    	
+    	//It is important that we add the action to the history after it has been applied.
+    	this.history.push(act);
+    	return act;
+    }
+    
+    /**
+     * Undoes the action on the top of the stack./
+     * @return
+     */
+    Action undo(){
+    	Action lastMove = this.history.pop();
+    	lastMove.inverseApply(this);
+    	return lastMove;
     }
 
     /* === Methods that implement possible moves. === */
