@@ -1,5 +1,5 @@
 /**
- * The Action inter
+ * The Action interface.
  */
 package canfield;
 
