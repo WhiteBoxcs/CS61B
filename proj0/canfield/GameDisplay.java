@@ -18,7 +18,7 @@ import java.io.IOException;
 class GameDisplay extends Pad {
 
     /** Color of display field. */
-    private static final Color BACKGROUND_COLOR = Color.white;
+    private static final Color BACKGROUND_COLOR = Color.WHITE;
 
     /* Coordinates and lengths in pixels unless otherwise stated. */
 
@@ -74,7 +74,10 @@ class GameDisplay extends Pad {
         Rectangle b = g.getClipBounds();
         g.fillRect(0, 0, b.width, b.height);
         // FIXME
+        //Spaids Hearts Diamonds Clubs
+       
         paintCard(g, Card.SA, 100, 100);
+        paintBack(g, 0,0);
     }
 
     /** Game I am displaying. */
