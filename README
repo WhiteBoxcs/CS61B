@@ -135,10 +135,30 @@ to add a setting for CLASSPATH with value
 
     %USERPROFILE%\cs61b-software\lib\*;.
 
-(that's a semicolon, not a colon).  If you already have a CLASSPATH value,
-append 
+(that's a semicolon, not a colon).  If you already have a CLASSPATH value
+(with other stuff than this on it) append 
 
     ;%USERPROFILE%\cs61b-software\lib\*
 
 to it (being sure to include the semicolon as shown to separate it
-from the stuff already there)
+from the stuff already there).  
+
+Finally, edit your PATH variable using the same technique you used for CLASSPATH
+(Windpws calls it Path) to add our bin directory.  That is, append 
+
+    ;%USERPROFILE%\cs61b-software\bin
+
+to the end of your Path so that you will be able to run style61b and gjdb 
+directly
+
+WARNING: paths and classpaths on pure Windows use a different convention from
+   Unix.  The separator is ";" rather than ":", file names start with a
+   device designator (like C:), and directories in a path entry use "\"
+   rather than "/".  Git Bash on Windows uses the Unix convention
+   for the PATH variable (":", "/", and "/c/" in place of "c:").  It can do
+   this because the PATH is used to tell the shell where to find executable
+   files, and the git bash shell understands Unix conventions.  Unfortunately,
+   when you invoke java or javac via the bash shell, you still get the same
+   java or javac program you'd get under pure windows, and those programs
+   use the Windows conventions.  Hence the CLASSPATH must be in Windows
+   format (";", "\", etc.), EVEN IF you set it in your .bash_profile.   

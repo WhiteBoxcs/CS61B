@@ -25,5 +25,5 @@ else
    config=
 fi
 
-java -cp "$lib/ucb-checkstyle.jar:${CLASSPATH:-.}" ucb.checkstyle.Main $suppress $config $*
+java ucb.checkstyle.Main $suppress $config $*
 
