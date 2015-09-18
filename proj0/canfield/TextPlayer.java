@@ -115,7 +115,8 @@ class TextPlayer extends Player {
                     }
                     break;
                 case "undo": case "u":
-                	//Perform the undo action.
+                	if(!_game.undo())
+                		throw err("Nothing to undo.");
                 	break;
                 default:
                     throw new IllegalArgumentException("Unknown command");
@@ -126,6 +127,8 @@ class TextPlayer extends Player {
                 error("Invalid or missing argument");
             }
         }
+        
+        
     }
 
     /** Respond to QUESTION.  Returns true iff answer is yes. */
@@ -208,4 +211,10 @@ class TextPlayer extends Player {
 
     /** Source of input commands from the user. */
     private Scanner _inp;
+    
+    /** Returns an IllegalArgumentException with specified message.  Arguments
+     *  MSG and ARGS are as for String.format. */
+    static IllegalArgumentException err(String msg, Object... args) {
+        return new IllegalArgumentException(String.format(msg, args));
+    }
 }

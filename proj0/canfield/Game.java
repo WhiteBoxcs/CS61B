@@ -175,10 +175,14 @@ class Game {
      * Undoes the action on the top of the stack./
      * @return
      */
-    Action undo(){
+    boolean undo(){
+    	if(history.isEmpty())
+    		return false;
+    	
     	Action lastMove = this.history.pop();
     	lastMove.undo();
-    	return lastMove;
+    	
+    	return true;
     }
 
     /* === Methods that implement possible moves. === */
@@ -196,10 +200,10 @@ class Game {
      *
      */
     class StockToWaste implements Action{
-
+    	int num = 0;
 		@Override
 		public void act() {
-	        int num = Math.min(_stock.size(), 3);
+	        num = Math.min(_stock.size(), 3);
 	        if (num == 0) {
 	            _stock.move(_waste);
 	            _stock.turnOver();
@@ -214,16 +218,9 @@ class Game {
 		@Override
 		//TODO: Implement undoing.
 		public void undo() {
-			// TODO Auto-generated method stub
-	        int num = Math.min(_waste.size(), 3);
-	        if (num == 0) {
-	            _stock.move(_waste);
-	            _stock.turnOver();
-	        } else {
-	            for (int i = 0; i < num; i += 1) {
-	                _waste.move(_stock, 1);
-	            }
-	        }
+			for (int i = 0; i < num; i += 1) {
+                _stock.move(_waste, 1);
+            }
 		}
     }
 
@@ -523,7 +520,8 @@ class Game {
 
 		@Override
 		public void undo() {
-			// TODO Auto-generated method stub
+			Pile p = tableau(kIndex);
+	        _reserve.move(p,1);
 			
 		}
     	
