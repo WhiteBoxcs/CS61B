@@ -1,4 +1,7 @@
 import java.io.Reader;
+
+import com.sun.tools.javac.util.Assert;
+
 import java.io.IOException;
 
 /** Translating Reader: a stream that is a translation of an
@@ -6,33 +9,58 @@ import java.io.IOException;
  *  @author
  */
 public class TrReader extends Reader {
-    /** A new TrReader that produces the stream of characters produced
+    private Reader source;
+	private String from;
+	private String to;
+
+	/** A new TrReader that produces the stream of characters produced
      *  by STR, converting all characters that occur in FROM to the
      *  corresponding characters in TO.  That is, change occurrences of
      *  FROM.charAt(0) to TO.charAt(0), etc., leaving other characters
      *  unchanged.  FROM and TO must have the same length. */
     public TrReader(Reader str, String from, String to) {
+    	Assert.check(from != null);
+    	Assert.check(to != null);
+    	Assert.check(from.length() == to.length());
+    	
         // FILL IN
     	this.source = str;
+    	this.from = from;
+    	this.to = to;
     }
 
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
 		source.close();
 		
 	}
 
 	@Override
 	public int read(char[] cbuf, int off, int len) throws IOException {
-		// TODO Auto-generated method stub
-		return 0;
+		int readStatus = source.read(cbuf, off, len);
+
+		for(int i = off; i < len; i++){
+		
+			cbuf[i-off] = map(cbuf[i-off]);
+		}
+		
+		return Math.min(len, readStatus);
 	}
 
-    // FILL IN
-    // NOTE: Until you fill in the right methods, the compiler will
-    //       reject this file, saying that you must declare TrReader
-    //     abstract.  Don't do that; define the right methods instead!
+	/**
+	 * Translates a given character.
+	 * @param origin
+	 * @return
+	 */
+	private char map(char origin){
+		int fromIndex = from.indexOf(origin);
+		if(fromIndex == -1)
+			return origin;
+		else
+			return to.charAt(fromIndex);
+
+		
+	}
 }
 
 
