@@ -13,7 +13,21 @@ public class TrReader extends Reader {
      *  unchanged.  FROM and TO must have the same length. */
     public TrReader(Reader str, String from, String to) {
         // FILL IN
+    	this.source = str;
     }
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		source.close();
+		
+	}
+
+	@Override
+	public int read(char[] cbuf, int off, int len) throws IOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
     // FILL IN
     // NOTE: Until you fill in the right methods, the compiler will
