@@ -7,11 +7,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import ucb.junit.textui;
-
+//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 /** Cursory test of the TrReader class.
  *  @author Josh Hug
  *  @author P. N. Hilfinger
  */
+
 public class TrReaderTest {
 
     /* This test reads in the source code for itself.
@@ -24,7 +26,7 @@ public class TrReaderTest {
         TrReader trR = new TrReader(r, "import jav.", "josh hug___");
         char[] cbuf = new char[250];
 
-        assertEquals(250, trR.read(cbuf));
+        assertEquals(250, trR.read(cbuf,0,250));
         String result = new String(cbuf);
         assertEquals(TRANSLATION.substring(0, 250), result);
     }
@@ -44,18 +46,18 @@ public class TrReaderTest {
         System.exit(textui.runClasses(TrReaderTest.class));
     }
 
-    static final String TRANSLATION =
-        "import java.io.FileReader;\n"
-        + "import java.io.Reader;\n"
-        + "import java.io.IOException;\n"
-        + "import java.util.Arrays;\n"
-        + "\n"
-        + "import org.junit.Test;\n"
-        + "import static org.junit.Assert.*;\n"
-        + "\n"
-        + "import ucb.junit.textui;\n"
-        + "\n"
-        + "/** Cursory test of the TrReader class.\n"
-        + " *  @author Josh Hug\n"
-        + " *  @author P. N. Hilfinger\n";
+    static final String TRANSLATION = 
+    	"josh hug____jh_FjleRe_de ;\n"
+			+ "josh hug____jh_Re_de ;\n"
+			+ "josh hug____jh_Sh jngRe_de ;\n"
+			+ "josh hug____jh_IOExceshjhn;\n"
+			+ "\n"
+			+ "josh huh g_gunjh_Tesh;\n"
+			+ "josh hush_hjcuh g_gunjh_Asse h_*;\n"
+			+ "\n"
+			+ "josh huucb_gunjh_hexhuj;\n"
+			+ "//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\n"
+			+ "//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\n"
+			+ "/**uCu sh yuheshuhfuhheuT Re_de ucl_ss_\n"
+			+ "u*uu@_uhhh uJhshuH\n";
 }
