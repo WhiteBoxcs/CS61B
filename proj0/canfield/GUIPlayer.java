@@ -1,8 +1,10 @@
 package canfield;
 
-/** A type of player that gets input from the mouse, and reports
- *  game positions and reports errors on a GUI.
- *  @author
+/**
+ * A type of player that gets input from the mouse, and reports game positions
+ * and reports errors on a GUI.
+ *
+ * @author
  */
 class GUIPlayer extends Player {
 
@@ -13,8 +15,8 @@ class GUIPlayer extends Player {
 
     @Override
     void play() {
-        _game.deal();
-        _display = new CanfieldGUI("Canfield", _game);
+        this._game.deal();
+        this._display = new CanfieldGUI("Canfield", this._game);
     }
 
     /** Displays the playing surface. */

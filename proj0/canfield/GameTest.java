@@ -1,10 +1,13 @@
 package canfield;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
-/** Tests of the Game class.
- *  @author
+/**
+ * Tests of the Game class.
+ *
+ * @author
  */
 
 public class GameTest {

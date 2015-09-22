@@ -1,8 +1,10 @@
 package gui;
 
-/** A type of Point that uses pointer equality (==) for equality, rather
- *  than equality of coordinates.
- *  @author P. N. Hilfinger
+/**
+ * A type of Point that uses pointer equality (==) for equality, rather than
+ * equality of coordinates.
+ * 
+ * @author P. N. Hilfinger
  */
 class Point extends java.awt.Point {
 
@@ -23,8 +25,8 @@ class Point extends java.awt.Point {
 
     /** Return square of distance from me to (X, Y). */
     double dist2(int x, int y) {
-        return (x - getX()) * (x - getX()) + (y - getY()) * (y - getY());
+        return (x - this.getX()) * (x - this.getX()) + (y - this.getY())
+                * (y - this.getY());
     }
 
 }
-
