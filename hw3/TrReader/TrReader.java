@@ -6,7 +6,9 @@ import java.io.IOException;
  *  @author
  */
 public class TrReader extends Reader {
-    /** A new TrReader that produces the stream of characters produced
+    private Reader source;
+
+	/** A new TrReader that produces the stream of characters produced
      *  by STR, converting all characters that occur in FROM to the
      *  corresponding characters in TO.  That is, change occurrences of
      *  FROM.charAt(0) to TO.charAt(0), etc., leaving other characters
