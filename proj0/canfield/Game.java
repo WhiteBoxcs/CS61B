@@ -248,6 +248,7 @@ class Game {
     			
     		}
 
+			
     		/**
     		 * Undoes that action
     		 * Suppose that act has been called.
