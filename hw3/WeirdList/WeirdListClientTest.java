@@ -1,11 +1,14 @@
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import ucb.junit.textui;
 
-/** Cursory tests of WeirdListClient.
- *  @author Josh Hug
- *  @author P. N. Hilfinger
+/**
+ * Cursory tests of WeirdListClient.
+ * 
+ * @author Josh Hug
+ * @author P. N. Hilfinger
  */
 public class WeirdListClientTest {
     @Test
@@ -25,7 +28,7 @@ public class WeirdListClientTest {
         WeirdList wl2 = new WeirdList(6, wl1);
 
         WeirdList nwl = WeirdListClient.add(wl2, 4);
-        assertEquals((6 + 4) + (5 + 4), WeirdListClient.sum(nwl));
+        assertEquals(6 + 4 + 5 + 4, WeirdListClient.sum(nwl));
     }
 
     public static void main(String[] args) {

@@ -1,19 +1,20 @@
 package canfield;
 
-import ucb.gui.Pad;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import java.io.InputStream;
-import java.io.IOException;
+import ucb.gui.Pad;
 
-/** A widget that displays a Pinball playfield.
- *  @author P. N. Hilfinger
+/**
+ * A widget that displays a Pinball playfield.
+ *
+ * @author P. N. Hilfinger
  */
 class GameDisplay extends Pad {
 
@@ -30,14 +31,14 @@ class GameDisplay extends Pad {
 
     /** A graphical representation of GAME. */
     public GameDisplay(Game game) {
-        _game = game;
-        setPreferredSize(BOARD_WIDTH, BOARD_HEIGHT);
+        this._game = game;
+        this.setPreferredSize(BOARD_WIDTH, BOARD_HEIGHT);
     }
 
     /** Return an Image read from the resource named NAME. */
     private Image getImage(String name) {
-        InputStream in =
-            getClass().getResourceAsStream("/canfield/resources/" + name);
+        InputStream in = this.getClass().getResourceAsStream(
+                "/canfield/resources/" + name);
         try {
             return ImageIO.read(in);
         } catch (IOException excp) {
@@ -47,25 +48,25 @@ class GameDisplay extends Pad {
 
     /** Return an Image of CARD. */
     private Image getCardImage(Card card) {
-        return getImage("playing-cards/" + card + ".png");
+        return this.getImage("playing-cards/" + card + ".png");
     }
 
     /** Return an Image of the back of a card. */
     private Image getBackImage() {
-        return getImage("playing-cards/blue-back.png");
+        return this.getImage("playing-cards/blue-back.png");
     }
 
     /** Draw CARD at X, Y on G. */
     private void paintCard(Graphics2D g, Card card, int x, int y) {
         if (card != null) {
-            g.drawImage(getCardImage(card), x, y,
-                        CARD_WIDTH, CARD_HEIGHT, null);
+            g.drawImage(this.getCardImage(card), x, y, CARD_WIDTH, CARD_HEIGHT,
+                    null);
         }
     }
 
     /** Draw card back at X, Y on G. */
     private void paintBack(Graphics2D g, int x, int y) {
-        g.drawImage(getBackImage(), x, y, CARD_WIDTH, CARD_HEIGHT, null);
+        g.drawImage(this.getBackImage(), x, y, CARD_WIDTH, CARD_HEIGHT, null);
     }
 
     @Override
@@ -74,10 +75,10 @@ class GameDisplay extends Pad {
         Rectangle b = g.getClipBounds();
         g.fillRect(0, 0, b.width, b.height);
         // FIXME
-        //Spaids Hearts Diamonds Clubs
-       
-        paintCard(g, Card.SA, 100, 100);
-        paintBack(g, 0,0);
+        // Spaids Hearts Diamonds Clubs
+
+        this.paintCard(g, Card.SA, 100, 100);
+        this.paintBack(g, 0, 0);
     }
 
     /** Game I am displaying. */

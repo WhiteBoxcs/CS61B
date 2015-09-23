@@ -1,11 +1,13 @@
 package canfield;
 
-import java.util.Scanner;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
-/** A type of player that gets input from System.stdin, reports
- *  game positions on System.stdout, and reports errors on System.err.
- *  @author P. N. Hilfinger
+/**
+ * A type of player that gets input from System.stdin, reports game positions on
+ * System.stdout, and reports errors on System.err.
+ *
+ * @author P. N. Hilfinger
  */
 class TextPlayer extends Player {
 
@@ -15,33 +17,39 @@ class TextPlayer extends Player {
     /** A TextPlayer that makes moves on GAME. */
     TextPlayer(Game game) {
         super(game);
-        _inp = new Scanner(System.in);
+        this._inp = new Scanner(System.in);
     }
 
-    /** Display informational message MSG, using additional arguments ARGS
-     *  as for String.format. */
+    /**
+     * Display informational message MSG, using additional arguments ARGS as for
+     * String.format.
+     */
     private void message(String msg, Object... args) {
         System.err.printf(msg, args);
         System.err.println();
     }
 
-    /** Display error message MSG, using additional arguments ARGS as for
-     *  String.format. */
+    /**
+     * Display error message MSG, using additional arguments ARGS as for
+     * String.format.
+     */
     private void error(String msg, Object... args) {
-        message("Error: " + msg, args);
+        this.message("Error: " + msg, args);
     }
 
-    /** Prompt for and read a command, ignoring comments and blank lines.
-     *  Return line after removing leading and trailing whitespace, or
-     *  return null if there are no more lines. */
+    /**
+     * Prompt for and read a command, ignoring comments and blank lines. Return
+     * line after removing leading and trailing whitespace, or return null if
+     * there are no more lines.
+     */
     private String getCommand() {
         while (true) {
             System.err.print("> ");
             System.err.flush();
-            if (!_inp.hasNext()) {
+            if (!this._inp.hasNext()) {
                 break;
             }
-            String line = _inp.nextLine();
+            String line = this._inp.nextLine();
             line = line.trim();
             if (!line.startsWith("#") && !line.isEmpty()) {
                 return line;
@@ -50,100 +58,116 @@ class TextPlayer extends Player {
         return null;
     }
 
-    /** Announce a win if there is one, ask if user wants another, and if so,
-     *  set it up.  Returns true iff user wants to quit. */
+    /**
+     * Announce a win if there is one, ask if user wants another, and if so, set
+     * it up. Returns true iff user wants to quit.
+     */
     private boolean endGame() {
-        if (_game.isWon()) {
-            if (!yorn("You won! Another game?")) {
+        if (this._game.isWon()) {
+            if (!this.yorn("You won! Another game?")) {
                 return true;
             }
         } else {
-            if (!yorn("Another game?")) {
+            if (!this.yorn("Another game?")) {
                 return true;
             }
         }
-        _game.deal();
-        display();
+        this._game.deal();
+        this.display();
         return false;
     }
 
     @Override
     void play() {
-        _game.deal();
+        this._game.deal();
         while (true) {
-            display();
-            if (_game.isWon() && endGame()) {
+            this.display();
+            if (this._game.isWon() && this.endGame()) {
                 return;
             }
-            String line = getCommand();
+            String line = this.getCommand();
             if (line == null) {
                 break;
             }
             Scanner inp = new Scanner(line);
             try {
                 switch (inp.next().toLowerCase()) {
-                case "card": case "c":
-                    _game.stockToWaste();
+                case "card":
+                case "c":
+                    this._game.stockToWaste();
                     break;
-                case "resfnd": case "rf":
-                    _game.reserveToFoundation();
+                case "resfnd":
+                case "rf":
+                    this._game.reserveToFoundation();
                     break;
-                case "wstfnd": case "wf":
-                    _game.wasteToFoundation();
+                case "wstfnd":
+                case "wf":
+                    this._game.wasteToFoundation();
                     break;
-                case "tabfnd": case "tf":
-                    _game.tableauToFoundation(inp.nextInt());
+                case "tabfnd":
+                case "tf":
+                    this._game.tableauToFoundation(inp.nextInt());
                     break;
-                case "restab": case "rt":
-                    _game.reserveToTableau(inp.nextInt());
+                case "restab":
+                case "rt":
+                    this._game.reserveToTableau(inp.nextInt());
                     break;
-                case "wsttab": case "wt":
-                    _game.wasteToTableau(inp.nextInt());
+                case "wsttab":
+                case "wt":
+                    this._game.wasteToTableau(inp.nextInt());
                     break;
-                case "tabtab": case "tt":
-                    _game.tableauToTableau(inp.nextInt(), inp.nextInt());
+                case "tabtab":
+                case "tt":
+                    this._game.tableauToTableau(inp.nextInt(), inp.nextInt());
                     break;
-                case "fndtab": case "ft":
-                    _game.foundationToTableau(inp.nextInt(), inp.nextInt());
+                case "fndtab":
+                case "ft":
+                    this._game
+                    .foundationToTableau(inp.nextInt(), inp.nextInt());
                     break;
-                case "help": case "h": case "?":
-                    help();
+                case "help":
+                case "h":
+                case "?":
+                    this.help();
                     break;
-                case "quit": case "q":
-                    if (endGame()) {
+                case "quit":
+                case "q":
+                    if (this.endGame()) {
                         return;
                     }
                     break;
-                case "undo": case "u":
-                	if(!_game.undo())
-                		throw err("Nothing to undo.");
-                	break;
+                case "undo":
+                case "u":
+                    if (!this._game.undo())
+                        throw err("Nothing to undo.");
+                    break;
                 default:
                     throw new IllegalArgumentException("Unknown command");
                 }
             } catch (IllegalArgumentException excp) {
-                error(String.format(excp.getMessage()));
+                this.error(String.format(excp.getMessage()));
             } catch (NoSuchElementException excp) {
-                error("Invalid or missing argument");
+                this.error("Invalid or missing argument");
             }
         }
-        
-        
+
     }
 
-    /** Respond to QUESTION.  Returns true iff answer is yes. */
+    /** Respond to QUESTION. Returns true iff answer is yes. */
     boolean yorn(String question) {
         while (true) {
             System.err.print(question + " [yn] ");
             System.err.flush();
-            if (!_inp.hasNext()) {
+            if (!this._inp.hasNext()) {
                 return false;
             }
-            String resp = _inp.next();
+            String resp = this._inp.next();
             switch (resp.toLowerCase()) {
-            case "y": case "yes":
+            case "y":
+            case "yes":
                 return true;
-            case "n": case "no":
+            case "n":
+            case "no":
                 return false;
             default:
                 System.err.println("Please answer yes or no.");
@@ -155,35 +179,35 @@ class TextPlayer extends Player {
     private void display() {
         System.out.printf("%10s", "");
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
-            System.out.printf(" %3s", str(_game.topFoundation(i)));
+            System.out.printf(" %3s", this.str(this._game.topFoundation(i)));
         }
         System.out.println();
 
-        System.out.printf("%n %3s      ", str(_game.topReserve()));
-        displayTableau(0);
+        System.out.printf("%n %3s      ", this.str(this._game.topReserve()));
+        this.displayTableau(0);
         System.out.println();
 
-        if (_game.stockEmpty()) {
+        if (this._game.stockEmpty()) {
             System.out.print(" --- ");
         } else {
             System.out.print(" ### ");
         }
-        System.out.printf("%3s  ", str(_game.topWaste()));
+        System.out.printf("%3s  ", this.str(this._game.topWaste()));
 
         int tabLen;
         tabLen = 0;
         for (int i = 1; i <= Game.TABLEAU_SIZE; i += 1) {
-            tabLen = Math.max(tabLen, _game.tableauSize(i));
+            tabLen = Math.max(tabLen, this._game.tableauSize(i));
         }
 
         if (tabLen > 1) {
-            displayTableau(1);
+            this.displayTableau(1);
         }
         System.out.println();
 
         for (int j = 2; j < tabLen; j += 1) {
             System.out.printf("%10s", "");
-            displayTableau(j);
+            this.displayTableau(j);
             System.out.println();
         }
     }
@@ -199,8 +223,9 @@ class TextPlayer extends Player {
     /** Display row #ROW of the tableau, counting from 0 as the top. */
     private void displayTableau(int row) {
         for (int i = 1; i <= Game.TABLEAU_SIZE; i += 1) {
-            Card c = _game.getTableau(i, _game.tableauSize(i) - row - 1);
-            System.out.printf(" %3s", str(c));
+            Card c = this._game.getTableau(i, this._game.tableauSize(i) - row
+                    - 1);
+            System.out.printf(" %3s", this.str(c));
         }
     }
 
@@ -211,9 +236,11 @@ class TextPlayer extends Player {
 
     /** Source of input commands from the user. */
     private Scanner _inp;
-    
-    /** Returns an IllegalArgumentException with specified message.  Arguments
-     *  MSG and ARGS are as for String.format. */
+
+    /**
+     * Returns an IllegalArgumentException with specified message. Arguments MSG
+     * and ARGS are as for String.format.
+     */
     static IllegalArgumentException err(String msg, Object... args) {
         return new IllegalArgumentException(String.format(msg, args));
     }

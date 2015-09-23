@@ -2,19 +2,23 @@ package canfield;
 
 import ucb.util.CommandArgs;
 
-/** The main class for Canfield solitaire.
- *  @author P. N. Hilfinger
+/**
+ * The main class for Canfield solitaire.
+ *
+ * @author P. N. Hilfinger
  */
 public class Main {
 
-    /** The main program.  ARGS may contain the options --seed=NUM,
-     *  (random seed); and --text (use textual commands). */
+    /**
+     * The main program. ARGS may contain the options --seed=NUM, (random seed);
+     * and --text (use textual commands).
+     */
     public static void main(String... args) {
         String spec = "--seed=(\\d+) --text";
         CommandArgs options = new CommandArgs(spec, args);
         if (!options.ok()) {
             System.err.printf("Usage: java canfield.Main [ --seed=N ] "
-                              + "[ --text ]");
+                    + "[ --text ]");
             System.exit(1);
         }
 
@@ -28,14 +32,14 @@ public class Main {
         Player player;
 
         player = null;
-        if (_options.contains("--text")) {
+        if (this._options.contains("--text")) {
             player = new TextPlayer(game);
         } else {
             player = new GUIPlayer(game);
         }
 
-        if (_options.contains("--seed")) {
-            game.seed(_options.getLong("--seed"));
+        if (this._options.contains("--seed")) {
+            game.seed(this._options.getLong("--seed"));
         }
 
         player.play();
@@ -43,7 +47,7 @@ public class Main {
 
     /** A new Main object using OPTIONS as options (as for main). */
     Main(CommandArgs options) {
-        _options = options;
+        this._options = options;
     }
 
     /** Command-line arguments. */

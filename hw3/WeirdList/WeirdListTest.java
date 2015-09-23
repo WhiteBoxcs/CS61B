@@ -1,11 +1,14 @@
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import ucb.junit.textui;
 
-/** Tests of WeirdList.
- *  @author Josh Hug
- *  @author P. N. Hilfinger
+/**
+ * Tests of WeirdList.
+ * 
+ * @author Josh Hug
+ * @author P. N. Hilfinger
  */
 public class WeirdListTest {
     @Test

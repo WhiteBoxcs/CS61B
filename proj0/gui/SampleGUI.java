@@ -1,9 +1,9 @@
 package gui;
 
-import ucb.gui.TopLevel;
-import ucb.gui.LayoutSpec;
-
 import java.awt.event.MouseEvent;
+
+import ucb.gui.LayoutSpec;
+import ucb.gui.TopLevel;
 
 /* SampleGUI is the controller part of the model-view-controller
  * pattern.  It sets up the view, and manipulates the model
@@ -47,8 +47,10 @@ import java.awt.event.MouseEvent;
  * alignments, and padding.
  */
 
-/** A sample GUI.
- *  @author P. N. Hilfinger
+/**
+ * A sample GUI.
+ * 
+ * @author P. N. Hilfinger
  */
 class SampleGUI extends TopLevel {
 
@@ -58,101 +60,97 @@ class SampleGUI extends TopLevel {
     /** A new window with given TITLE and displaying DATA. */
     SampleGUI(String title, SampleData data) {
         super(title, true);
-        _data = data;
-        _display = new DataDisplay(data, WIDTH, HEIGHT);
-        addMenuButton("Data->Clear", "clear");
-        addMenuButton("Data->Quit", "quit");
-        add(_display, new LayoutSpec("y", 0, "width", 2));
-        addLabel("Points: 0", "pointCount",
-                 new LayoutSpec("y", 1, "x", 0));
-        addLabel("Lines: 0", "lineCount",
-                 new LayoutSpec("y", 1, "x", 1));
-        _display.setMouseHandler("click", this, "mouseClicked");
-        _display.setMouseHandler("move", this, "mouseMoved");
-        _display.setMouseHandler("drag", this, "mouseDragged");
-        _display.setMouseHandler("release", this, "mouseReleased");
-        display(true);
+        this._data = data;
+        this._display = new DataDisplay(data, WIDTH, HEIGHT);
+        this.addMenuButton("Data->Clear", "clear");
+        this.addMenuButton("Data->Quit", "quit");
+        this.add(this._display, new LayoutSpec("y", 0, "width", 2));
+        this.addLabel("Points: 0", "pointCount", new LayoutSpec("y", 1, "x", 0));
+        this.addLabel("Lines: 0", "lineCount", new LayoutSpec("y", 1, "x", 1));
+        this._display.setMouseHandler("click", this, "mouseClicked");
+        this._display.setMouseHandler("move", this, "mouseMoved");
+        this._display.setMouseHandler("drag", this, "mouseDragged");
+        this._display.setMouseHandler("release", this, "mouseReleased");
+        this.display(true);
     }
 
     /** Response to "Quit" menu item.. */
     public void quit(String dummy) {
-        if (showOptions("Really quit?", "Quit?", "question",
-                        "Yes", "Yes", "No") == 0) {
+        if (this.showOptions("Really quit?", "Quit?", "question", "Yes", "Yes",
+                "No") == 0) {
             System.exit(1);
         }
     }
 
     /** Response to "Clear" menu item. */
     public void clear(String dummy) {
-        _data.clear();
-        updateCounts();
-        _display.repaint();
+        this._data.clear();
+        this.updateCounts();
+        this._display.repaint();
     }
 
     /** Action in response to mouse-clicking event EVENT. */
     public void mouseClicked(MouseEvent event) {
         int x = event.getX(), y = event.getY();
-        Point existing =
-            _data.findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
+        Point existing = this._data
+                .findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
         if (existing == null) {
-            if (_clickedPoint == null) {
-                _data.addPoint(x, y);
+            if (this._clickedPoint == null) {
+                this._data.addPoint(x, y);
             }
-            _clickedPoint = null;
-            _display.removeIncompleteSegment();
-        } else if (_clickedPoint == null) {
-            _clickedPoint = existing;
-            _display.setIncompleteSegment(_clickedPoint, _clickedPoint);
-        } else if (_clickedPoint != existing) {
-            _data.addLine(_clickedPoint, existing);
-            _clickedPoint = null;
-            _display.removeIncompleteSegment();
+            this._clickedPoint = null;
+            this._display.removeIncompleteSegment();
+        } else if (this._clickedPoint == null) {
+            this._clickedPoint = existing;
+            this._display.setIncompleteSegment(this._clickedPoint,
+                    this._clickedPoint);
+        } else if (this._clickedPoint != existing) {
+            this._data.addLine(this._clickedPoint, existing);
+            this._clickedPoint = null;
+            this._display.removeIncompleteSegment();
         } else {
-            _clickedPoint = null;
-            _display.removeIncompleteSegment();
+            this._clickedPoint = null;
+            this._display.removeIncompleteSegment();
         }
-        updateCounts();
-        _display.repaint();
+        this.updateCounts();
+        this._display.repaint();
     }
 
     /** Action in response to mouse-dragging event EVENT. */
     public void mouseDragged(MouseEvent event) {
         int x = event.getX(), y = event.getY();
-        Point dragged;
-
-        if (_draggedPoint == null) {
-            _draggedPoint =
-                _data.findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
+        if (this._draggedPoint == null) {
+            this._draggedPoint = this._data.findPoint(x, y,
+                    DataDisplay.MOUSE_TOLERANCE);
         } else {
-            _draggedPoint.move(event.getX(), event.getY());
+            this._draggedPoint.move(event.getX(), event.getY());
         }
 
-        _clickedPoint = null;
-        _display.removeIncompleteSegment();
-        _display.repaint();
+        this._clickedPoint = null;
+        this._display.removeIncompleteSegment();
+        this._display.repaint();
     }
 
     /** Action in response to release of mouse button. */
     public void mouseReleased(MouseEvent ignored) {
-        _draggedPoint = null;
+        this._draggedPoint = null;
     }
 
     /** Action in response to mouse-moving event EVENT. */
     public void mouseMoved(MouseEvent event) {
-        if (_clickedPoint != null) {
-            _display.setIncompleteSegment(_clickedPoint,
-                                          new Point(event.getX(),
-                                                    event.getY()));
+        if (this._clickedPoint != null) {
+            this._display.setIncompleteSegment(this._clickedPoint, new Point(
+                    event.getX(), event.getY()));
         }
-        _display.repaint();
+        this._display.repaint();
     }
 
     /** Display number of points and lines. */
     void updateCounts() {
-        setLabel("pointCount",
-                 String.format("Points: %d", _data.numPoints()));
-        setLabel("lineCount",
-                 String.format("Lines: %d", _data.numLines()));
+        this.setLabel("pointCount",
+                String.format("Points: %d", this._data.numPoints()));
+        this.setLabel("lineCount",
+                String.format("Lines: %d", this._data.numLines()));
     }
 
     /** Point being dragged. */
