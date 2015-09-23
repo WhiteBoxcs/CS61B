@@ -297,19 +297,23 @@ class Game {
      *  Throws IllegalArgumentException if this is not a legal move. */
     void tableauToFoundation(final int t) {
     	this.apply(new Action(){
-    		/**
+    		private Pile tableau;
+			private Pile foundation;
+			private boolean filled;
+
+			/**
     		 * Moves the card
     		 */
     		@Override
     		protected void act() {
-    	        Pile tableau = tableau(t);
+    	        this.tableau = tableau(t);
     	        if (tableau.isEmpty()) {
     	            throw err("No cards in that pile");
     	        }
-    	        Pile foundation = findFoundation(tableau.top());
+    	        this.foundation = findFoundation(tableau.top());
     	        checkFoundationAdd(tableau.top(), foundation);
     	        foundation.move(tableau, 1);
-    	        fillFromReserve(tableau);
+    	        this.filled = fillFromReserve(tableau);
     		}
 
     		/**
@@ -317,7 +321,10 @@ class Game {
     		 */
     		@Override
     		protected void undo() {
-    			// TODO Auto-generated method stub
+    			if(this.filled)
+    				_reserve.move(this.tableau, 1);
+    			else
+    				tableau.move(foundation,1);
     			
     		}
     	});
@@ -330,25 +337,33 @@ class Game {
      *  where K0, K1 in 1 .. TABLEAU_SIZE. */
     void tableauToTableau(final int k0, final int k1) {
     	this.apply(new Action(){
-    		/** Move tableau pile #K0 to tableau pile #K1,
+    		private boolean filled;
+    		private int sizeT0;
+			private Pile t0;
+			private Pile t1;
+
+			/** Move tableau pile #K0 to tableau pile #K1,
              *  where K0, K1 in 1 .. TABLEAU_SIZE. */
     		@Override
     		protected void act() {
-    	        Pile t0 = tableau(k0);
-    	        Pile t1 = tableau(k1);
+    	        this.t0 = tableau(k0);
+    	        this.t1 = tableau(k1);
     	        if (t0 == t1) {
     	            throw err("Can't move a pile onto itself");
     	        }
     	        if (t0.isEmpty()) {
     	            throw err("Can't move an empty pile");
     	        }
+    	        
+    	        this.sizeT0 = t0.size();
     	        if (t1.isEmpty()) {
     	            t1.move(t0);
     	        } else {
     	            checkTableauAdd(t0.bottom(), t1);
     	            t1.move(t0);
+    	            
     	        }
-    	        fillFromReserve(t0);
+    	        this.filled = fillFromReserve(t0);
     		}
 
     		/**
@@ -356,8 +371,11 @@ class Game {
     		 */
     		@Override
     		protected void undo() {
-    			
-    			// TODO Auto-generated method stub
+    			if(this.filled)
+    				_reserve.move(t0,1);
+    			else
+    				t0.move(t1, sizeT0);
+    				
     			
     		}
     	});
@@ -472,13 +490,22 @@ class Game {
 
     /* === Internal methods === */
 
-    /** If P is empty and the reserve is not, move the top card of the reserve
-     *  to P. */
-    private void fillFromReserve(Pile p) {
+    /**
+     * If P is empty and the reserve is not, move the top card of the reserve
+     *  to P. 
+     * @param p The pile to fill.
+     * @return If the pile was filled.
+     */
+    private boolean fillFromReserve(Pile p) {
         if (p.isEmpty() && !_reserve.isEmpty()) {
             p.move(_reserve, 1);
+            return true;
         }
+        return false;
     }
+    
+    
+    private boolean reserveDepleted = false;
 
     /** Return foundation pile #K, 1<=K<=Card.NUM_SUITS. Throws
      *  IllegalArgumentException if K is out of range. */
