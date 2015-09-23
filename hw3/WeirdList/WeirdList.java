@@ -5,14 +5,21 @@ public class WeirdList {
     /** The empty sequence of integers. */
     public static final WeirdList EMPTY =
         null;  // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+	private WeirdList tail;
+	private int head;
+	private int size;
 
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
-    public WeirdList(int head, WeirdList tail) { /* FILL IN */ }
+    public WeirdList(int head, WeirdList tail) {
+    	this.tail = tail; 
+    	this.head = head; 
+    	this.size = tail.length()+1;
+    	}
 
     /** Returns the number of elements in the sequence that
      *  starts with THIS. */
     public int length() {
-        return 0;  // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        return this.size;  // REPLACE THIS LINE WITH THE RIGHT ANSWER.
     }
 
     /** Return a string containing my contents as a sequence of numerals
