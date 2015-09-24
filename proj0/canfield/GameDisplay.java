@@ -25,28 +25,20 @@ class GameDisplay extends Pad {
 
     /** Preferred dimensions of the playing surface. */
     private static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 600;
+
+    /** Displayed dimensions of a card image. */
+    private static final int CARD_HEIGHT = 125, CARD_WIDTH = 90;
     
     private static final int CARD_PADDING = 10;
     private static final int CARD_REVEAL = 30;
-    
-
 
     /** A graphical representation of GAME. */
     public GameDisplay(Game game) {
         this._game = game;
         this.setPreferredSize(BOARD_WIDTH, BOARD_HEIGHT);
         background = this.getImage("bg.jpg");
-        buildDisplay();
     }
 
-    
-    private void buildDisplay(){
-    	
-    }
-
-    
-    /* =============== DRAWING ================ */
-    
     /** Return an Image read from the resource named NAME. */
     private Image getImage(String name) {
         InputStream in = this.getClass().getResourceAsStream(
@@ -67,17 +59,12 @@ class GameDisplay extends Pad {
     private Image getBackImage() {
         return this.getImage("playing-cards/blue-back.png");
     }
-    
 
     /** Draw CARD at X, Y on G. */
     private void paintCard(Graphics2D g, Card card, int x, int y) {
         if (card != null) {
-        	if(card == card.BACK)
-        		paintBack(g, x, y);
-        	else
-        		g.drawImage(this.getCardImage(card), x, y, GUICard.WIDTH,  GUICard.HEIGHT,
+            g.drawImage(this.getCardImage(card), x, y, CARD_WIDTH, CARD_HEIGHT,
                     null);
-
         }
     }
     
@@ -85,11 +72,10 @@ class GameDisplay extends Pad {
     private void paintCard(Graphics2D g, Card card, Point p) {
         this.paintCard(g,card,p.x,p.y);
     }
-    
 
     /** Draw card back at X, Y on G. */
     private void paintBack(Graphics2D g, int x, int y) {
-        g.drawImage(this.getBackImage(), x,y,  GUICard.WIDTH,  GUICard.HEIGHT, null);
+        g.drawImage(this.getBackImage(), x,y, CARD_WIDTH, CARD_HEIGHT, null);
     }
     
     /** Draw card back at P on G. */
@@ -97,17 +83,6 @@ class GameDisplay extends Pad {
     	this.paintBack(g,p.x,p.y);
     }
 
-    /**
-     * Paints a GUICard CARD on the screen.
-     * @param g
-     * @param card
-     */
-    private void paintCard(Graphics2D g, GUICard card){
-    	paintCard(g,card.getCard(),cctp(card));
-    }
-    
-    
-    /* =================== RENDERING ====================== */
     
     /**
      * Paints the game.
@@ -163,29 +138,17 @@ class GameDisplay extends Pad {
      * @return the point where the cards pos is.
      */
     public static Point cctp(double x,double y){
-    	int paddedWidth =  GUICard.WIDTH + CARD_PADDING;
-    	int paddedHeight =  GUICard.HEIGHT + CARD_PADDING;
+    	int paddedWidth = CARD_WIDTH + CARD_PADDING;
+    	int paddedHeight = CARD_HEIGHT + CARD_PADDING;
     	
     	return new Point((int)((x - 0.5)*paddedWidth)+(int)ORIGIN.getX(),
     			(int)((y-0.5)*paddedHeight) + (int)ORIGIN.getY());
     }
     
-    /**
-     * Converts a card coord point to a pixel point.
-     * @param cardCoordPoint
-     * @return
-     */
-    public static Point cctp(Point cardCoordPoint){
-    	return cctp(cardCoordPoint.getX(), cardCoordPoint.getY());
-    }
     
-    
-    /* ================== FIELDS =========================*/
 
     /** Game I am displaying. */
     private final Game _game;
     private final Image background;
-    
-    private ArrayList<GUICard> cards 
 
 }
