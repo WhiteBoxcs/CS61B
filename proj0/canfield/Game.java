@@ -179,7 +179,7 @@ class Game {
      */
     boolean undo(){
     	if(history.isEmpty())
-    		return false;
+    		throw err("Nothing to undo!");
     	
     	Action lastMove = this.history.pop();
     	lastMove.inverseApply();

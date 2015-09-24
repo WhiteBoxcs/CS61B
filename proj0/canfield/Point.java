@@ -1,4 +1,4 @@
-package gui;
+package canfield;
 
 /**
  * A type of Point that uses pointer equality (==) for equality, rather than
@@ -28,4 +28,5 @@ class Point extends java.awt.Point {
         return (x - this.getX()) * (x - this.getX()) + (y - this.getY())
                 * (y - this.getY());
     }
+
 }

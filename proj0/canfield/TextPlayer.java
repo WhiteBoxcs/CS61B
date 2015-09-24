@@ -138,8 +138,8 @@ class TextPlayer extends Player {
                     break;
                 case "undo":
                 case "u":
-                    if (!this._game.undo())
-                        throw err("Nothing to undo.");
+                    this._game.undo();
+                       
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown command");

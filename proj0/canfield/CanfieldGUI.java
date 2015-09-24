@@ -16,19 +16,51 @@ class CanfieldGUI extends TopLevel {
     CanfieldGUI(String title, Game game) {
         super(title, true);
         this._game = game;
-        this.addLabel("Sorry, no graphical interface yet", new LayoutSpec("y",
-                0, "x", 0));
-        this.addButton("Quit", "quit", new LayoutSpec("y", 0, "x", 1));
+        
+        this.addMenuButton("Game->New Game", "newGame");
+        this.addMenuButton("Game->Undo", "undo");
+        this.addMenuButton("Game->Quit", "quit");
+        
 
+
+        
+        this.addLabel("New game started!","messageLabel", new LayoutSpec("y",
+                1, "x", 0));
+        
         this._display = new GameDisplay(game);
-        this.add(this._display, new LayoutSpec("y", 2, "width", 2));
+        this.add(this._display, new LayoutSpec("y", 0, "width", 2));
         this._display.setMouseHandler("click", this, "mouseClicked");
         this._display.setMouseHandler("release", this, "mouseReleased");
         this._display.setMouseHandler("drag", this, "mouseDragged");
+        
+        
 
         this.display(true);
     }
 
+    /**
+     * Creates a new game
+     * @param dummy
+     */
+    public void newGame(String dummy){
+    	//TODO: IMOPLEMENRT
+    }
+    
+    /**
+     * Undoes a move if there is one to undo.
+     * @param dummy
+     */
+    public void undo(String dummy){
+    	try{
+    		_game.undo();
+    	}
+    	catch(IllegalArgumentException exp){
+    		this.error(exp);
+    	}
+    	
+    	this._display.repaint();
+    }
+    
     /** Respond to "Quit" button. */
     public void quit(String dummy) {
         System.exit(1);
@@ -51,6 +83,29 @@ class CanfieldGUI extends TopLevel {
         this._display.repaint();
     }
 
+    
+    /* ================ MESSAGE STUFF ===================*/
+    /**
+     * Writes an error message to the label.
+     * @param exp
+     */
+    private void error(Exception exp){
+    	String errorMsg = (String.format(exp.getMessage()));
+    	this.message( "Error" + errorMsg);
+    	this.showMessage(errorMsg, "Error", "Error");
+    	
+    }
+    
+    /**
+     * Writes a simple message to the label.
+     * @param message
+     */
+    private void message(String message){
+    	this.setLabel("messageLabel", message);
+    }
+    
+    
+    /*===================================================*/
     /** The board widget. */
     private final GameDisplay _display;
 

@@ -24,17 +24,29 @@ class GameDisplay extends Pad {
     /* Coordinates and lengths in pixels unless otherwise stated. */
 
     /** Preferred dimensions of the playing surface. */
-    private static final int BOARD_WIDTH = 400, BOARD_HEIGHT = 300;
+    private static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 600;
+    
+    private static final int CARD_PADDING = 10;
+    private static final int CARD_REVEAL = 30;
+    
 
-    /** Displayed dimensions of a card image. */
-    private static final int CARD_HEIGHT = 125, CARD_WIDTH = 90;
 
     /** A graphical representation of GAME. */
     public GameDisplay(Game game) {
         this._game = game;
         this.setPreferredSize(BOARD_WIDTH, BOARD_HEIGHT);
+        background = this.getImage("bg.jpg");
+        buildDisplay();
     }
 
+    
+    private void buildDisplay(){
+    	
+    }
+
+    
+    /* =============== DRAWING ================ */
+    
     /** Return an Image read from the resource named NAME. */
     private Image getImage(String name) {
         InputStream in = this.getClass().getResourceAsStream(
@@ -55,33 +67,125 @@ class GameDisplay extends Pad {
     private Image getBackImage() {
         return this.getImage("playing-cards/blue-back.png");
     }
+    
 
     /** Draw CARD at X, Y on G. */
     private void paintCard(Graphics2D g, Card card, int x, int y) {
         if (card != null) {
-            g.drawImage(this.getCardImage(card), x, y, CARD_WIDTH, CARD_HEIGHT,
+        	if(card == card.BACK)
+        		paintBack(g, x, y);
+        	else
+        		g.drawImage(this.getCardImage(card), x, y, GUICard.WIDTH,  GUICard.HEIGHT,
                     null);
+
         }
     }
+    
+    /** Draw CARD at P on G. */
+    private void paintCard(Graphics2D g, Card card, Point p) {
+        this.paintCard(g,card,p.x,p.y);
+    }
+    
 
     /** Draw card back at X, Y on G. */
     private void paintBack(Graphics2D g, int x, int y) {
-        g.drawImage(this.getBackImage(), x, y, CARD_WIDTH, CARD_HEIGHT, null);
+        g.drawImage(this.getBackImage(), x,y,  GUICard.WIDTH,  GUICard.HEIGHT, null);
+    }
+    
+    /** Draw card back at P on G. */
+    private void paintBack(Graphics2D g, Point p){
+    	this.paintBack(g,p.x,p.y);
     }
 
+    /**
+     * Paints a GUICard CARD on the screen.
+     * @param g
+     * @param card
+     */
+    private void paintCard(Graphics2D g, GUICard card){
+    	paintCard(g,card.getCard(),cctp(card));
+    }
+    
+    
+    /* =================== RENDERING ====================== */
+    
+    /**
+     * Paints the game.
+     */
     @Override
     public synchronized void paintComponent(Graphics2D g) {
-        g.setColor(BACKGROUND_COLOR);
-        Rectangle b = g.getClipBounds();
-        g.fillRect(0, 0, b.width, b.height);
-        // FIXME
-        // Spaids Hearts Diamonds Clubs
+    	/*paint the background */
+    	 Rectangle b = g.getClipBounds();
+    	 g.drawImage(background,0,0,b.width,b.height,null);
 
-        this.paintCard(g, Card.SA, 100, 100);
-        this.paintBack(g, 0, 0);
+        
+        // Spaids Hearts Diamonds Clubs
+    	 
+    	 /* RESERVE */
+    	 Card reserve = _game.topReserve();
+    	 if(reserve != null)
+    		 this.paintCard(g, reserve, cctp(-3,0));
+    	 
+    	 /* STOCK */
+    	 if(!_game.stockEmpty())
+    		 this.paintBack(g, cctp(-3,1));
+    	 
+    	 /* WASTE */
+    	 Card waste = _game.topWaste();
+    	 if(waste != null)
+    		 this.paintCard(g,waste, cctp(-2,1));
+
+    	 /* TABLEAU */
+    	 for(int x = 1; x <= 4; x++){
+    		 Card tab = _game.topTableau(x);
+    		 if(tab != null)
+    			 this.paintCard(g, tab, cctp(-1+x,0));
+    	 }
+    	 
+    	 /* FOUNDATION */
+    	 for(int x = 1; x <= 4; x++){
+    		 Card found = _game.topFoundation(x);
+    		 if(found != null)
+    			 this.paintCard(g, found, cctp(-1+x,-1));
+    	 }
+        
     }
+    
+    
+    /* ================ Positional attributes ================ */
+    
+    private static Point ORIGIN = new Point(BOARD_WIDTH/2, BOARD_HEIGHT/2);
+    
+    /**
+     * Converts card coords to pixels
+     * @param x the grid position in X of a given card
+     * @param y the grid position in Y of a given card
+     * @return the point where the cards pos is.
+     */
+    public static Point cctp(double x,double y){
+    	int paddedWidth =  GUICard.WIDTH + CARD_PADDING;
+    	int paddedHeight =  GUICard.HEIGHT + CARD_PADDING;
+    	
+    	return new Point((int)((x - 0.5)*paddedWidth)+(int)ORIGIN.getX(),
+    			(int)((y-0.5)*paddedHeight) + (int)ORIGIN.getY());
+    }
+    
+    /**
+     * Converts a card coord point to a pixel point.
+     * @param cardCoordPoint
+     * @return
+     */
+    public static Point cctp(Point cardCoordPoint){
+    	return cctp(cardCoordPoint.getX(), cardCoordPoint.getY());
+    }
+    
+    
+    /* ================== FIELDS =========================*/
 
     /** Game I am displaying. */
     private final Game _game;
+    private final Image background;
+    
+    private ArrayList<GUICard> cards 
 
 }
