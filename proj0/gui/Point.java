@@ -5,6 +5,7 @@ package gui;
  * equality of coordinates.
  * 
  * @author P. N. Hilfinger
+ * @author William Guss
  */
 class Point extends java.awt.Point {
 
@@ -27,5 +28,17 @@ class Point extends java.awt.Point {
     double dist2(int x, int y) {
         return (x - this.getX()) * (x - this.getX()) + (y - this.getY())
                 * (y - this.getY());
+    }
+    
+    /**
+     * Gets the supremum norm of a point sitance.
+     * @param x
+     * @param y
+     * @return
+     */
+    double supremumNorm(int x, int y){
+    	return Math.max(
+    			Math.abs(x-this.getX()),
+    			Math.abs(y-this.getY()));
     }
 }

@@ -31,12 +31,19 @@ class GameDisplay extends Pad {
     
     private static final int CARD_PADDING = 10;
     private static final int CARD_REVEAL = 30;
+    
+    /** The positions of cards **/
+    private static final Point RESERVE_POS = cctp(-3,0);
+	private static final Point STOCK_POS = cctp(-3,1);
+	private static final Point WASTE_POS = cctp(-2,1);
 
     /** A graphical representation of GAME. */
     public GameDisplay(Game game) {
         this._game = game;
         this.setPreferredSize(BOARD_WIDTH, BOARD_HEIGHT);
         background = this.getImage("bg.jpg");
+        
+        
     }
 
     /** Return an Image read from the resource named NAME. */
@@ -94,27 +101,34 @@ class GameDisplay extends Pad {
     	 g.drawImage(background,0,0,b.width,b.height,null);
 
         
+    	 
         // Spaids Hearts Diamonds Clubs
     	 
     	 /* RESERVE */
     	 Card reserve = _game.topReserve();
     	 if(reserve != null)
-    		 this.paintCard(g, reserve, cctp(-3,0));
+    		 this.paintCard(g, reserve, RESERVE_POS);
     	 
     	 /* STOCK */
     	 if(!_game.stockEmpty())
-    		 this.paintBack(g, cctp(-3,1));
+    		 this.paintBack(g, STOCK_POS);
     	 
     	 /* WASTE */
     	 Card waste = _game.topWaste();
     	 if(waste != null)
-    		 this.paintCard(g,waste, cctp(-2,1));
+    		 this.paintCard(g,waste, WASTE_POS);
 
     	 /* TABLEAU */
     	 for(int x = 1; x <= 4; x++){
-    		 Card tab = _game.topTableau(x);
-    		 if(tab != null)
-    			 this.paintCard(g, tab, cctp(-1+x,0));
+    		 Point basis = cctp(-1+x,0);
+    		 
+    		 for(int i = 0; i < _game.tableauSize(x); i++){
+    			 
+    			 this.paintCard(g, _game.getTableau(x, i), 
+    					 new Point((int)basis.getX(),
+							 (int)basis.getY()+CARD_REVEAL*i) );
+    		 }
+    		 
     	 }
     	 
     	 /* FOUNDATION */
