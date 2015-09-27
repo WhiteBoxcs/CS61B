@@ -9,7 +9,7 @@ import java.awt.Point;
  * @author MadcowD
  *
  */
-public class MoveableCard extends GUICard {
+public class GUIMoveableCard extends GUICard {
 
     /**
      * @param repr The card's representation
@@ -17,7 +17,7 @@ public class MoveableCard extends GUICard {
      * @param pos The initial position of the moveable card.
      * @param layer The layer of the card.
      */
-    public MoveableCard(Card repr, CardType type, Point pos, int layer) {
+    public GUIMoveableCard(Card repr, CardType type, Point pos, int layer) {
         super(repr, type, pos, layer);
         this.oldPos = null;
         this.offset = null;
