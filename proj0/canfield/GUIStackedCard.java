@@ -63,7 +63,11 @@ public class GUIStackedCard extends GUIMoveableCard {
             nextCard.onRelease(pos, justified);
     };
     
-    
+    /**
+     * Drags a pile card recursively
+     * @param pos the position of the mouse
+     * @param justified if the drag is justified.
+     */
     private void pileDrag(Point pos, boolean justified) {
         super.onDrag(pos,justified);
         if(nextCard != null)
