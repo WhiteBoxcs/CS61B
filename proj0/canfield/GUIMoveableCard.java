@@ -44,6 +44,8 @@ public class GUIMoveableCard extends GUICard {
     public void onRelease(Point pos, boolean justified) {
         if(!justified)
             this.setPos(oldPos);
+        this.oldPos = null;
+        this.offset = null;
     };
     
     /*==== Fields ==== */

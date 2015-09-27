@@ -21,7 +21,6 @@ class GUICard {
     private static final int HEIGHT = 125, WIDTH = 90;
     
     private static final int PADDING = 10;
-    private static final int REVEAL = 30;
     
     /**
      * @param repr The representation of the card.
