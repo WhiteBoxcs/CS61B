@@ -68,7 +68,7 @@ class CanfieldGUI extends TopLevel {
 
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
-        // FIXME
+        
         this._display.repaint();
     }
 

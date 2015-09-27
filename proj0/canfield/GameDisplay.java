@@ -3,6 +3,7 @@ package canfield;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +26,6 @@ class GameDisplay extends Pad {
 
     /** Preferred dimensions of the playing surface. */
     private static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 600;
-
-    /** Displayed dimensions of a card image. */
-    private static final int CARD_HEIGHT = 125, CARD_WIDTH = 90;
-    
-    private static final int CARD_PADDING = 10;
-    private static final int CARD_REVEAL = 30;
     
     /** The positions of cards **/
     private static final Point RESERVE_POS = cctp(-3,0);
@@ -45,10 +40,9 @@ class GameDisplay extends Pad {
         
         
     }
-
-    /** Return an Image read from the resource named NAME. */
-    private Image getImage(String name) {
-        InputStream in = this.getClass().getResourceAsStream(
+    
+    public static Image getImage(String name) {
+        InputStream in = GameDisplay.class.getResourceAsStream(
                 "/canfield/resources/" + name);
         try {
             return ImageIO.read(in);
@@ -57,37 +51,15 @@ class GameDisplay extends Pad {
         }
     }
 
-    /** Return an Image of CARD. */
-    private Image getCardImage(Card card) {
-        return this.getImage("playing-cards/" + card + ".png");
-    }
-
-    /** Return an Image of the back of a card. */
-    private Image getBackImage() {
-        return this.getImage("playing-cards/blue-back.png");
-    }
-
-    /** Draw CARD at X, Y on G. */
-    private void paintCard(Graphics2D g, Card card, int x, int y) {
-        if (card != null) {
-            g.drawImage(this.getCardImage(card), x, y, CARD_WIDTH, CARD_HEIGHT,
-                    null);
-        }
-    }
     
     /** Draw CARD at P on G. */
-    private void paintCard(Graphics2D g, Card card, Point p) {
-        this.paintCard(g,card,p.x,p.y);
-    }
-
-    /** Draw card back at X, Y on G. */
-    private void paintBack(Graphics2D g, int x, int y) {
-        g.drawImage(this.getBackImage(), x,y, CARD_WIDTH, CARD_HEIGHT, null);
-    }
-    
-    /** Draw card back at P on G. */
-    private void paintBack(Graphics2D g, Point p){
-    	this.paintBack(g,p.x,p.y);
+    private void paintCard(Graphics2D g, GUICard card) {
+        g.drawImage(card.getImage(),
+                (int)card.getPos().getX(),
+                (int)card.getPos().getY(),
+                (int)card.getBoundingBox().getWidth(),
+                (int)card.getBoundingBox().getHeight(),
+                null);
     }
 
     
@@ -142,8 +114,7 @@ class GameDisplay extends Pad {
     
     
     /* ================ Positional attributes ================ */
-    
-    private static Point ORIGIN = new Point(BOARD_WIDTH/2, BOARD_HEIGHT/2);
+       
     
     /**
      * Converts card coords to pixels
