@@ -49,10 +49,34 @@ class GUICard {
     
     /* ==== Sudo Event Listeners ==== */
     
-    public void onDrag(Point pos) {}
+    /**
+     * Called when the card is selected and the mouse is dragging!
+     * Unfortunate side effect of trying to program with component oriented mindset.
+     * @param pos The position of the mouse.
+     * @param justified If the drag was justified (caused a change of gamestate).
+     */
+    public void onDrag(Point pos, boolean justified) {}
+    
+    /**
+     * Called when the card is selected and the mouse is released!
+     * Unfortunate side effect of trying to program with component oriented mindset.
+     * @param pos The position of the release.
+     * @param justified If the release was justified (caused a change of gamestate).
+     */
     public void onRelease(Point pos, boolean justified) {}
     
+    /**
+     * Called when the card is selected!
+     * Unfortunate side effect of trying to program with component oriented mindset.
+     * @param pos The position of the click..
+     * @param justified If the click was justified (caused a change of gamestate).
+     */
+    public void onClick(Point pos, boolean justified) {}
+
+    
     /* ==== Getters/Setters ==== */
+    
+
     /**
      * @return the layer
      */
@@ -94,6 +118,18 @@ class GUICard {
         return new Point(x,y);
     }
     
+    /**
+     * Sets the position of the GUICard.
+     * @param pos The position
+     */
+    public void setPos(Point pos){
+        this.boundingBox.setLocation(
+                (int)pos.getX(), (int)pos.getY());
+    }
+   
+    /**
+     * @return the position of the GUICard
+     */
     public Point getPos(){
         return boundingBox.getLocation();
     }
