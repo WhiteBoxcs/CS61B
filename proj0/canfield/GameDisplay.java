@@ -28,6 +28,7 @@ class GameDisplay extends Pad {
 
     /** Preferred dimensions of the playing surface. */
     private static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 600;
+    private static final Point ORIGIN = new Point(BOARD_WIDTH/2, BOARD_HEIGHT/2);
     
     private static final int CARD_REVEAL = 30;
     
@@ -42,6 +43,8 @@ class GameDisplay extends Pad {
         this.setPreferredSize(BOARD_WIDTH, BOARD_HEIGHT);
         background = this.getImage("bg.jpg");
         
+        rebuild();
+        
     }
     
     
@@ -53,45 +56,9 @@ class GameDisplay extends Pad {
     	/*paint the background */
     	 Rectangle b = g.getClipBounds();
     	 g.drawImage(background,0,0,b.width,b.height,null);
-
-        
     	 
-        // Spaids Hearts Diamonds Clubs
-    	 
-    	 /* RESERVE */
-    	 Card reserve = _game.topReserve();
-    	 if(reserve != null)
-    		 this.paintCard(g, reserve, RESERVE_POS);
-    	 
-    	 /* STOCK */
-    	 if(!_game.stockEmpty())
-    		 this.paintBack(g, STOCK_POS);
-    	 
-    	 /* WASTE */
-    	 Card waste = _game.topWaste();
-    	 if(waste != null)
-    		 this.paintCard(g,waste, WASTE_POS);
-
-    	 /* TABLEAU */
-    	 for(int x = 1; x <= 4; x++){
-    		 Point basis = cctp(-1+x,0);
-    		 
-    		 for(int i = 0; i < _game.tableauSize(x); i++){
-    			 
-    			 this.paintCard(g, _game.getTableau(x, i), 
-    					 new Point((int)basis.getX(),
-							 (int)basis.getY()+CARD_REVEAL*i) );
-    		 }
-    		 
-    	 }
-    	 
-    	 /* FOUNDATION */
-    	 for(int x = 1; x <= 4; x++){
-    		 Card found = _game.topFoundation(x);
-    		 if(found != null)
-    			 this.paintCard(g, found, cctp(-1+x,-1));
-    	 }
-        
+    	 for(GUICard card : cards)
+    	     this.paintCard(g, card);
     }
     
     /**
@@ -182,7 +149,7 @@ class GameDisplay extends Pad {
      * Gets the card at a certain position.
      * @param pos The test position
      * @param except But this card.
-     * @return The list of cards at a certain position.
+     * @return The list of cards at a certain position sorted by layer.
      */
     public ArrayList<GUICard> getCardAt(Point pos, GUICard except){
         ArrayList<GUICard> satisfying = new ArrayList<GUICard>();
@@ -191,16 +158,41 @@ class GameDisplay extends Pad {
             if(card.getBoundingBox().contains(pos) && card != except)
                 satisfying.add(card);
         
+        satisfying.sort(new GUICard.LayerComparator());
+        
         return satisfying;
     }
     
     /**
      * Gets the card at a certain position.
      * @param pos The test position
-     * @return The list of cards at a certain position.
+     * @return The list of cards at a certain position sorted by layer.
      */
     public ArrayList<GUICard> getCardAt(Point pos){
         return getCardAt(pos, null);
+    }
+    
+    /**
+     * Gets the top card at a given position.
+     * @param pos The POS to check.
+     * @param except but this card.
+     * @return the top card or NULL if there is no card.
+     */
+    public GUICard getTopCardAt(Point pos, GUICard except){
+        ArrayList<GUICard> satisfying = getCardAt(pos,except);
+        if(satisfying.size() != 0)
+            return satisfying.get(satisfying.size()-1);
+        else
+            return null;
+    }
+    
+    /**
+     * Gets the top card at a given position.
+     * @param pos The POS to check.
+     * @return the top card or NULL if there is no card.
+     */
+    public GUICard getTopCardAt(Point pos){
+        return getTopCardAt(pos,null);
     }
     
     
@@ -263,7 +255,7 @@ class GameDisplay extends Pad {
     /** Game I am displaying. */
     private final Game _game;
     private ArrayList<GUICard> cards = new ArrayList<GUICard>();
-    private ArrayList<ArrayList<GUICard>> tableau;
+    private ArrayList<ArrayList<GUICard>> tableau = new ArrayList<ArrayList<GUICard>>();
     private final Image background;
 
 }

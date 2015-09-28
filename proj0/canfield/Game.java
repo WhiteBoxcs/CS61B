@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
+import java.util.function.UnaryOperator;
 
 import canfield.actions.Action;
-
 import static canfield.Utils.*;
 
 /** Represents the state of a game of Canfield.
@@ -20,11 +20,13 @@ class Game {
     static final int TABLEAU_SIZE = 4;
     /** Score for each foundation card. */
     static final int POINTS_PER_CARD = 5;
-	private Stack<Action> history;
+
 
     /** A new Game, as yet undealt. */
     Game() {
     	history = new Stack<Action>();
+    	listeners = new ArrayList<GameListener>();
+    	
         _stock = new Pile();
         _waste = new Pile();
         _reserve = new Pile();
@@ -170,6 +172,10 @@ class Game {
     	
     	//It is important that we add the action to the history after it has been applied.
     	this.history.push(action);
+    	
+    	for(GameListener listener : listeners)
+    	    listener.onGameChange(this);
+    	
     	return action;
     }
     
@@ -184,9 +190,16 @@ class Game {
     	Action lastMove = this.history.pop();
     	lastMove.inverseApply();
     	
+        for(GameListener listener : listeners)
+            listener.onGameChange(this);
+    	
     	return true;
     }
 
+    
+    public void addListener(GameListener listener) {
+        listeners.add(listener);
+    }
     /* === Methods that implement possible moves. === */
     
     /** Turn up to 3 cards over from the stock to the waste.  If the stock
@@ -599,6 +612,12 @@ class Game {
     private final ArrayList<Pile> _foundation = new ArrayList<>();
     /** The tableau piles. */
     private final ArrayList<Pile> _tableau = new ArrayList<>();
+    
+    /* The game history */
+    private Stack<Action> history;
+    
+    /* The game listeners */
+    private ArrayList<GameListener> listeners;
 
     /** Source of random numbers for dealing. */
     private final Random _random = new Random();

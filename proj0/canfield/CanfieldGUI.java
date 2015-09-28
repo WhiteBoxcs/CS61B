@@ -1,6 +1,7 @@
 package canfield;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import ucb.gui.LayoutSpec;
 import ucb.gui.TopLevel;
@@ -10,12 +11,13 @@ import ucb.gui.TopLevel;
  *
  * @author
  */
-class CanfieldGUI extends TopLevel {
+class CanfieldGUI extends TopLevel implements GameListener {
 
     /** A new window with given TITLE and displaying GAME. */
     CanfieldGUI(String title, Game game) {
         super(title, true);
         this._game = game;
+        game.addListener(this);
         
         this.addMenuButton("Game->New Game", "newGame");
         this.addMenuButton("Game->Undo", "undo");
@@ -65,10 +67,21 @@ class CanfieldGUI extends TopLevel {
     public void quit(String dummy) {
         System.exit(1);
     }
+    
+    
+    
+    /* =========== GAME LISTENER ===============*/
+    @Override
+    public void onGameChange(Game changedGame) {
+        this._display.rebuild();
+    }
+    
+    /* =========== INPUT LISTENER ==============*/
 
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
-        
+        ArrayList<GUICard> cardsOnMouse =
+                _display.getCardAt(event.getPoint());
         this._display.repaint();
     }
 
@@ -111,5 +124,8 @@ class CanfieldGUI extends TopLevel {
 
     /** The game I am consulting. */
     private final Game _game;
+    
+    /** The card I am selectiong **/
+    private GUICard selectedCard = null;
 
 }

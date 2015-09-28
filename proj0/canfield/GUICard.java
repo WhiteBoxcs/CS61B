@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 
@@ -156,6 +157,20 @@ class GUICard {
         return this.type;
     }
 
+    
+    /* ==== Comparator =====*/
+    public static class LayerComparator implements Comparator<GUICard> {
+        /*
+         * Uses that 0 > 1.
+         * (non-Javadoc)
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
+        @Override
+        public int compare(GUICard o1, GUICard o2) {
+            return o2.getLayer() - o1.getLayer(); 
+        }
+
+    }
     
     /* ==== Fields ==== */
     private Card repr; 
