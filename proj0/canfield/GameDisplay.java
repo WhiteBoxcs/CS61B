@@ -185,14 +185,19 @@ class GameDisplay extends Pad {
             ArrayList<GUIStackedCard> tabPile = new ArrayList<GUIStackedCard>();
             
             int tabSize = _game.tableauSize(x);
+
+            Point basis = cctp(-1+x,0);
+            Point top = cctp(-1 + x, 0 + (tabSize)*((double)CARD_REVEAL/(double)GUICard.HEIGHT));
+
             
             /* IF THERE IS AN EMPTY TAB */
             if(tabSize <= 0)
+            {
+                cards.add(new GUIEmptyCard(CardType.TABLEAU_EMPTY,basis));
                 continue;
+            }
             
-            Point basis = cctp(-1+x,0);
-            Point top = cctp(-1 + x, 0 + (tabSize)*((double)CARD_REVEAL/(double)GUICard.HEIGHT));
-            
+                        
             
             /* TOP CARD */
             GUIStackedCard head = new GUIStackedCard(

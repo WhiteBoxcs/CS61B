@@ -218,6 +218,18 @@ class Game {
     int reserveSize(){
         return _reserve.size();
     }
+    /**
+     * Gets an index of an empty yableau pile/
+     * @return 1 <= K <= TABLEAU_SIZE if there is an empty tableau pile, or -1.
+     */
+    public int getEmptyTableau() {
+        for(int i = 1; i <= TABLEAU_SIZE; i++)
+            if(tableauSize(i) == 0)
+                return i;
+        
+        return -1;
+            
+    }
     
     /* === Undo Code === */
     /**
@@ -678,6 +690,8 @@ class Game {
 
     /** Source of random numbers for dealing. */
     private final Random _random = new Random();
+
+
 
 
 }

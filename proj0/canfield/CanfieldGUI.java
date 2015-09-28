@@ -169,6 +169,8 @@ class CanfieldGUI extends TopLevel implements GameListener {
                     case TABLEAU_NORM:
                         _game.wasteToTableau(_game.tableauPileOf(other.getRepr()));
                         break;
+                    case TABLEAU_EMPTY:
+                        _game.wasteToTableau(_game.getEmptyTableau());
                     }
                     break;
                 

@@ -11,9 +11,10 @@ import java.awt.Point;
  * The empty card placeholder
  */
 public class GUIEmptyCard extends GUICard {
-
+    public static final Card DEFAULT = Card.C10;
+    
     public GUIEmptyCard(CardType type, Point pos) {
-        super(Card.C10, type, pos, -10);
+        super(DEFAULT, type, pos, -10);
     }
 
     @Override
