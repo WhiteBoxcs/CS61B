@@ -80,30 +80,112 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
-        this.selectedCard = _display.getTopCardAt(event.getPoint());
-        
-        if(selectedCard != null)
-            selectedCard.onClick(event.getPoint(), true);
-        
+        GUICard top = _display.getTopCardAt(event.getPoint());
+        if(top != null){
+            boolean justified = true;
+            
+            if(top.getType() == CardType.STOCK)
+                _game.stockToWaste();
+            else
+                justified = false;
+           
+
+            top.onClick(event.getPoint(), justified);
+        }
+
         this._display.repaint();
     }
 
-    /** Action in response to mouse-released event EVENT. */
-    public synchronized void mouseReleased(MouseEvent event) {
-        if(selectedCard != null)
-            selectedCard.onRelease(event.getPoint(), false);
-        selectedCard = null;
-        
-        this._display.repaint();
-    }
+
 
     /** Action in response to mouse-dragging event EVENT. */
     public synchronized void mouseDragged(MouseEvent event) {
+        if(selectedCard == null){
+            this.selectedCard = _display.getTopCardAt(event.getPoint());
+            if(selectedCard != null){
+                this.selectedLayer = selectedCard.getLayer();
+                selectedCard.setLayer(-1);
+            }
+        }
+        
+        
         if(selectedCard != null)
             selectedCard.onDrag(event.getPoint(), true);
+        this._display.repaint();
+    }
+    
+    /** Action in response to mouse-released event EVENT.
+     * Occurs only after drag.
+     */
+    public synchronized void mouseReleased(MouseEvent event) {
+        
+       
+        if(selectedCard != null){
+            
+            /*see if there was another card. */
+            GUICard other = _display.getCollision(selectedCard);
+            if(other != null){
+                boolean justified = true;
+                
+                try{
+                    /* THE LOGIC FOR SELECTED CARD -> OTHER */
+                    switch(selectedCard.getType()){
+                    
+                    /* WASTE TO (FOUNDATION, TABLEAU) */
+                    case WASTE:
+                        
+                        switch(other.getType()){
+                        case FOUNDATION:
+                            _game.wasteToFoundation();
+                            break;
+                        case TABLEAU_BASE:
+                        case TABLEAU_HEAD:
+                        case TABLEAU_NORM:
+                            _game.wasteToTableau(_display.checkTableau(other));
+                            break;
+                            
+                        default:
+                            justified = false;
+                            break;
+                        }
+                        break;
+                    
+                    /* TABLEAU_HEAD TO(FOUNDATION, TABLEAU)*/
+                    case TABLEAU_HEAD:
+                        
+                        switch(other.getType()){
+                        case FOUNDATION:
+                            _game.tableauToFoundation(_display.checkTableau(selectedCard));
+                            break;
+                        
+                            
+                        default:
+                            justified = false;
+                            break;
+                        }
+                        break;
+                        
+                    default:
+                        justified = false;
+                        break;
+                    }
+                } catch(IllegalArgumentException exp){
+                    this.error(exp);
+                }
+                
+                selectedCard.onRelease(event.getPoint(), false);
+            }
+            else
+                selectedCard.onRelease(event.getPoint(), false);
+            
+            
+            selectedCard.setLayer(selectedLayer);
+            selectedCard = null;
+        }
         
         this._display.repaint();
     }
+    
 
     
     /* ================ MESSAGE STUFF ===================*/
@@ -136,5 +218,6 @@ class CanfieldGUI extends TopLevel implements GameListener {
     
     /** The card I am selectiong **/
     private GUICard selectedCard = null;
+    private int selectedLayer = 0;
 
 }

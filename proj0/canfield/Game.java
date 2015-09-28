@@ -336,8 +336,7 @@ class Game {
     		protected void undo() {
     			if(this.filled)
     				_reserve.move(this.tableau, 1);
-    			else
-    				tableau.move(foundation,1);
+				tableau.move(foundation,1);
     			
     		}
     	});

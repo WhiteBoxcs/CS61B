@@ -186,7 +186,7 @@ class GUICard {
          */
         @Override
         public int compare(GUICard o1, GUICard o2) {
-            return o2.getLayer() - o1.getLayer(); 
+            return o2.getLayer()- o1.getLayer(); 
         }
 
     }

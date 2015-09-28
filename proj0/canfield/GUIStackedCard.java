@@ -75,6 +75,12 @@ public class GUIStackedCard extends GUIMoveableCard {
         
     }
 
+    @Override
+    public void setLayer(int layer) {
+        super.setLayer(layer);
+        if(nextCard != null)
+            nextCard.setLayer(layer-1);
+    };
     
     
     /* ==== Fields ==== */

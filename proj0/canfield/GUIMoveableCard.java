@@ -25,17 +25,21 @@ public class GUIMoveableCard extends GUICard {
     
     @Override
     public void onClick(Point pos, boolean justified) {
-        this.oldPos = this.getPos();
-        
-        double xOff = pos.getX() - oldPos.getX();
-        double yOff = pos.getY() - oldPos.getY();
-        this.offset = new Point((int)xOff, (int)yOff);
     };
     
     @Override
     public void onDrag(Point pos, boolean justified) {
-        double xPos = pos.getX() + this.offset.getX();
-        double yPos = pos.getY() + this.offset.getY();
+        
+        if(oldPos == null){
+            this.oldPos = this.getPos();
+            
+            double xOff = pos.getX() - oldPos.getX();
+            double yOff = pos.getY() - oldPos.getY();
+            this.offset = new Point((int)xOff, (int)yOff);
+        }
+        
+        double xPos = pos.getX() - this.offset.getX();
+        double yPos = pos.getY() - this.offset.getY();
         
         this.setPos(new Point((int)xPos, (int)yPos));
     };

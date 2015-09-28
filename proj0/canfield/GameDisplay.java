@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.SortedSet;
 
 import javax.imageio.ImageIO;
@@ -54,6 +55,7 @@ class GameDisplay extends Pad {
     @Override
     public synchronized void paintComponent(Graphics2D g) {
     	/*paint the background */
+        cards.sort(new GUICard.LayerComparator());
     	 Rectangle b = g.getClipBounds();
     	 g.drawImage(background,0,0,b.width,b.height,null);
     	 
@@ -81,6 +83,8 @@ class GameDisplay extends Pad {
             stock.flip();
             cards.add(stock);
         }
+        else
+            cards.add(new GUIEmptyCard(CardType.STOCK,STOCK_POS));
             
         
         /* WASTE */
@@ -94,6 +98,8 @@ class GameDisplay extends Pad {
             if(found != null)
                 cards.add(
                         new GUICard(found, CardType.FOUNDATION, cctp(-1+x,-1),0));
+            else
+                cards.add(new GUIEmptyCard(CardType.FOUNDATION,cctp(-1+x,-1)));
         }
         
         
@@ -142,6 +148,9 @@ class GameDisplay extends Pad {
             cards.addAll(tableau.get(x-1));
             
         }
+        
+        /* sort cards */
+        cards.sort(new GUICard.LayerComparator());
 
     }
     
@@ -184,7 +193,7 @@ class GameDisplay extends Pad {
     public GUICard getTopCardAt(Point pos, GUICard except){
         ArrayList<GUICard> satisfying = getCardAt(pos,except);
         if(satisfying.size() != 0)
-            return satisfying.get(satisfying.size()-1);
+            return satisfying.get(0);
         else
             return null;
     }
@@ -196,6 +205,36 @@ class GameDisplay extends Pad {
      */
     public GUICard getTopCardAt(Point pos){
         return getTopCardAt(pos,null);
+    }
+    
+    /**
+     * Gets the top card colliding with a given GUI card
+     * @param with The card with which another card may collide.
+     * @return the top card colliding with WITH
+     */
+    public GUICard getCollision(GUICard with){
+        ArrayList<GUICard> satisfying = new ArrayList<GUICard>();
+        
+        for(GUICard card : cards)
+            if(card.getBoundingBox().intersects(with.getBoundingBox()) && card != with)
+                satisfying.add(card);
+        
+        satisfying.sort(new GUICard.LayerComparator());
+        satisfying.sort(new Comparator<GUICard>(){
+
+            @Override
+            public int compare(GUICard o1, GUICard o2) {
+                double px = with.getCenter().getX();
+                double py = with.getCenter().getY();
+                return (int) o1.getPos().distance(px,py)
+                        - (int) o2.getPos().distance(px, py);
+            }
+            
+        });
+        if(satisfying.size() == 0)
+            return null;
+        else
+            return satisfying.get(satisfying.size()-1);
     }
     
     
