@@ -37,7 +37,7 @@ class Game {
             _foundation.add(new Pile());
         }
     }
-
+    
     /** A new Game, copied from GAME0. No state is shared with GAME0. */
     Game(Game game0) {
         this();
@@ -85,6 +85,9 @@ class Game {
         _stock.clear();
         _stock.move(deck);
         _waste.clear();
+        
+        for(GameListener listener : listeners)
+            listener.onGameChange(this);
     }
 
     /** Return true iff the game is won. */
@@ -180,6 +183,40 @@ class Game {
             if(this._tableau.get(i-1).contains(card))
                 return i;
         return -1;
+    }
+    
+    /**
+     * Gets the kth card from the top of the waste. 
+     * @param k 0 <= K < waste.size()
+     * @return
+     */
+    Card getWaste(int k){
+        return _waste.get(k);
+    }
+    
+    /**
+     * Gives the waste size
+     * @return the size of the waste.
+     */
+    int wasteSize(){
+        return _waste.size();
+    }
+    
+    /**
+     * Gets the kth card from the top of the reserve. 
+     * @param k 0 <= K < reserve.size()
+     * @return
+     */
+    Card getReserve(int k){
+        return _reserve.get(k);
+    }
+    
+    /**
+     * Gives the reserve size
+     * @return the size of the reserve.
+     */
+    int reserveSize(){
+        return _reserve.size();
     }
     
     /* === Undo Code === */
@@ -641,4 +678,6 @@ class Game {
 
     /** Source of random numbers for dealing. */
     private final Random _random = new Random();
+
+
 }

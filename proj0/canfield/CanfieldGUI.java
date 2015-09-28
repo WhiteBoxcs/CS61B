@@ -45,7 +45,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
      * @param dummy
      */
     public void newGame(String dummy){
-    	//TODO: IMOPLEMENRT
+    	_game.deal();
     }
     
     /**
@@ -74,6 +74,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
     @Override
     public void onGameChange(Game changedGame) {
         this._display.rebuild();
+        this._display.repaint();
+        message("Score: " + _game.getScore());
+        
+        if(_game.isWon())
+            victory();
     }
     
     /* =========== INPUT LISTENER ==============*/
@@ -99,14 +104,16 @@ class CanfieldGUI extends TopLevel implements GameListener {
         if(selectedCard == null){
             this.selectedCard = _display.getTopCardAt(event.getPoint());
             if(selectedCard != null){
+                
                 this.selectedLayer = selectedCard.getLayer();
                 selectedCard.setLayer(100);
             }
         }
         
         
-        if(selectedCard != null)
+        if(selectedCard != null){
             selectedCard.onDrag(event.getPoint());
+        }
         
         
         this._display.repaint();
@@ -116,15 +123,20 @@ class CanfieldGUI extends TopLevel implements GameListener {
      * Occurs only after drag.
      */
     public synchronized void mouseReleased(MouseEvent event) {
-        message("released");
+
        
         if(selectedCard != null){
             
+            try{
             processInput();
             
             selectedCard.onRelease(event.getPoint());
             selectedCard.setLayer(selectedLayer);
             selectedCard = null;
+            }
+            catch(NullPointerException exp){
+                error(exp);
+            }
         }
         
         this._display.repaint();
@@ -136,9 +148,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
      */
     private void processInput(){
         /*see if there was another card. */
-        GUICard other = _display.getCollision(selectedCard);
-        if(other != null){
-
+        ArrayList<GUICard> colliding = _display.getCollision(selectedCard);
+        if(!colliding.isEmpty()){
+            
+            GUICard other = colliding.get(0);
+            
             try{
                 /* THE LOGIC FOR SELECTED CARD -> OTHER */
                 switch(selectedCard.getType()){
@@ -167,22 +181,39 @@ class CanfieldGUI extends TopLevel implements GameListener {
                 /* TABLEAU_BASE TO (TABLEAU_*) */
                 case TABLEAU_BASE:
                     int tabPile = _game.tableauPileOf(selectedCard.getRepr());
-                    switch(other.getType()){
-                    case TABLEAU_HEAD:
-                        int otherTabPile = _game.tableauPileOf(other.getRepr());
+                    boolean satisfied = false;
+                    
+                    for(int i = 0; i < colliding.size() && !satisfied; i++){
+                        GUICard colCard = colliding.get(i);
+                        switch(colCard.getType()){
                         
-                        _game.tableauToTableau(
-                                tabPile,
-                                _game.tableauPileOf(other.getRepr()));
-                        break;
-                    case FOUNDATION:
-                        /* In the case that the base is the only element in the pile 
-                         * we can clearly move the pile up to the foundation.
-                         */
-                        if(_game.tableauSize(tabPile) == 1)
-                            _game.tableauToFoundation(tabPile);
-                        break;
+                        case TABLEAU_BASE:
+                        case TABLEAU_HEAD:
+                            /* make sure that we aren't moving to the same tab pile */
+                            
+                            int otherTabPile = _game.tableauPileOf(colCard.getRepr());
+                            if(otherTabPile != tabPile){
+                                _game.tableauToTableau(
+                                        tabPile,
+                                        _game.tableauPileOf(colCard.getRepr()));
+                                satisfied = true;
+                            }
+                           
+                            break;
+                            
+                        case FOUNDATION:
+                            /* In the case that the base is the only element in the pile 
+                             * we can clearly move the pile up to the foundation.
+                             */
+                            if(_game.tableauSize(tabPile) == 1){
+                                _game.tableauToFoundation(tabPile);
+                                satisfied = true;
+                            }
+                            break;
+                        }
                     }
+                    
+                    
                     break;
                     
                 /* FOUNDATION TO (TABLEAU_*) */
@@ -215,6 +246,8 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
                     
                     break;
+                    default:
+                        break;
                 }
             } catch(IllegalArgumentException exp){
                 this.error(exp);
@@ -232,7 +265,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
      */
     private void error(Exception exp){
     	String errorMsg = (String.format(exp.getMessage()));
-    	this.message( "Error" + errorMsg);
+    	this.message( "Error: " + errorMsg);
     	this.showMessage(errorMsg, "Error", "Error");
     	
     }
@@ -243,6 +276,17 @@ class CanfieldGUI extends TopLevel implements GameListener {
      */
     private void message(String message){
     	this.setLabel("messageLabel", message);
+    }
+    
+    private void victory(){
+        int result =
+                this.showOptions("You won with score " + _game.getScore() + "!",
+                        "Victory!", "information", null,
+                        "New Game", "Quit");
+        if(result == 0)
+            newGame(null);
+        else
+            quit(null);
     }
     
     

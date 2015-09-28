@@ -46,7 +46,8 @@ public class GUIMoveableCard extends GUICard {
     
     @Override
     public void onRelease(Point pos) {
-        this.setPos(oldPos);
+        if(oldPos != null)
+            this.setPos(oldPos);
         this.oldPos = null;
         this.offset = null;
     };

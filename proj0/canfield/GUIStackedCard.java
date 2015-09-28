@@ -59,7 +59,7 @@ public class GUIStackedCard extends GUIMoveableCard {
     @Override
     public void onRelease(Point pos) {
         super.onRelease(pos);
-        if(base && nextCard != null)
+        if(nextCard != null)
             nextCard.onRelease(pos);
     };
     

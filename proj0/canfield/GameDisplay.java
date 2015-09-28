@@ -32,12 +32,12 @@ class GameDisplay extends Pad {
     private static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 600;
     private static final Point ORIGIN = new Point(BOARD_WIDTH/2, BOARD_HEIGHT/2);
     
-    private static final int CARD_REVEAL = 30;
+    private static final int CARD_REVEAL = 22;
     
     /** The positions of cards **/
-    private static final Point RESERVE_POS = cctp(-3,0);
-	private static final Point STOCK_POS = cctp(-3,1);
-	private static final Point WASTE_POS = cctp(-2,1);
+    private static final Point RESERVE_POS = cctp(-3,0.25);
+	private static final Point STOCK_POS = cctp(-3,1.4);
+	private static final Point WASTE_POS = cctp(-1.75,1.4);
 
     /** A graphical representation of GAME. */
     public GameDisplay(Game game) {
@@ -83,6 +83,8 @@ class GameDisplay extends Pad {
         
         /* sort cards */
         cards.sort(new GUICard.LayerComparator());
+        
+        
 
     }
     
@@ -91,10 +93,32 @@ class GameDisplay extends Pad {
      */
     private void rebuildReserve(){
         Card reserve = _game.topReserve();
-        if(reserve != null)
-            cards.add(
-                new GUIMoveableCard(reserve,CardType.RESERVE,RESERVE_POS,0));
-
+        if(reserve != null){
+            ArrayList<GUIStackedCard> reserveStack = new ArrayList<GUIStackedCard>();
+            
+            Point rTop = new Point(
+                    (int)RESERVE_POS.getX()+(_game.reserveSize()-1)*13,
+                    (int)RESERVE_POS.getY());
+            
+            reserveStack.add(
+                new GUIStackedCard(reserve,CardType.RESERVE,rTop,true)) ;
+        
+            /* bottom reserve cards */
+            for(int i =1; i < _game.reserveSize(); i++){
+                Point wPos = new Point((int)rTop.getX()-i*13,
+                        (int)rTop.getY());
+                
+                GUIStackedCard resCard = new GUIStackedCard(_game.getReserve(i),
+                        CardType.RESERVE,
+                        wPos,reserveStack.get(reserveStack.size()-1),
+                        false);
+                resCard.flip();
+                
+                reserveStack.add(resCard);
+            }
+            
+            cards.addAll(reserveStack);
+        }
     }
     
     /**
@@ -116,8 +140,23 @@ class GameDisplay extends Pad {
      */
     private void rebuildWaste(){
         Card waste = _game.topWaste();
-        if(waste != null)
-            cards.add(new GUIMoveableCard(waste,CardType.WASTE,WASTE_POS,0));
+        if(waste != null){
+            ArrayList<GUIStackedCard> wasteStack = new ArrayList<GUIStackedCard>();
+            wasteStack.add(new GUIStackedCard(waste,CardType.WASTE,WASTE_POS,true));
+            /* bottom waste cards */
+            for(int i =1; i < Math.min(_game.wasteSize(), 3); i++){
+                Point wPos = new Point((int)WASTE_POS.getX()-i*13,
+                        (int)WASTE_POS.getY());
+                
+                wasteStack.add(new GUIStackedCard(_game.getWaste(i),
+                        CardType.WASTE,
+                        wPos,wasteStack.get(wasteStack.size()-1),
+                        false));
+            }
+            
+            cards.addAll(wasteStack);
+        }
+        
         
     }
     
@@ -125,7 +164,7 @@ class GameDisplay extends Pad {
      * Rebuilds the foundation.
      */
     private void rebuildFoundation(){
-        for(int x = 1; x <= 4; x++){
+        for(int x = 1; x <= Card.NUM_SUITS; x++){
             Card found = _game.topFoundation(x);
             if(found != null)
                 cards.add(
@@ -141,7 +180,7 @@ class GameDisplay extends Pad {
      */
     private void rebuildTableau(){
         /* TABLEAU */
-        for(int x = 1; x <= 4; x++){
+        for(int x = 1; x <= Game.TABLEAU_SIZE; x++){
             /* PILE INFO */
             ArrayList<GUIStackedCard> tabPile = new ArrayList<GUIStackedCard>();
             
@@ -166,14 +205,14 @@ class GameDisplay extends Pad {
             tabPile.add(head);
             
             /* NORM/BASE CARDS */
-            for(int i = _game.tableauSize(x)-1 ; i >= 1; i--){
+            for(int i = 1 ; i <= _game.tableauSize(x)-1; i++){
                 
                 /* The calculated position of said card */
-                Point cPos = new Point((int)basis.getX(),
-                        (int)basis.getY()+CARD_REVEAL*(i));
+                Point cPos = new Point((int)top.getX(),
+                        (int)top.getY()-CARD_REVEAL*(i));
                 
                 /* Add the card to the tab pile */
-                boolean base = i == 1;
+                boolean base = i == _game.tableauSize(x)-1;
                 tabPile.add(
                     new GUIStackedCard( 
                         _game.getTableau(x, i),
@@ -248,7 +287,7 @@ class GameDisplay extends Pad {
      * @param with The card with which another card may collide.
      * @return the top card colliding with WITH
      */
-    public GUICard getCollision(GUICard with){
+    public ArrayList<GUICard> getCollision(GUICard with){
         ArrayList<GUICard> satisfying = new ArrayList<GUICard>();
         
         for(GUICard card : cards)
@@ -265,10 +304,8 @@ class GameDisplay extends Pad {
             }
             
         });
-        if(satisfying.isEmpty())
-            return null;
-        else
-            return satisfying.get(satisfying.size()-1);
+
+        return satisfying;
     }
     
     
