@@ -160,6 +160,27 @@ class Game {
         }
     }
     
+    /**
+     * @param card the card to check
+     * @return the foundation pile of CARD if there is one else -1.
+     */
+    int foundationPileOf(Card card){
+        for(int i = 1; i <= this._foundation.size(); i++)
+            if(this._foundation.get(i-1).contains(card))
+                return i;
+        return -1;
+    }
+    
+    /**
+     * @param card the card to check
+     * @return the foundation pile of CARD if there is one else -1.
+     */
+    int tableauPileOf(Card card){
+        for(int i = 1; i <= this._tableau.size(); i++)
+            if(this._tableau.get(i-1).contains(card))
+                return i;
+        return -1;
+    }
     
     /* === Undo Code === */
     /**
@@ -385,8 +406,8 @@ class Game {
     		protected void undo() {
     			if(this.filled)
     				_reserve.move(t0,1);
-    			else
-    				t0.move(t1, sizeT0);
+    			
+				t0.move(t1, sizeT0);
     				
     			
     		}

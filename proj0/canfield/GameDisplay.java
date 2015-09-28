@@ -68,7 +68,6 @@ class GameDisplay extends Pad {
      */
     public void rebuild(){
         cards.clear();
-        tableau.clear();
         
         /* RESERVE */
         Card reserve = _game.topReserve();
@@ -97,7 +96,7 @@ class GameDisplay extends Pad {
             Card found = _game.topFoundation(x);
             if(found != null)
                 cards.add(
-                        new GUICard(found, CardType.FOUNDATION, cctp(-1+x,-1),0));
+                        new GUIMoveableCard(found, CardType.FOUNDATION, cctp(-1+x,-1),0));
             else
                 cards.add(new GUIEmptyCard(CardType.FOUNDATION,cctp(-1+x,-1)));
         }
@@ -107,7 +106,6 @@ class GameDisplay extends Pad {
         for(int x = 1; x <= 4; x++){
             /* PILE INFO */
             ArrayList<GUICard> tabPile = new ArrayList<GUICard>();
-            tableau.add(tabPile);
             
             int tabSize = _game.tableauSize(x);
             
@@ -144,8 +142,8 @@ class GameDisplay extends Pad {
                         base
                 ));
             }
-            
-            cards.addAll(tableau.get(x-1));
+            if(!tabPile.isEmpty())
+                cards.addAll(tabPile);
             
         }
         
@@ -218,41 +216,24 @@ class GameDisplay extends Pad {
         for(GUICard card : cards)
             if(card.getBoundingBox().intersects(with.getBoundingBox()) && card != with)
                 satisfying.add(card);
-        
-        satisfying.sort(new GUICard.LayerComparator());
         satisfying.sort(new Comparator<GUICard>(){
 
             @Override
             public int compare(GUICard o1, GUICard o2) {
                 double px = with.getCenter().getX();
                 double py = with.getCenter().getY();
-                return (int) o1.getPos().distance(px,py)
-                        - (int) o2.getPos().distance(px, py);
+                return  (int) o2.getPos().distance(px, py)
+                        - (int) o1.getPos().distance(px,py);
             }
             
         });
-        if(satisfying.size() == 0)
+        if(satisfying.isEmpty())
             return null;
         else
             return satisfying.get(satisfying.size()-1);
     }
     
     
-    /**
-     * Returns the tableau pile number of the given card
-     * @param card The card to check
-     * @return A pile number in 1 <= K <= 4. or -1 if not in any pile.
-     */
-    public int checkTableau(GUICard card){
-        for(int i =0; i < 4; i++)
-        {
-            if(tableau.get(i).contains(card))
-                return i+1;
-        }
-        
-        return -1;
-    }
-
     public static Image getImage(String name) {
         InputStream in = GameDisplay.class.getResourceAsStream(
                 "/canfield/resources/" + name);
@@ -297,7 +278,6 @@ class GameDisplay extends Pad {
     /** Game I am displaying. */
     private final Game _game;
     private ArrayList<GUICard> cards = new ArrayList<GUICard>();
-    private ArrayList<ArrayList<GUICard>> tableau = new ArrayList<ArrayList<GUICard>>();
     private final Image background;
 
 }

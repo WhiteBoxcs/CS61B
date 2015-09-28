@@ -68,6 +68,14 @@ class Pile {
     boolean isEmpty() {
         return this._cards.isEmpty();
     }
+    
+    /**
+     * @param card the card to check.
+     * @return if the pile contains CARD
+     */
+    boolean contains(Card card){
+        return this._cards.contains(card);
+    }
 
     /**
      * Return and remove my top card. Returns null and has no effect if I am
