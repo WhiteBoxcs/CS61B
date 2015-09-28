@@ -13,7 +13,7 @@ import java.awt.Point;
 public class GUIEmptyCard extends GUICard {
 
     public GUIEmptyCard(CardType type, Point pos) {
-        super(Card.C10, type, pos, 100);
+        super(Card.C10, type, pos, -10);
     }
 
     @Override

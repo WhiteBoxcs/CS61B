@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.SortedSet;
 
@@ -55,13 +56,17 @@ class GameDisplay extends Pad {
     @Override
     public synchronized void paintComponent(Graphics2D g) {
     	/*paint the background */
-        cards.sort(new GUICard.LayerComparator());
+         cards.sort(new GUICard.LayerComparator());
+         
     	 Rectangle b = g.getClipBounds();
     	 g.drawImage(background,0,0,b.width,b.height,null);
     	 
-    	 for(GUICard card : cards)
-    	     this.paintCard(g, card);
+    	 /* Print cards from highest layer to lowest */
+    	 for(int i = 0; i < cards.size(); i++)
+    	     this.paintCard(g,cards.get(i));
     }
+    
+    /* =======  REBUILD ======= */
     
     /**
      * Rebuilds the display using the given game.
@@ -69,14 +74,33 @@ class GameDisplay extends Pad {
     public void rebuild(){
         cards.clear();
         
-        /* RESERVE */
+        /* rebuild different card types */
+        rebuildReserve();
+        rebuildStock();
+        rebuildWaste();
+        rebuildFoundation();
+        rebuildTableau();
+        
+        /* sort cards */
+        cards.sort(new GUICard.LayerComparator());
+
+    }
+    
+    /**
+     * Rebuilds the reserve.
+     */
+    private void rebuildReserve(){
         Card reserve = _game.topReserve();
         if(reserve != null)
             cards.add(
                 new GUIMoveableCard(reserve,CardType.RESERVE,RESERVE_POS,0));
 
-        
-        /* STOCK */
+    }
+    
+    /**
+     * Rebuilds the stock.
+     */
+    private void rebuildStock(){
         if(!_game.stockEmpty()){
             GUICard stock = new GUICard(Card.C10, CardType.STOCK, STOCK_POS,0);
             stock.flip();
@@ -84,14 +108,23 @@ class GameDisplay extends Pad {
         }
         else
             cards.add(new GUIEmptyCard(CardType.STOCK,STOCK_POS));
-            
-        
-        /* WASTE */
+
+    }
+    
+    /**
+     * Rebuilds the waste.
+     */
+    private void rebuildWaste(){
         Card waste = _game.topWaste();
         if(waste != null)
             cards.add(new GUIMoveableCard(waste,CardType.WASTE,WASTE_POS,0));
         
-        /* FOUNDATION */
+    }
+    
+    /**
+     * Rebuilds the foundation.
+     */
+    private void rebuildFoundation(){
         for(int x = 1; x <= 4; x++){
             Card found = _game.topFoundation(x);
             if(found != null)
@@ -101,14 +134,20 @@ class GameDisplay extends Pad {
                 cards.add(new GUIEmptyCard(CardType.FOUNDATION,cctp(-1+x,-1)));
         }
         
-        
+    }
+    
+    /**
+     * Rebuilds the tableau
+     */
+    private void rebuildTableau(){
         /* TABLEAU */
         for(int x = 1; x <= 4; x++){
             /* PILE INFO */
-            ArrayList<GUICard> tabPile = new ArrayList<GUICard>();
+            ArrayList<GUIStackedCard> tabPile = new ArrayList<GUIStackedCard>();
             
             int tabSize = _game.tableauSize(x);
             
+            /* IF THERE IS AN EMPTY TAB */
             if(tabSize <= 0)
                 continue;
             
@@ -134,13 +173,14 @@ class GameDisplay extends Pad {
                         (int)basis.getY()+CARD_REVEAL*(i));
                 
                 /* Add the card to the tab pile */
-                boolean base = i == 0;
+                boolean base = i == 1;
                 tabPile.add(
-                    new GUIStackedCard(
+                    new GUIStackedCard( 
                         _game.getTableau(x, i),
                         base ? CardType.TABLEAU_BASE
                             : CardType.TABLEAU_NORM,
                         cPos,
+                        tabPile.get(tabPile.size()-1),
                         base
                 ));
             }
@@ -148,10 +188,6 @@ class GameDisplay extends Pad {
                 cards.addAll(tabPile);
             
         }
-        
-        /* sort cards */
-        cards.sort(new GUICard.LayerComparator());
-
     }
     
     
@@ -192,8 +228,8 @@ class GameDisplay extends Pad {
      */
     public GUICard getTopCardAt(Point pos, GUICard except){
         ArrayList<GUICard> satisfying = getCardAt(pos,except);
-        if(satisfying.size() != 0)
-            return satisfying.get(0);
+        if(!satisfying.isEmpty())
+            return satisfying.get(satisfying.size() -1);
         else
             return null;
     }

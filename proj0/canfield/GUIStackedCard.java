@@ -24,7 +24,7 @@ public class GUIStackedCard extends GUIMoveableCard {
      * @param base
      */
     public GUIStackedCard(Card repr, CardType type, Point pos, GUIStackedCard nextCard, boolean base) {
-        super(repr, type, pos, nextCard != null ? nextCard.getLayer() + 1 : 0 );
+        super(repr, type, pos, nextCard != null ? nextCard.getLayer() - 1 : 13 );
         this.base = base;
         this.nextCard = nextCard;
     }
@@ -79,7 +79,7 @@ public class GUIStackedCard extends GUIMoveableCard {
     public void setLayer(int layer) {
         super.setLayer(layer);
         if(nextCard != null)
-            nextCard.setLayer(layer-1);
+            nextCard.setLayer(layer+1);
     };
     
     
