@@ -10,5 +10,5 @@ package canfield;
 enum CardType {
     WASTE, RESERVE,
     TABLEAU_BASE, TABLEAU_HEAD,
-    FOUNDATION, STOCK
+    FOUNDATION, STOCK, TABLEAU_NORM
 }

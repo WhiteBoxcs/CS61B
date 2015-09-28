@@ -18,9 +18,8 @@ import javax.imageio.ImageIO;
 class GUICard {
     
     /** Displayed dimensions of a card image. */
-    private static final int HEIGHT = 125, WIDTH = 90;
-    
-    private static final int PADDING = 10;
+    public static final int HEIGHT = 125, WIDTH = 90;
+    public static final int PADDING = 10;
     
     /**
      * @param repr The representation of the card.
