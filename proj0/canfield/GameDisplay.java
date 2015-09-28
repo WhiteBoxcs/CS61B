@@ -76,9 +76,12 @@ class GameDisplay extends Pad {
 
         
         /* STOCK */
-        if(!_game.stockEmpty())
-            cards.add(
-                    new GUICard(Card.BACK, CardType.STOCK, STOCK_POS,0));
+        if(!_game.stockEmpty()){
+            GUICard stock = new GUICard(Card.C10, CardType.STOCK, STOCK_POS,0);
+            stock.flip();
+            cards.add(stock);
+        }
+            
         
         /* WASTE */
         Card waste = _game.topWaste();

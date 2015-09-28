@@ -80,19 +80,28 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
-        ArrayList<GUICard> cardsOnMouse =
-                _display.getCardAt(event.getPoint());
+        this.selectedCard = _display.getTopCardAt(event.getPoint());
+        
+        if(selectedCard != null)
+            selectedCard.onClick(event.getPoint(), true);
+        
         this._display.repaint();
     }
 
     /** Action in response to mouse-released event EVENT. */
     public synchronized void mouseReleased(MouseEvent event) {
-        // FIXME
+        if(selectedCard != null)
+            selectedCard.onRelease(event.getPoint(), false);
+        selectedCard = null;
+        
         this._display.repaint();
     }
 
     /** Action in response to mouse-dragging event EVENT. */
     public synchronized void mouseDragged(MouseEvent event) {
+        if(selectedCard != null)
+            selectedCard.onDrag(event.getPoint(), true);
+        
         this._display.repaint();
     }
 

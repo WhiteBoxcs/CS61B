@@ -31,6 +31,7 @@ class GUICard {
     public GUICard(Card repr, CardType type, Point pos, int layer) {
         super();
         
+        this.faceDown = false;
         this.repr = repr;
         this.type = type;
         
@@ -139,10 +140,7 @@ class GUICard {
     
     /** Return an Image of CARD. */
     private Image getCardImage(Card card) {
-        if(card != Card.BACK)
-            return GameDisplay.getImage("playing-cards/" + card + ".png");
-        else
-            return getBackImage();
+        return GameDisplay.getImage("playing-cards/" + card + ".png");
     }
 
     /** Return an Image of the back of a card. */
@@ -158,6 +156,27 @@ class GUICard {
     }
 
     
+    /**
+     * @return the faceDown
+     */
+    public boolean isFaceDown() {
+        return this.faceDown;
+    }
+
+
+
+    /**
+     * @param faceDown the faceDown to set
+     */
+    public void flip() {
+        this.faceDown = !faceDown;
+        if(faceDown)
+            this.image = this.getBackImage();
+        else
+            this.getCardImage(repr);
+    }
+
+
     /* ==== Comparator =====*/
     public static class LayerComparator implements Comparator<GUICard> {
         /*
@@ -178,4 +197,5 @@ class GUICard {
     private Rectangle boundingBox;
     private Image image;
     private int layer;
+    private boolean faceDown;
 }
