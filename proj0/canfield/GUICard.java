@@ -55,7 +55,7 @@ class GUICard {
      * @param pos The position of the mouse.
      * @param justified If the drag was justified (caused a change of gamestate).
      */
-    public void onDrag(Point pos, boolean justified) {}
+    public void onDrag(Point pos) {}
     
     /**
      * Called when the card is selected and the mouse is released!
@@ -63,7 +63,7 @@ class GUICard {
      * @param pos The position of the release.
      * @param justified If the release was justified (caused a change of gamestate).
      */
-    public void onRelease(Point pos, boolean justified) {}
+    public void onRelease(Point pos) {}
     
     /**
      * Called when the card is selected!
@@ -71,7 +71,7 @@ class GUICard {
      * @param pos The position of the click..
      * @param justified If the click was justified (caused a change of gamestate).
      */
-    public void onClick(Point pos, boolean justified) {}
+    public void onClick(Point pos) {}
 
     
     /* ==== Getters/Setters ==== */

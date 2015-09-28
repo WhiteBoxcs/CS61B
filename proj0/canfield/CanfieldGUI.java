@@ -82,15 +82,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
     public synchronized void mouseClicked(MouseEvent event) {
         GUICard top = _display.getTopCardAt(event.getPoint());
         if(top != null){
-            boolean justified = true;
-            
+
             if(top.getType() == CardType.STOCK)
                 _game.stockToWaste();
-            else
-                justified = false;
-           
 
-            top.onClick(event.getPoint(), justified);
+            top.onClick(event.getPoint());
         }
 
         this._display.repaint();
@@ -110,7 +106,9 @@ class CanfieldGUI extends TopLevel implements GameListener {
         
         
         if(selectedCard != null)
-            selectedCard.onDrag(event.getPoint(), true);
+            selectedCard.onDrag(event.getPoint());
+        
+        
         this._display.repaint();
     }
     
@@ -118,15 +116,14 @@ class CanfieldGUI extends TopLevel implements GameListener {
      * Occurs only after drag.
      */
     public synchronized void mouseReleased(MouseEvent event) {
-        
+        message("released");
        
         if(selectedCard != null){
             
             /*see if there was another card. */
             GUICard other = _display.getCollision(selectedCard);
             if(other != null){
-                boolean justified = true;
-                
+
                 try{
                     /* THE LOGIC FOR SELECTED CARD -> OTHER */
                     switch(selectedCard.getType()){
@@ -141,42 +138,57 @@ class CanfieldGUI extends TopLevel implements GameListener {
                         case TABLEAU_BASE:
                         case TABLEAU_HEAD:
                         case TABLEAU_NORM:
-                            _game.wasteToTableau(_display.checkTableau(other));
-                            break;
-                            
-                        default:
-                            justified = false;
+                            _game.wasteToTableau(_game.tableauPileOf(other.getRepr()));
                             break;
                         }
                         break;
                     
-                    /* TABLEAU_HEAD TO(FOUNDATION, TABLEAU)*/
+                    /* TABLEAU_HEAD TO(FOUNDATION)*/
                     case TABLEAU_HEAD:
                         
+                        if(other.getType() == CardType.FOUNDATION)
+                            _game.tableauToFoundation(_game.tableauPileOf(selectedCard.getRepr()));
+                        break;
+                    /* TABLEAU_BASE TO (TABLEAU_*) */
+                    case TABLEAU_BASE:
+                        int tabPile = _game.tableauPileOf(selectedCard.getRepr());
                         switch(other.getType()){
-                        case FOUNDATION:
-                            _game.tableauToFoundation(_display.checkTableau(selectedCard));
+                        case TABLEAU_BASE:
+                        case TABLEAU_HEAD:
+                        case TABLEAU_NORM:
+                            _game.tableauToTableau(
+                                    tabPile,
+                                    _game.tableauPileOf(other.getRepr()));
                             break;
-                        
-                            
-                        default:
-                            justified = false;
+                        case FOUNDATION:
+                            /* In the case that the base is the only element in the pile 
+                             * we can clearly move the pile up to the foundation.
+                             */
+                            if(_game.tableauSize(tabPile) == 1)
+                                _game.tableauToFoundation(tabPile);
                             break;
                         }
                         break;
                         
-                    default:
-                        justified = false;
+                    /* FOUNDATION TO (TABLEAU_*) */
+                    case FOUNDATION:
+                        switch(other.getType()){
+                        case TABLEAU_BASE:
+                        case TABLEAU_HEAD:
+                        case TABLEAU_NORM:
+                            _game.foundationToTableau(
+                                    _game.foundationPileOf(selectedCard.getRepr()),
+                                    _game.tableauPileOf(other.getRepr()));
+                            break;
+                        }
                         break;
                     }
                 } catch(IllegalArgumentException exp){
                     this.error(exp);
                 }
                 
-                selectedCard.onRelease(event.getPoint(), false);
             }
-            else
-                selectedCard.onRelease(event.getPoint(), false);
+                selectedCard.onRelease(event.getPoint());
             
             
             selectedCard.setLayer(selectedLayer);

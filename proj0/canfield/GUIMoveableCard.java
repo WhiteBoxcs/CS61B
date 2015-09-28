@@ -24,11 +24,11 @@ public class GUIMoveableCard extends GUICard {
     }
     
     @Override
-    public void onClick(Point pos, boolean justified) {
+    public void onClick(Point pos) {
     };
     
     @Override
-    public void onDrag(Point pos, boolean justified) {
+    public void onDrag(Point pos) {
         
         if(oldPos == null){
             this.oldPos = this.getPos();
@@ -45,9 +45,8 @@ public class GUIMoveableCard extends GUICard {
     };
     
     @Override
-    public void onRelease(Point pos, boolean justified) {
-        if(!justified)
-            this.setPos(oldPos);
+    public void onRelease(Point pos) {
+        this.setPos(oldPos);
         this.oldPos = null;
         this.offset = null;
     };

@@ -113,23 +113,25 @@ class GameDisplay extends Pad {
                 continue;
             
             Point basis = cctp(-1+x,0);
-            Point top = cctp(-1 + x, 0 + tabSize*CARD_REVEAL/GUICard.HEIGHT);
+            Point top = cctp(-1 + x, 0 + (tabSize)*((double)CARD_REVEAL/(double)GUICard.HEIGHT));
             
             
             /* TOP CARD */
             GUIStackedCard head = new GUIStackedCard(
                     _game.topTableau(x),
-                    CardType.TABLEAU_HEAD,
+                    _game.tableauSize(x) > 1?
+                            CardType.TABLEAU_HEAD :
+                            CardType.TABLEAU_BASE,
                     top,
                     true);
             tabPile.add(head);
             
             /* NORM/BASE CARDS */
-            for(int i = _game.tableauSize(x) -2; i >= 0; i--){
+            for(int i = _game.tableauSize(x)-1 ; i >= 1; i--){
                 
                 /* The calculated position of said card */
                 Point cPos = new Point((int)basis.getX(),
-                        (int)basis.getY()+CARD_REVEAL*i);
+                        (int)basis.getY()+CARD_REVEAL*(i));
                 
                 /* Add the card to the tab pile */
                 boolean base = i == 0;

@@ -44,23 +44,23 @@ public class GUIStackedCard extends GUIMoveableCard {
     /* ==== Movement of Stacked Cards ==== */
     
     @Override
-    public void onClick(Point pos, boolean justified){
-        super.onClick(pos, justified);
+    public void onClick(Point pos){
+        super.onClick(pos);
         if(nextCard != null)
-            nextCard.onClick(pos, justified);
+            nextCard.onClick(pos);
     }
     
     @Override
-    public void onDrag(Point pos, boolean justified) {
+    public void onDrag(Point pos) {
         if(base)
-            this.pileDrag(pos, justified);
+            this.pileDrag(pos);
     };
     
     @Override
-    public void onRelease(Point pos, boolean justified) {
-        super.onRelease(pos, justified);
+    public void onRelease(Point pos) {
+        super.onRelease(pos);
         if(base && nextCard != null)
-            nextCard.onRelease(pos, justified);
+            nextCard.onRelease(pos);
     };
     
     /**
@@ -68,10 +68,10 @@ public class GUIStackedCard extends GUIMoveableCard {
      * @param pos the position of the mouse
      * @param justified if the drag is justified.
      */
-    private void pileDrag(Point pos, boolean justified) {
-        super.onDrag(pos,justified);
+    private void pileDrag(Point pos) {
+        super.onDrag(pos);
         if(nextCard != null)
-            nextCard.pileDrag(pos, justified);
+            nextCard.pileDrag(pos);
         
     }
 
