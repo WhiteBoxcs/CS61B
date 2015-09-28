@@ -3,7 +3,7 @@ package gui;
 /**
  * Display a sample GUI displaying points (as images) and lines between them,
  * allowing user creation of points and lines and movement of points.
- * 
+ *
  * @author P. N. Hilfinger
  */
 public class Main {

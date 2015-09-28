@@ -45,7 +45,7 @@ import ucb.gui.Pad;
 
 /**
  * A widget that displays a set of points and connecting line segments.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class DataDisplay extends Pad {
@@ -67,9 +67,8 @@ class DataDisplay extends Pad {
     /** Shape of line stroke. */
     private static final Stroke LINE_STROKE = new BasicStroke(3);
     /** Shape of dashed line stroke. */
-    private static final Stroke DASHED_STROKE = new BasicStroke(1.0f,
-            BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND, 1.0f, new float[] {
-                    4.0f, 4.0f }, 0.0f);
+    private static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE,
+            BasicStroke.JOIN_ROUND, 1.0f, new float[] { 4.0f, 4.0f }, 0.0f);
 
     /** Color of display field. */
     private static final Color BACKGROUND_COLOR = Color.white;
@@ -103,8 +102,7 @@ class DataDisplay extends Pad {
 
     /** Return an Image read from the resource named NAME. */
     private static Image getImage(String name) {
-        InputStream in = DataDisplay.class
-                .getResourceAsStream("/gui/resources/" + name);
+        InputStream in = DataDisplay.class.getResourceAsStream("/gui/resources/" + name);
         try {
             return ImageIO.read(in);
         } catch (IOException excp) {
@@ -124,12 +122,11 @@ class DataDisplay extends Pad {
         }
         g.setStroke(DASHED_STROKE);
         if (!this._firstPoint.equals(this._lastPoint)) {
-            g.drawLine(this._firstPoint.x, this._firstPoint.y,
-                    this._lastPoint.x, this._lastPoint.y);
+            g.drawLine(this._firstPoint.x, this._firstPoint.y, this._lastPoint.x, this._lastPoint.y);
         }
         for (Point p : this._data.getPoints()) {
-            g.drawImage(POINT_IMAGE, p.x - POINT_WIDTH / 2, p.y - POINT_HEIGHT
-                    / 2, POINT_WIDTH, POINT_HEIGHT, null);
+            g.drawImage(POINT_IMAGE, p.x - POINT_WIDTH / 2, p.y - POINT_HEIGHT / 2, POINT_WIDTH,
+                    POINT_HEIGHT, null);
         }
     }
 

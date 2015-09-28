@@ -3,7 +3,6 @@ package canfield;
 /**
  * A type of player that gets input from the mouse, and reports game positions
  * and reports errors on a GUI.
- *
  * @author
  */
 class GUIPlayer extends Player {

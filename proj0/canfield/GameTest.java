@@ -6,7 +6,6 @@ import org.junit.Test;
 
 /**
  * Tests of the Game class.
- *
  * @author
  */
 

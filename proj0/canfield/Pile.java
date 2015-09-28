@@ -8,7 +8,6 @@ import java.util.Random;
 
 /**
  * Represents a pile of cards.
- *
  * @author P. N. Hilfinger
  */
 class Pile {
@@ -68,12 +67,13 @@ class Pile {
     boolean isEmpty() {
         return this._cards.isEmpty();
     }
-    
+
     /**
-     * @param card the card to check.
+     * @param card
+     *            the card to check.
      * @return if the pile contains CARD
      */
-    boolean contains(Card card){
+    boolean contains(Card card) {
         return this._cards.contains(card);
     }
 
@@ -103,8 +103,8 @@ class Pile {
 
     /**
      * Place the top K cards in PILE on top of my cards, so that PILE's former
-     * top card (if any) is now mine as well. If there are fewer than K cards in
-     * PILE, move all of them. Removes the cards from PILE.
+     * top card (if any) is now mine as well. If there are fewer than K cards
+     * in PILE, move all of them. Removes the cards from PILE.
      */
     void move(Pile pile, int k) {
         List<Card> L = pile._cards.subList(Math.max(0, pile.size() - k),

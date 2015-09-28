@@ -4,14 +4,13 @@ import ucb.util.CommandArgs;
 
 /**
  * The main class for Canfield solitaire.
- *
  * @author P. N. Hilfinger
  */
 public class Main {
 
     /**
-     * The main program. ARGS may contain the options --seed=NUM, (random seed);
-     * and --text (use textual commands).
+     * The main program. ARGS may contain the options --seed=NUM, (random
+     * seed); and --text (use textual commands).
      */
     public static void main(String... args) {
         String spec = "--seed=(\\d+) --text";
