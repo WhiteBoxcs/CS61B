@@ -4,7 +4,6 @@
   5H        QC  JS  9C  8S
  ### ---  
 > tt 2 1
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   5H        QC  JS  9C  8S
@@ -15,7 +14,6 @@ Error: tableau is built down in alternating colors
   5H        QC  JS  9C  8S
  ###  4H  
 > tt 4 3
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   5H        QC  JS  9C  8S
@@ -46,7 +44,6 @@ Error: tableau is built down in alternating colors
   5H        QC  JS  9C  8S
  ###  JC   --- ---  8D ---
 > wt 1
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   5H        QC  JS  9C  8S
@@ -87,7 +84,6 @@ Error: tableau is built down in alternating colors
   5H        QC  JS  9C  8S
  --- 10H   --- ---  8D ---
 > wt 3
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   5H        QC  JS  9C  8S
@@ -168,19 +164,16 @@ Error: tableau is built down in alternating colors
   5H        QC  JS  9C  8S
  ### ---  
 > u
-Error: Nothing to undo!
             2S --- --- ---
 
   5H        QC  JS  9C  8S
  ### ---  
 > u
-Error: Nothing to undo!
             2S --- --- ---
 
   5H        QC  JS  9C  8S
  ### ---  
 > u
-Error: Nothing to undo!
             2S --- --- ---
 
   5H        QC  JS  9C  8S
@@ -303,7 +296,6 @@ Error: Nothing to undo!
   5H        QC  JS  9C  8S
  ###  5D    JH 10H  8D ---
 > wt 3 2
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   5H        QC  JS  9C  8S
@@ -328,7 +320,6 @@ Error: tableau is built down in alternating colors
            ---  9C --- ---
            ---  8D --- ---
 > tt 5 2
-Error: No such tableau pile: 5
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -369,7 +360,6 @@ Error: No such tableau pile: 5
            ---  9C --- ---
            ---  8D --- ---
 > wr 1
-Error: Unknown command
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -384,7 +374,6 @@ Error: Unknown command
            10C  9C --- ---
            ---  8D --- ---
 > rt 1
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -399,7 +388,6 @@ Error: tableau is built down in alternating colors
            ---  9C --- ---
            ---  8D --- ---
 > rt 1
-Error: tableau is built down in sequence
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -414,7 +402,6 @@ Error: tableau is built down in sequence
            10C  9C --- ---
            ---  8D --- ---
 > rt 1
-Error: tableau is built down in alternating colors
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -464,7 +451,6 @@ Error: tableau is built down in alternating colors
            10C  9C --- ---
            ---  8D --- ---
 > wt 3
-Error: tableau is built down in sequence
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -472,7 +458,6 @@ Error: tableau is built down in sequence
            10C  9C --- ---
            ---  8D --- ---
 > wr 4
-Error: Unknown command
             2S --- --- ---
 
   9S        QC  JS  5H  8S
@@ -571,7 +556,6 @@ Error: Unknown command
            10C  9C ---  6C
            ---  8D --- ---
 > wt
-Error: Invalid or missing argument
             2S  2C --- ---
 
   9S        QC  JS  5H  8S
@@ -684,7 +668,6 @@ Error: Invalid or missing argument
            10C  9C ---  6C
             9H  8D ---  5D
 > wt 4
-Error: tableau is built down in alternating colors
             2S  2C  2D ---
 
   9S        QC  JS  5H  8S
@@ -692,7 +675,6 @@ Error: tableau is built down in alternating colors
            10C  9C ---  6C
             9H  8D ---  5D
 > wt 4
-Error: tableau is built down in alternating colors
             2S  2C  2D ---
 
   9S        QC  JS  5H  8S
@@ -770,7 +752,6 @@ Error: tableau is built down in alternating colors
            10C  9C  3H  6C
             9H  8D ---  5D
 > wt 4
-Error: tableau is built down in alternating colors
             2S  2C  2D ---
 
   9S        QC  JS  5H  8S
