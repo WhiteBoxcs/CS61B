@@ -69,6 +69,7 @@
  10S        2H 10C  AD  8C
  ###  9C    AC --- --- ---
 > wt 2
+Error: tableau is built down in alternating colors
             6S --- --- ---
 
  10S        2H 10C  AD  8C
@@ -141,6 +142,7 @@
  ###  JD    AC ---  KS ---
            --- ---  QH ---
 > wt 3
+Error: tableau is built down in alternating colors
             6S --- --- ---
 
  10S        2H 10C  AD  8C
@@ -232,6 +234,7 @@
            --- ---  QH ---
            --- ---  JC ---
 > rt 3
+Error: tableau is built down in alternating colors
             6S --- --- ---
 
  10S        2H 10C  AD  8C
@@ -260,6 +263,7 @@
            --- ---  QH ---
            --- ---  JC ---
 > wt 1
+Error: tableau is built down in alternating colors
             6S --- --- ---
 
  10S        2H 10C  AD  8C
@@ -274,6 +278,7 @@
            --- ---  QH ---
            --- ---  JC ---
 > wt 2
+Error: tableau is built down in alternating colors
             6S --- --- ---
 
  10S        2H 10C  AD  8C
@@ -563,6 +568,7 @@
            --- --- 10D ---
            --- ---  9S ---
 > tt 4 2
+Error: tableau is built down in alternating colors
             6S  6D --- ---
 
  10S        2H 10C  AD  8C
