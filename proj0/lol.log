@@ -1,0 +1,2805 @@
+undo1.inp: ERROR (wrong output)
+===== Input =====
+tt 2 1
+c
+tt 4 3
+c
+c
+wt 3
+c
+c
+wt 1
+c
+c
+c
+c
+c
+c
+c
+wt 3
+wt 2
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+c
+c
+c
+wt 3
+c
+c
+c
+c
+c
+c
+c
+c
+c
+wt 2
+c
+c
+c
+c
+wt 1
+u
+wt 1
+tt 3 2
+u
+wt 3 2
+tt 3 2
+u
+tt 3 2
+tt 5 2
+u
+tt 3 2
+c
+C
+C
+wr 1
+wt 1
+rt 1
+u
+rt 1
+wt 1
+rt 1
+c
+c
+wt 3
+u
+wt 3
+c
+wt 3
+wr 4
+wt 4
+c
+wt 4
+c
+c
+c
+c
+c
+wf
+u
+wf
+wt 4
+u
+wt
+wt 4
+u
+u
+wf
+wt 4
+wf
+c
+c
+wt 1
+c
+c
+c
+c
+c
+c
+wt 4
+wt 4
+c
+c
+c
+c
+wt 3
+c
+c
+c
+c
+c
+wt 4
+c
+c
+c
+c
+c
+wt 4
+u
+wt 4
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+u
+u
+u
+u
+u
+u
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+tt 4 1
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+q
+===== Expected Output =====
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8D  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8C   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  AD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4S   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QH   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ---  QH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QH   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4S   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  AD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8C   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8D  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8D  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8C   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  AD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4S   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QH   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ---  QH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  3D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QS    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  3H    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4C    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  8H    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4C    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  8H    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  7D    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  7D    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  7D    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4S    JH 10H  4C  7D
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  6C    JH 10H  4C  7D
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  9H    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QS    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  AD    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  8H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  3H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  AD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4D    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ---  QH    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ### ---    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  4H    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  5C    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  KD    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  QD    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  KC    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  5S    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ---  QH    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ### ---    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  4H    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  5C    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  KD    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+Another game? [yn] 
+===== Actual Output =====
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8D  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8C   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  AD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4S   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QH   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ---  QH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QH   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4S   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  AD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8C   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8D  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8D  
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8C   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JC   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  AD   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  8H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4S   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4D   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  QH   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ --- 10H   --- ---  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ---  QH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ### ---   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  4H   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5C   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  JH   --- 10H  8D ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+Error: No such tableau pile: 5
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  5H        QC  JS  9C  8S
+ ###  5D    JH 10H  8D ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  3D    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QS    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+Error: Unknown command
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+Error: tableau is built down in sequence
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### 10C    JH 10H --- ---
+           ---  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+Error: tableau is built down in alternating colors
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  3H    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4C    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  8H    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4C    JH 10H --- ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  8H    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  7D    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+Error: tableau is built down in sequence
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  7D    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+Error: Unknown command
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  7D    JH 10H  4C ---
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4S    JH 10H  4C  7D
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  6C    JH 10H  4C  7D
+           10C  9C --- ---
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+Error: Invalid or missing argument
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S --- --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  5D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D --- ---
+            2S  2C --- ---
+
+  9S        QC  JS  5H  8S
+ ###  2D    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  9H    JH 10H  4C  7D
+           10C  9C ---  6C
+           ---  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QS    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  AD    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  8H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+Error: tableau is built down in alternating colors
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+Error: tableau is built down in alternating colors
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  3H    JH 10H  4C  7D
+           10C  9C ---  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  AD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4D    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+Error: tableau is built down in alternating colors
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  6H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5S    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KC    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  QD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  KD    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  5C    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ###  4H    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ### ---    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  9S        QC  JS  5H  8S
+ ---  QH    JH 10H  4C  7D
+           10C  9C  3H  6C
+            9H  8D ---  5D
+           --- --- ---  4S
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ---  QH    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ### ---    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  4H    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  5C    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  KD    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  QD    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  KC    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  5S    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ---  QH    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ### ---    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  4H    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  5C    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+            2S  2C  2D ---
+
+  AH        QC  JS  5H  9S
+ ###  KD    JH 10H  4C ---
+           10C  9C  3H ---
+            9H  8D --- ---
+            8S --- --- ---
+            7D --- --- ---
+            6C --- --- ---
+            5D --- --- ---
+            4S --- --- ---
+Another game? [yn] 
+===== Differences =====
+*** Expected
+--- Actual
+***************
+*** 2,7 ****
+--- 2,8 ----
+  
+    5H        QC  JS  9C  8S
+   ### ---  
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    5H        QC  JS  9C  8S
+***************
+*** 10,15 ****
+--- 11,17 ----
+  
+    5H        QC  JS  9C  8S
+   ###  4H  
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    5H        QC  JS  9C  8S
+***************
+*** 34,39 ****
+--- 36,42 ----
+  
+    5H        QC  JS  9C  8S
+   ###  JC   --- ---  8D ---
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    5H        QC  JS  9C  8S
+***************
+*** 66,71 ****
+--- 69,75 ----
+  
+    5H        QC  JS  9C  8S
+   --- 10H   --- ---  8D ---
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    5H        QC  JS  9C  8S
+***************
+*** 236,241 ****
+--- 240,246 ----
+  
+    5H        QC  JS  9C  8S
+   ###  5D    JH 10H  8D ---
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    5H        QC  JS  9C  8S
+***************
+*** 256,261 ****
+--- 261,267 ----
+   ###  5D    JH 10H --- ---
+             ---  9C --- ---
+             ---  8D --- ---
++ Error: No such tableau pile: 5
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 290,295 ****
+--- 296,302 ----
+   ### 10C    JH 10H --- ---
+             ---  9C --- ---
+             ---  8D --- ---
++ Error: Unknown command
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 302,307 ****
+--- 309,315 ----
+   ###  QD    JH 10H --- ---
+             10C  9C --- ---
+             ---  8D --- ---
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 314,319 ****
+--- 322,328 ----
+   ### 10C    JH 10H --- ---
+             ---  9C --- ---
+             ---  8D --- ---
++ Error: tableau is built down in sequence
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 326,331 ****
+--- 335,341 ----
+   ###  QD    JH 10H --- ---
+             10C  9C --- ---
+             ---  8D --- ---
++ Error: tableau is built down in alternating colors
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 368,379 ****
+--- 378,391 ----
+   ###  7D    JH 10H  4C ---
+             10C  9C --- ---
+             ---  8D --- ---
++ Error: tableau is built down in sequence
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+   ###  7D    JH 10H  4C ---
+             10C  9C --- ---
+             ---  8D --- ---
++ Error: Unknown command
+              2S --- --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 458,463 ****
+--- 470,476 ----
+   ###  5D    JH 10H  4C  7D
+             10C  9C ---  6C
+             ---  8D --- ---
++ Error: Invalid or missing argument
+              2S  2C --- ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 554,565 ****
+   ###  4H    JH 10H  4C  7D
+             10C  9C ---  6C
+              9H  8D ---  5D
+!             2S  2C  2D ---
+! 
+!   9S        QC  JS  5H  8S
+!  ###  4H    JH 10H  4C  7D
+!            10C  9C ---  6C
+!             9H  8D ---  5D
+              2S  2C  2D ---
+  
+    9S        QC  JS  5H  8S
+--- 567,580 ----
+   ###  4H    JH 10H  4C  7D
+             10C  9C ---  6C
+              9H  8D ---  5D
+! Error: tableau is built down in alternating colors
+!             2S  2C  2D ---
+! 
+!   9S        QC  JS  5H  8S
+!  ###  4H    JH 10H  4C  7D
+!            10C  9C ---  6C
+!             9H  8D ---  5D
+! Error: tableau is built down in alternating colors
+              2S  2C  2D ---
+  
+    9S        QC  JS  5H  8S
+***************
+*** 626,631 ****
+--- 641,647 ----
+   ###  4H    JH 10H  4C  7D
+             10C  9C  3H  6C
+              9H  8D ---  5D
++ Error: tableau is built down in alternating colors
+              2S  2C  2D ---
+  
+    9S        QC  JS  5H  8S
+
+===== =====
+Summary: Passed 0 of 1 tests
