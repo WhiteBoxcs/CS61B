@@ -1,14 +1,11 @@
 /**
-c * The Action interface.
+ * c * The Action interface.
  */
 package canfield.actions;
 
-
 /**
  * The action abstract class for bijective functions on gamestates.
- * 
  * @author MadcowD
- *
  */
 public abstract class Action {
     private boolean applied = false;
@@ -17,8 +14,9 @@ public abstract class Action {
      * Applies the action and marks the action applied.
      */
     public final void apply() {
-        if(this.applied)
+        if (this.applied) {
             throw new IllegalArgumentException();
+        }
         this.act();
         this.applied = true;
     }
@@ -28,8 +26,9 @@ public abstract class Action {
      * applied.
      */
     public final void inverseApply() {
-        if(!this.applied)
+        if (!this.applied) {
             throw new IllegalArgumentException();
+        }
         this.undo();
         this.applied = false;
     }

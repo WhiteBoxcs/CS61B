@@ -188,7 +188,7 @@ class GameDisplay extends Pad {
             /* IF THERE IS AN EMPTY TAB */
             if (tabSize <= 0) {
                 this.cards
-                .add(new GUIEmptyCard(CardType.TABLEAU_EMPTY, basis));
+                        .add(new GUIEmptyCard(CardType.TABLEAU_EMPTY, basis));
                 continue;
             }
 
@@ -209,7 +209,7 @@ class GameDisplay extends Pad {
                 boolean base = i == this._game.tableauSize(x) - 1;
                 tabPile.add(new GUIStackedCard(this._game.getTableau(x, i),
                         base ? CardType.TABLEAU_BASE : CardType.TABLEAU_NORM,
-                                cPos, tabPile.get(tabPile.size() - 1), base));
+                        cPos, tabPile.get(tabPile.size() - 1), base));
             }
             if (!tabPile.isEmpty()) {
                 this.cards.addAll(tabPile);

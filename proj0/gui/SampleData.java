@@ -4,15 +4,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-/* SampleData is the model part of the Model-View-Controller
- * pattern.  It represents data that is to be displayed and
- * manipulated.  It is operated on by the controller (SampleGUI), and
- * displayed by the view (DataDisplay). */
+/*
+ * SampleData is the model part of the Model-View-Controller pattern. It
+ * represents data that is to be displayed and manipulated. It is operated on
+ * by the controller (SampleGUI), and displayed by the view (DataDisplay).
+ */
 
 /**
  * A set of points and line segments joining some of them in 2-dimensional
  * space.
- *
  * @author P. N. Hilfinger
  */
 class SampleData {

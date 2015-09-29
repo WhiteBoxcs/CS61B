@@ -160,7 +160,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
                         break;
                     case TABLEAU_EMPTY:
                         this._game
-                        .wasteToTableau(this._game.getEmptyTableau());
+                                .wasteToTableau(this._game.getEmptyTableau());
                     default:
                         break;
                     }
@@ -187,7 +187,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
                         case TABLEAU_HEAD:
 
                             int otherTabPile = this._game
-                            .tableauPileOf(colCard.getRepr());
+                                    .tableauPileOf(colCard.getRepr());
                             if (otherTabPile != tabPile) {
                                 this._game.tableauToTableau(tabPile,
                                         this._game.tableauPileOf(colCard

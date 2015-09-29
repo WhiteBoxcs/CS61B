@@ -5,51 +5,43 @@ import java.awt.event.MouseEvent;
 import ucb.gui.LayoutSpec;
 import ucb.gui.TopLevel;
 
-/* SampleGUI is the controller part of the model-view-controller
- * pattern.  It sets up the view, and manipulates the model
- * (SampleData) in response to user commands conveyed by the mouse. */
+/*
+ * SampleGUI is the controller part of the model-view-controller pattern. It
+ * sets up the view, and manipulates the model (SampleData) in response to user
+ * commands conveyed by the mouse.
+ */
 
-/* The ucb.gui package is a highly simplified interface to the Java
- * GUI classes.  A TopLevel (ucb.gui.TopLevel) is intended to
- * represent an application window.  It contains buttons, labels,
- * menus, and assorted Widgets.
- *
- * The menus are all drop-down menus on the menu bar at the top of the
- * window.  Each entry in the menus is identified by a String label that
- * uses a common notation to identify it:  "A->B->C", for example,
- * denotes the menu button C in submenu B of main menu tab A.
- *
- * Buttons and labels are identified by arbitrary Strings.  Radio
- * buttons (which can also appear in menus) are likewise identified by
- * labels, plus another String, a group name, that groups together
- * buttons that are mutually exclusive.
- *
- * Actions may be associated with buttons by specifying the <i>name</i> of
- * a method (a String) and an object on which the method is called.
- * For example, <tt>addMenuButton("Data->Clear", obj, "clear")</tt>
- * will call the <tt>.clear</tt> method of object <tt>obj</tt> when
- * the menu button Data->Clear is pushed.  The call
- * <tt>addMenuButton("Data->Clear", "clear")</tt> is short for
- * <tt>addMenuButton("Data->Clear", this, "clear")</tt>.  Several
- * other methods use a similar way to denote actions.
- *
- * [API Design Note: Wnile this technique of specifying actions is
- * convenient in Java 7, Java 8 has introduced <i>method
- * references</i>, which are better a option, and will eventually
- * replace the current interface.]
- *
- * Methods whose names start with "add" place buttons, labels, and
- * Widgets (basically, everything else) into a TopLevel window as
- * specified by a LayoutSpec.  Conceptually, the window is divided
- * into an irregular grid (that is, one whose columns and rows may
- * each have different sizes).  One may specify where a given item is
- * added on this grid by specifying grid coordinates, widths,
+/*
+ * The ucb.gui package is a highly simplified interface to the Java GUI
+ * classes. A TopLevel (ucb.gui.TopLevel) is intended to represent an
+ * application window. It contains buttons, labels, menus, and assorted
+ * Widgets. The menus are all drop-down menus on the menu bar at the top of the
+ * window. Each entry in the menus is identified by a String label that uses a
+ * common notation to identify it: "A->B->C", for example, denotes the menu
+ * button C in submenu B of main menu tab A. Buttons and labels are identified
+ * by arbitrary Strings. Radio buttons (which can also appear in menus) are
+ * likewise identified by labels, plus another String, a group name, that
+ * groups together buttons that are mutually exclusive. Actions may be
+ * associated with buttons by specifying the <i>name</i> of a method (a String)
+ * and an object on which the method is called. For example,
+ * <tt>addMenuButton("Data->Clear", obj, "clear")</tt> will call the
+ * <tt>.clear</tt> method of object <tt>obj</tt> when the menu button
+ * Data->Clear is pushed. The call <tt>addMenuButton("Data->Clear",
+ * "clear")</tt> is short for <tt>addMenuButton("Data->Clear", this,
+ * "clear")</tt>. Several other methods use a similar way to denote actions.
+ * [API Design Note: Wnile this technique of specifying actions is convenient
+ * in Java 7, Java 8 has introduced <i>method references</i>, which are better
+ * a option, and will eventually replace the current interface.] Methods whose
+ * names start with "add" place buttons, labels, and Widgets (basically,
+ * everything else) into a TopLevel window as specified by a LayoutSpec.
+ * Conceptually, the window is divided into an irregular grid (that is, one
+ * whose columns and rows may each have different sizes). One may specify where
+ * a given item is added on this grid by specifying grid coordinates, widths,
  * alignments, and padding.
  */
 
 /**
  * A sample GUI.
- *
  * @author P. N. Hilfinger
  */
 class SampleGUI extends TopLevel {
@@ -65,7 +57,8 @@ class SampleGUI extends TopLevel {
         this.addMenuButton("Data->Clear", "clear");
         this.addMenuButton("Data->Quit", "quit");
         this.add(this._display, new LayoutSpec("y", 0, "width", 2));
-        this.addLabel("Points: 0", "pointCount", new LayoutSpec("y", 1, "x", 0));
+        this.addLabel("Points: 0", "pointCount",
+                new LayoutSpec("y", 1, "x", 0));
         this.addLabel("Lines: 0", "lineCount", new LayoutSpec("y", 1, "x", 1));
         this._display.setMouseHandler("click", this, "mouseClicked");
         this._display.setMouseHandler("move", this, "mouseMoved");
@@ -76,7 +69,8 @@ class SampleGUI extends TopLevel {
 
     /** Response to "Quit" menu item.. */
     public void quit(String dummy) {
-        if (this.showOptions("Really quit?", "Quit?", "question", "Yes", "Yes", "No") == 0) {
+        if (this.showOptions("Really quit?", "Quit?", "question", "Yes",
+                "Yes", "No") == 0) {
             System.exit(1);
         }
     }
@@ -91,7 +85,8 @@ class SampleGUI extends TopLevel {
     /** Action in response to mouse-clicking event EVENT. */
     public void mouseClicked(MouseEvent event) {
         int x = event.getX(), y = event.getY();
-        Point existing = this._data.findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
+        Point existing = this._data.findPoint(x, y,
+                DataDisplay.MOUSE_TOLERANCE);
         if (existing == null) {
             if (this._clickedPoint == null) {
                 this._data.addPoint(x, y);
@@ -100,7 +95,8 @@ class SampleGUI extends TopLevel {
             this._display.removeIncompleteSegment();
         } else if (this._clickedPoint == null) {
             this._clickedPoint = existing;
-            this._display.setIncompleteSegment(this._clickedPoint, this._clickedPoint);
+            this._display.setIncompleteSegment(this._clickedPoint,
+                    this._clickedPoint);
         } else if (this._clickedPoint != existing) {
             this._data.addLine(this._clickedPoint, existing);
             this._clickedPoint = null;
@@ -117,7 +113,8 @@ class SampleGUI extends TopLevel {
     public void mouseDragged(MouseEvent event) {
         int x = event.getX(), y = event.getY();
         if (this._draggedPoint == null) {
-            this._draggedPoint = this._data.findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
+            this._draggedPoint = this._data.findPoint(x, y,
+                    DataDisplay.MOUSE_TOLERANCE);
         } else {
             this._draggedPoint.move(event.getX(), event.getY());
         }
@@ -135,16 +132,18 @@ class SampleGUI extends TopLevel {
     /** Action in response to mouse-moving event EVENT. */
     public void mouseMoved(MouseEvent event) {
         if (this._clickedPoint != null) {
-            this._display.setIncompleteSegment(this._clickedPoint,
-                    new Point(event.getX(), event.getY()));
+            this._display.setIncompleteSegment(this._clickedPoint, new Point(
+                    event.getX(), event.getY()));
         }
         this._display.repaint();
     }
 
     /** Display number of points and lines. */
     void updateCounts() {
-        this.setLabel("pointCount", String.format("Points: %d", this._data.numPoints()));
-        this.setLabel("lineCount", String.format("Lines: %d", this._data.numLines()));
+        this.setLabel("pointCount",
+                String.format("Points: %d", this._data.numPoints()));
+        this.setLabel("lineCount",
+                String.format("Lines: %d", this._data.numLines()));
     }
 
     /** Point being dragged. */
