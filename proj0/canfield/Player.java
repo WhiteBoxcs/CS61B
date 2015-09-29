@@ -3,7 +3,7 @@ package canfield;
 /**
  * A player provides moves and commands to a Game and may also display the
  * status of the game.
- * 
+ *
  * @author P. N. Hilfinger
  */
 abstract class Player {

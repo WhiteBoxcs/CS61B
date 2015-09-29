@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * A type of player that gets input from System.stdin, reports game positions on
  * System.stdout, and reports errors on System.err.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class TextPlayer extends Player {

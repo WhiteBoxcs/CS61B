@@ -4,7 +4,7 @@ import ucb.util.CommandArgs;
 
 /**
  * The main class for Canfield solitaire.
- * 
+ *
  * @author P. N. Hilfinger
  */
 public class Main {

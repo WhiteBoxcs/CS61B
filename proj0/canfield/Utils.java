@@ -8,7 +8,7 @@ import java.net.URL;
 
 /**
  * Various static utility functions.
- * 
+ *
  * @author P. N. Hilfinger
  */
 public class Utils {

@@ -5,7 +5,6 @@ package canfield;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -225,7 +224,6 @@ public class GameTest {
         assertEquals(g.reserveSize(), Game.RESERVE_SIZE - 2);
     }
 
-
     /**
      * Test method for {@link canfield.Game#undo()}.
      */
@@ -235,42 +233,41 @@ public class GameTest {
         Game solid = new Game();
         solid.copyFrom(g);
 
-        for(int i = 0; i < 100; i++){
-            try{
-               g.stockToWaste();
-               g.reserveToFoundation();
-               g.wasteToFoundation();
-               g.tableauToFoundation(1);
-               g.tableauToFoundation(2);
-               g.tableauToFoundation(3);
-               g.tableauToFoundation(4);
-               
-               g.reserveToFoundation();
-               g.wasteToTableau(1);
-               g.wasteToFoundation();
-            } catch(Exception exp){
-                
-            }
-        }
-        
-        for(int i =0; i < 10000; i++){
-            try{
-                g.undo();
-            }
-            catch(Exception exp){}
-            
-        }
-        assertEquals(g.topReserve(),solid.topReserve());
-        for(int i = 1 ; i <= Card.NUM_SUITS; i++){
+        for (int i = 0; i < 100; i++) {
+            try {
+                g.stockToWaste();
+                g.reserveToFoundation();
+                g.wasteToFoundation();
+                g.tableauToFoundation(1);
+                g.tableauToFoundation(2);
+                g.tableauToFoundation(3);
+                g.tableauToFoundation(4);
 
-            assertEquals(g.topFoundation(i),solid.topFoundation(i));
-            assertEquals(g.topTableau(i),solid.topTableau(i));
+                g.reserveToFoundation();
+                g.wasteToTableau(1);
+                g.wasteToFoundation();
+            } catch (Exception exp) {
+
+            }
+        }
+
+        for (int i = 0; i < 10000; i++) {
+            try {
+                g.undo();
+            } catch (Exception exp) {
+            }
+
+        }
+        assertEquals(g.topReserve(), solid.topReserve());
+        for (int i = 1; i <= Card.NUM_SUITS; i++) {
+
+            assertEquals(g.topFoundation(i), solid.topFoundation(i));
+            assertEquals(g.topTableau(i), solid.topTableau(i));
         }
         assertEquals(g.topWaste(), solid.topWaste());
         assertEquals(g.stockEmpty(), solid.stockEmpty());
         assertEquals(g.getScore(), solid.getScore());
-        
-        
+
     }
 
     /**
@@ -278,20 +275,20 @@ public class GameTest {
      */
     @Test
     public void testStockToWaste() {
-        Game g = setUpGame(18);
+        Game g = this.setUpGame(18);
         int deckSize = Card.NUM_SUITS * Card.NUM_RANKS;
         int stockSize = deckSize - Game.TABLEAU_SIZE - Game.RESERVE_SIZE - 1;
         for (int i = 0; i < stockSize / 3 + 1; i++) {
             g.stockToWaste();
         }
-        assertTrue(g.stockEmpty());   
-        assertEquals(g.topWaste(),Card.C6);
+        assertTrue(g.stockEmpty());
+        assertEquals(g.topWaste(), Card.C6);
         g.stockToWaste();
         assertEquals(g.topWaste(), null);
-        g.undo();   
-        assertEquals(g.topWaste(),Card.C6);
-        g.undo();   
-        assertEquals(g.topWaste(),Card.S2);
+        g.undo();
+        assertEquals(g.topWaste(), Card.C6);
+        g.undo();
+        assertEquals(g.topWaste(), Card.S2);
     }
 
     /**
@@ -299,13 +296,13 @@ public class GameTest {
      */
     @Test
     public void testWasteToFoundation() {
-        Game g = setUpGame(7);
+        Game g = this.setUpGame(7);
         g.stockToWaste();
         assertEquals(g.topWaste(), Card.D8);
         g.wasteToFoundation();
         assertEquals(g.topFoundation(2), Card.D8);
         g.undo();
-        assertEquals(g.topFoundation(2),null);
+        assertEquals(g.topFoundation(2), null);
         assertEquals(g.topWaste(), Card.D8);
     }
 
@@ -314,7 +311,7 @@ public class GameTest {
      */
     @Test
     public void testReserveToFoundation() {
-        Game g = setUpGame(18);
+        Game g = this.setUpGame(18);
         assertEquals(g.topReserve(), Card.CA);
         g.reserveToFoundation();
         assertEquals(g.topFoundation(2), Card.CA);
@@ -328,7 +325,7 @@ public class GameTest {
      */
     @Test
     public void testTableauToFoundation() {
-        Game g = setUpGame(7);
+        Game g = this.setUpGame(7);
         g.stockToWaste();
         g.wasteToFoundation();
         g.tableauToFoundation(3);
@@ -345,13 +342,13 @@ public class GameTest {
 
         g.stockToWaste();
         g.tableauToTableau(2, 4);
-        
-        assertEquals(g.topTableau(4), Card.H10 );
+
+        assertEquals(g.topTableau(4), Card.H10);
         g.foundationToTableau(1, 4);
         assertEquals(g.topTableau(4), Card.C9);
         g.undo();
 
-        assertEquals(g.topTableau(4), Card.H10 );
+        assertEquals(g.topTableau(4), Card.H10);
         assertEquals(g.topFoundation(1), Card.C9);
 
     }
@@ -361,17 +358,17 @@ public class GameTest {
      */
     @Test
     public void testTableauToTableau() {
-        Game g = setUpGame(4);
-        assertEquals(g.topTableau(3),(Card.DA));
+        Game g = this.setUpGame(4);
+        assertEquals(g.topTableau(3), Card.DA);
         g.tableauToTableau(2, 3);
-        assertEquals(g.topTableau(3),(Card.CK));
+        assertEquals(g.topTableau(3), Card.CK);
         g.undo();
-        assertEquals(g.topTableau(3),(Card.DA));
-        assertEquals(g.topTableau(4),(Card.HA));
+        assertEquals(g.topTableau(3), Card.DA);
+        assertEquals(g.topTableau(4), Card.HA);
         g.tableauToTableau(2, 4);
-        assertEquals(g.topTableau(4),(Card.CK));
+        assertEquals(g.topTableau(4), Card.CK);
         g.undo();
-        assertEquals(g.topTableau(4),(Card.HA));
+        assertEquals(g.topTableau(4), Card.HA);
     }
 
     /**
@@ -379,8 +376,8 @@ public class GameTest {
      */
     @Test
     public void testFoundationToTableau() {
-        Game g = setUpGame(7);
-        
+        this.setUpGame(7);
+
     }
 
     /**
@@ -388,20 +385,20 @@ public class GameTest {
      */
     @Test
     public void testWasteToTableau() {
-        Game g = setUpGame(3);
+        Game g = this.setUpGame(3);
         g.stockToWaste();
         g.stockToWaste();
         g.stockToWaste();
         g.stockToWaste();
         assertEquals(g.topWaste(), Card.H8);
         g.wasteToTableau(3);
-        assertEquals(g.topTableau(3),Card.H8);
+        assertEquals(g.topTableau(3), Card.H8);
         g.undo();
         assertEquals(g.topWaste(), Card.H8);
-        g.wasteToTableau(3); 
-        assertEquals(g.topTableau(3),Card.H8);
-        
-        g= setUpGame(6);
+        g.wasteToTableau(3);
+        assertEquals(g.topTableau(3), Card.H8);
+
+        g = this.setUpGame(6);
         g.stockToWaste();
         g.stockToWaste();
         assertEquals(g.topTableau(2), Card.H2);
@@ -409,9 +406,7 @@ public class GameTest {
         assertEquals(g.topTableau(2), Card.SA);
         g.undo();
         assertEquals(g.topTableau(2), Card.H2);
-        
-        
-        
+
     }
 
     /**
@@ -433,9 +428,9 @@ public class GameTest {
 
         assertEquals(g.getTableau(3, 1), Card.S6);
         assertEquals(g.getTableau(3, 0), Card.D5);
-        
+
         g.undo();
-        
+
         assertEquals(g.getTableau(1, 0), Card.C8);
 
         assertEquals(g.getTableau(2, 0), Card.S4);
@@ -444,13 +439,13 @@ public class GameTest {
 
         assertEquals(g.getTableau(4, 0), Card.S2);
         assertEquals(g.topReserve(), Card.D5);
-        
-        g = setUpGame(10);
+
+        g = this.setUpGame(10);
         g.tableauToFoundation(3);
         assertEquals(g.topTableau(3), Card.S3);
         g.undo();
         assertEquals(g.topReserve(), Card.S3);
-        
+
     }
 
     /**

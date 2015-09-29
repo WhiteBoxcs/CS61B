@@ -3,7 +3,7 @@ package canfield;
 /**
  * The cards in a deck, ordered first by suit (Club, Diamond, Heart, Spade) and
  * then by rank (Ace through King).
- * 
+ *
  * @author P. N. Hilfinger
  */
 enum Card {

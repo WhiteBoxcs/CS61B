@@ -8,7 +8,7 @@ import ucb.gui.TopLevel;
 
 /**
  * A top-level GUI for Canfield solitaire.
- * 
+ *
  * @author Paul N. Hilfiger
  * @author William Guss
  */
@@ -37,7 +37,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Creates a new game.
-     * 
+     *
      * @param dummy
      */
     public void newGame(String dummy) {
@@ -46,7 +46,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Undoes a move if there is one to undo.
-     * 
+     *
      * @param dummy
      */
     public void undo(String dummy) {
@@ -250,7 +250,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
     /* ================ MESSAGE STUFF =================== */
     /**
      * Writes an error message to the label.
-     * 
+     *
      * @param exp
      */
     private void error(Exception exp) {
@@ -262,7 +262,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Writes a simple message to the label.
-     * 
+     *
      * @param message
      */
     private void message(String message) {

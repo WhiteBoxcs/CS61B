@@ -10,7 +10,7 @@ import canfield.actions.Action;
 
 /**
  * Represents the state of a game of Canfield.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class Game {
@@ -202,7 +202,7 @@ class Game {
 
     /**
      * Gets the kth card from the top of the waste.
-     * 
+     *
      * @param k
      *            0 <= K < waste.size()
      * @return
@@ -213,7 +213,7 @@ class Game {
 
     /**
      * Gives the waste size
-     * 
+     *
      * @return the size of the waste.
      */
     int wasteSize() {
@@ -222,7 +222,7 @@ class Game {
 
     /**
      * Gets the kth card from the top of the reserve.
-     * 
+     *
      * @param k
      *            0 <= K < reserve.size()
      * @return
@@ -233,7 +233,7 @@ class Game {
 
     /**
      * Gives the reserve size
-     * 
+     *
      * @return the size of the reserve.
      */
     int reserveSize() {
@@ -242,7 +242,7 @@ class Game {
 
     /**
      * Gets an index of an empty yableau pile/
-     * 
+     *
      * @return 1 <= K <= TABLEAU_SIZE if there is an empty tableau pile, or -1.
      */
     public int getEmptyTableau() {
@@ -259,7 +259,7 @@ class Game {
     /* === Undo Code === */
     /**
      * Applies an action and stores it to the history.
-     * 
+     *
      * @param act
      *            The action to enact.
      * @return Returns the enacted action.
@@ -280,7 +280,7 @@ class Game {
 
     /**
      * Undoes the action on the top of the stack./
-     * 
+     *
      * @return
      */
     boolean undo() {
@@ -619,7 +619,7 @@ class Game {
     /**
      * If P is empty and the reserve is not, move the top card of the reserve to
      * P.
-     * 
+     *
      * @param p
      *            The pile to fill.
      * @return If the pile was filled.

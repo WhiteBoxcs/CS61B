@@ -15,7 +15,7 @@ import ucb.gui.Pad;
 
 /**
  * A widget that displays a Pinball playfield.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class GameDisplay extends Pad {
@@ -212,7 +212,7 @@ class GameDisplay extends Pad {
 
     /**
      * Gets the card at a certain position.
-     * 
+     *
      * @param pos
      *            The test position
      * @param except
@@ -235,7 +235,7 @@ class GameDisplay extends Pad {
 
     /**
      * Gets the card at a certain position.
-     * 
+     *
      * @param pos
      *            The test position
      * @return The list of cards at a certain position sorted by layer.
@@ -246,7 +246,7 @@ class GameDisplay extends Pad {
 
     /**
      * Gets the top card at a given position.
-     * 
+     *
      * @param pos
      *            The POS to check.
      * @param except
@@ -264,7 +264,7 @@ class GameDisplay extends Pad {
 
     /**
      * Gets the top card at a given position.
-     * 
+     *
      * @param pos
      *            The POS to check.
      * @return the top card or NULL if there is no card.
@@ -275,7 +275,7 @@ class GameDisplay extends Pad {
 
     /**
      * Gets the top card colliding with a given GUI card
-     * 
+     *
      * @param with
      *            The card with which another card may collide.
      * @return the top card colliding with WITH
@@ -318,7 +318,7 @@ class GameDisplay extends Pad {
 
     /**
      * Converts card coords to pixels
-     * 
+     *
      * @param x
      *            the grid position in X of a given card
      * @param y

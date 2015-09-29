@@ -3,6 +3,7 @@ package gui;
 /**
  * A type of Point that uses pointer equality (==) for equality, rather than
  * equality of coordinates.
+ * 
  * @author P. N. Hilfinger
  * @author William Guss
  */
@@ -25,12 +26,12 @@ class Point extends java.awt.Point {
 
     /** Return square of distance from me to (X, Y). */
     double dist2(int x, int y) {
-        return (x - this.getX()) * (x - this.getX()) + (y - this.getY())
-                * (y - this.getY());
+        return (x - this.getX()) * (x - this.getX()) + (y - this.getY()) * (y - this.getY());
     }
 
     /**
      * Gets the supremum norm of a point sitance.
+     * 
      * @param x
      * @param y
      * @return

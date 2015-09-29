@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  * Represents a pile of cards.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class Pile {

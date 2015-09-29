@@ -13,6 +13,7 @@ import java.util.Set;
 /**
  * A set of points and line segments joining some of them in 2-dimensional
  * space.
+ * 
  * @author P. N. Hilfinger
  */
 class SampleData {
