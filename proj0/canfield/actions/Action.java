@@ -3,7 +3,6 @@ c * The Action interface.
  */
 package canfield.actions;
 
-import com.sun.tools.javac.util.Assert;
 
 /**
  * The action abstract class for bijective functions on gamestates.
@@ -18,7 +17,8 @@ public abstract class Action {
      * Applies the action and marks the action applied.
      */
     public final void apply() {
-        Assert.check(!this.applied);
+        if(this.applied)
+            throw new IllegalArgumentException();
         this.act();
         this.applied = true;
     }
@@ -28,7 +28,8 @@ public abstract class Action {
      * applied.
      */
     public final void inverseApply() {
-        Assert.check(this.applied);
+        if(!this.applied)
+            throw new IllegalArgumentException();
         this.undo();
         this.applied = false;
     }
