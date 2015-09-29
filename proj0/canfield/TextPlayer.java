@@ -4,8 +4,9 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * A type of player that gets input from System.stdin, reports game positions
- * on System.stdout, and reports errors on System.err.
+ * A type of player that gets input from System.stdin, reports game positions on
+ * System.stdout, and reports errors on System.err.
+ * 
  * @author P. N. Hilfinger
  */
 class TextPlayer extends Player {
@@ -16,12 +17,13 @@ class TextPlayer extends Player {
     /** A TextPlayer that makes moves on GAME. */
     TextPlayer(Game game) {
         super(game);
+        System.setErr(System.out);
         this._inp = new Scanner(System.in);
     }
 
     /**
-     * Display informational message MSG, using additional arguments ARGS as
-     * for String.format.
+     * Display informational message MSG, using additional arguments ARGS as for
+     * String.format.
      */
     private void message(String msg, Object... args) {
         System.err.printf(msg, args);
@@ -58,8 +60,8 @@ class TextPlayer extends Player {
     }
 
     /**
-     * Announce a win if there is one, ask if user wants another, and if so,
-     * set it up. Returns true iff user wants to quit.
+     * Announce a win if there is one, ask if user wants another, and if so, set
+     * it up. Returns true iff user wants to quit.
      */
     private boolean endGame() {
         if (this._game.isWon()) {
@@ -121,8 +123,7 @@ class TextPlayer extends Player {
                     break;
                 case "fndtab":
                 case "ft":
-                    this._game.foundationToTableau(inp.nextInt(),
-                            inp.nextInt());
+                    this._game.foundationToTableau(inp.nextInt(), inp.nextInt());
                     break;
                 case "help":
                 case "h":
@@ -222,8 +223,7 @@ class TextPlayer extends Player {
     /** Display row #ROW of the tableau, counting from 0 as the top. */
     private void displayTableau(int row) {
         for (int i = 1; i <= Game.TABLEAU_SIZE; i += 1) {
-            Card c = this._game.getTableau(i, this._game.tableauSize(i) - row
-                    - 1);
+            Card c = this._game.getTableau(i, this._game.tableauSize(i) - row - 1);
             System.out.printf(" %3s", this.str(c));
         }
     }
@@ -237,8 +237,8 @@ class TextPlayer extends Player {
     private Scanner _inp;
 
     /**
-     * Returns an IllegalArgumentException with specified message. Arguments
-     * MSG and ARGS are as for String.format.
+     * Returns an IllegalArgumentException with specified message. Arguments MSG
+     * and ARGS are as for String.format.
      */
     static IllegalArgumentException err(String msg, Object... args) {
         return new IllegalArgumentException(String.format(msg, args));

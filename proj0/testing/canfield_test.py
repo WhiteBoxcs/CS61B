@@ -58,7 +58,7 @@ for inp_file in files:
         expected_output = [clean_output_line(line) for line in transcript
                            if not re.match('> |#', line)]
         
-    proc = Popen('java -ea canfield.Main --text --seed={}'.format(seed),
+    proc = Popen('java -cp ..\\lib\\ucb.jar;.\\ -ea canfield.Main --text --seed={}'.format(seed),
                  stdin=PIPE, stdout=PIPE, stderr=STDOUT,
                  shell=True, universal_newlines=True)
     error = showdiff = False

@@ -16,14 +16,15 @@ public class GUIStackedCard extends GUIMoveableCard {
 
     /**
      * Full fledged constructor specifying further cards on the stack
+     * 
      * @param repr
      * @param type
      * @param pos
      * @param nextCard
      * @param base
      */
-    public GUIStackedCard(Card repr, CardType type, Point pos,
-            GUIStackedCard nextCard, boolean base) {
+    public GUIStackedCard(Card repr, CardType type, Point pos, GUIStackedCard nextCard,
+            boolean base) {
         super(repr, type, pos, nextCard != null ? nextCard.getLayer() - 1 : 13);
         this.base = base;
         this.nextCard = nextCard;
@@ -31,6 +32,7 @@ public class GUIStackedCard extends GUIMoveableCard {
 
     /***
      * Alternative constructor for last card on stack (or single stacks).
+     * 
      * @param repr
      * @param type
      * @param pos
@@ -68,6 +70,7 @@ public class GUIStackedCard extends GUIMoveableCard {
 
     /**
      * Drags a pile card recursively
+     * 
      * @param pos
      *            the position of the mouse
      * @param justified

@@ -3,6 +3,7 @@ package canfield;
 /**
  * The cards in a deck, ordered first by suit (Club, Diamond, Heart, Spade) and
  * then by rank (Ace through King).
+ * 
  * @author P. N. Hilfinger
  */
 enum Card {
@@ -89,7 +90,6 @@ enum Card {
      * Return the inverse of toString: the Card whose toString value is NAME.
      */
     public static Card toCard(String name) {
-        return valueOf(name.substring(name.length() - 1)
-                + name.substring(0, name.length() - 1));
+        return valueOf(name.substring(name.length() - 1) + name.substring(0, name.length() - 1));
     }
 }

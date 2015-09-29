@@ -8,6 +8,7 @@ import ucb.gui.TopLevel;
 
 /**
  * A top-level GUI for Canfield solitaire.
+ * 
  * @author Paul N. Hilfiger
  * @author William Guss
  */
@@ -23,8 +24,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
         this.addMenuButton("Game->Undo", "undo");
         this.addMenuButton("Game->Quit", "quit");
 
-        this.addLabel("New game started!", "messageLabel", new LayoutSpec("y",
-                1, "x", 0));
+        this.addLabel("New game started!", "messageLabel", new LayoutSpec("y", 1, "x", 0));
 
         this._display = new GameDisplay(game);
         this.add(this._display, new LayoutSpec("y", 0, "width", 2));
@@ -37,6 +37,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Creates a new game.
+     * 
      * @param dummy
      */
     public void newGame(String dummy) {
@@ -45,6 +46,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Undoes a move if there is one to undo.
+     * 
      * @param dummy
      */
     public void undo(String dummy) {
@@ -110,8 +112,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
     }
 
     /**
-     * Action in response to mouse-released event EVENT. Occurs only after
-     * drag.
+     * Action in response to mouse-released event EVENT. Occurs only after drag.
      */
     public synchronized void mouseReleased(MouseEvent event) {
 
@@ -136,8 +137,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
      */
     private void processInput() {
         /* see if there was another card. */
-        ArrayList<GUICard> colliding = this._display
-                .getCollision(this.selectedCard);
+        ArrayList<GUICard> colliding = this._display.getCollision(this.selectedCard);
         if (!colliding.isEmpty()) {
 
             GUICard other = colliding.get(0);
@@ -155,12 +155,10 @@ class CanfieldGUI extends TopLevel implements GameListener {
                     case TABLEAU_BASE:
                     case TABLEAU_HEAD:
                     case TABLEAU_NORM:
-                        this._game.wasteToTableau(this._game
-                                .tableauPileOf(other.getRepr()));
+                        this._game.wasteToTableau(this._game.tableauPileOf(other.getRepr()));
                         break;
                     case TABLEAU_EMPTY:
-                        this._game
-                        .wasteToTableau(this._game.getEmptyTableau());
+                        this._game.wasteToTableau(this._game.getEmptyTableau());
                     default:
                         break;
                     }
@@ -169,14 +167,13 @@ class CanfieldGUI extends TopLevel implements GameListener {
                 case TABLEAU_HEAD:
 
                     if (other.getType() == CardType.FOUNDATION) {
-                        this._game.tableauToFoundation(this._game
-                                .tableauPileOf(this.selectedCard.getRepr()));
+                        this._game.tableauToFoundation(
+                                this._game.tableauPileOf(this.selectedCard.getRepr()));
                     }
                     break;
 
                 case TABLEAU_BASE:
-                    int tabPile = this._game.tableauPileOf(this.selectedCard
-                            .getRepr());
+                    int tabPile = this._game.tableauPileOf(this.selectedCard.getRepr());
                     boolean satisfied = false;
 
                     for (int i = 0; i < colliding.size() && !satisfied; i++) {
@@ -186,12 +183,10 @@ class CanfieldGUI extends TopLevel implements GameListener {
                         case TABLEAU_BASE:
                         case TABLEAU_HEAD:
 
-                            int otherTabPile = this._game
-                            .tableauPileOf(colCard.getRepr());
+                            int otherTabPile = this._game.tableauPileOf(colCard.getRepr());
                             if (otherTabPile != tabPile) {
                                 this._game.tableauToTableau(tabPile,
-                                        this._game.tableauPileOf(colCard
-                                                .getRepr()));
+                                        this._game.tableauPileOf(colCard.getRepr()));
                                 satisfied = true;
                             }
 
@@ -217,9 +212,8 @@ class CanfieldGUI extends TopLevel implements GameListener {
                     case TABLEAU_HEAD:
                     case TABLEAU_NORM:
                         this._game.foundationToTableau(
-                                this._game.foundationPileOf(this.selectedCard
-                                        .getRepr()), this._game
-                                        .tableauPileOf(other.getRepr()));
+                                this._game.foundationPileOf(this.selectedCard.getRepr()),
+                                this._game.tableauPileOf(other.getRepr()));
                         break;
                     default:
                         break;
@@ -231,8 +225,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
                     case TABLEAU_BASE:
                     case TABLEAU_HEAD:
                     case TABLEAU_NORM:
-                        this._game.reserveToTableau(this._game
-                                .tableauPileOf(other.getRepr()));
+                        this._game.reserveToTableau(this._game.tableauPileOf(other.getRepr()));
                         break;
 
                     case FOUNDATION:
@@ -257,6 +250,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
     /* ================ MESSAGE STUFF =================== */
     /**
      * Writes an error message to the label.
+     * 
      * @param exp
      */
     private void error(Exception exp) {
@@ -268,6 +262,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Writes a simple message to the label.
+     * 
      * @param message
      */
     private void message(String message) {
@@ -275,8 +270,7 @@ class CanfieldGUI extends TopLevel implements GameListener {
     }
 
     private void victory() {
-        int result = this.showOptions(
-                "You won with score " + this._game.getScore() + "!",
+        int result = this.showOptions("You won with score " + this._game.getScore() + "!",
                 "Victory!", "information", null, "New Game", "Quit");
         if (result == 0) {
             this.newGame(null);

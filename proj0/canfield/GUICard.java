@@ -49,6 +49,7 @@ class GUICard {
     /**
      * Called when the card is selected and the mouse is dragging! Unfortunate
      * side effect of trying to program with component oriented mindset.
+     * 
      * @param pos
      *            The position of the mouse.
      * @param justified
@@ -60,6 +61,7 @@ class GUICard {
     /**
      * Called when the card is selected and the mouse is released! Unfortunate
      * side effect of trying to program with component oriented mindset.
+     * 
      * @param pos
      *            The position of the release.
      * @param justified
@@ -71,6 +73,7 @@ class GUICard {
     /**
      * Called when the card is selected! Unfortunate side effect of trying to
      * program with component oriented mindset.
+     * 
      * @param pos
      *            The position of the click..
      * @param justified
@@ -129,6 +132,7 @@ class GUICard {
 
     /**
      * Sets the position of the GUICard.
+     * 
      * @param pos
      *            The position
      */
@@ -188,8 +192,8 @@ class GUICard {
     public static class LayerComparator implements Comparator<GUICard> {
         /*
          * Uses that 0 > 1. (non-Javadoc)
-         * @see java.util.Comparator#compare(java.lang.Object,
-         * java.lang.Object)
+         * 
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         @Override
         public int compare(GUICard o1, GUICard o2) {

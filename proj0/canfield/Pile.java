@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Represents a pile of cards.
+ * 
  * @author P. N. Hilfinger
  */
 class Pile {
@@ -82,8 +83,7 @@ class Pile {
      * empty.
      */
     Card dealTop() {
-        return this.isEmpty() ? null : this._cards
-                .remove(this._cards.size() - 1);
+        return this.isEmpty() ? null : this._cards.remove(this._cards.size() - 1);
     }
 
     /** Add CARD to me as my top card. Has no effect if CARD is null. */
@@ -103,12 +103,11 @@ class Pile {
 
     /**
      * Place the top K cards in PILE on top of my cards, so that PILE's former
-     * top card (if any) is now mine as well. If there are fewer than K cards
-     * in PILE, move all of them. Removes the cards from PILE.
+     * top card (if any) is now mine as well. If there are fewer than K cards in
+     * PILE, move all of them. Removes the cards from PILE.
      */
     void move(Pile pile, int k) {
-        List<Card> L = pile._cards.subList(Math.max(0, pile.size() - k),
-                pile.size());
+        List<Card> L = pile._cards.subList(Math.max(0, pile.size() - k), pile.size());
         this._cards.addAll(L);
         L.clear();
     }

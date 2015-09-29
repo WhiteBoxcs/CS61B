@@ -8,6 +8,7 @@ import java.net.URL;
 
 /**
  * Various static utility functions.
+ * 
  * @author P. N. Hilfinger
  */
 public class Utils {
@@ -46,8 +47,7 @@ public class Utils {
             return null;
         }
         try {
-            URL url = Utils.class.getClassLoader()
-                    .getResource(file.toString());
+            URL url = Utils.class.getClassLoader().getResource(file.toString());
             if (url != null) {
                 return url.openStream();
             } else {
@@ -59,8 +59,8 @@ public class Utils {
     }
 
     /**
-     * Returns an IllegalArgumentException with specified message. Arguments
-     * MSG and ARGS are as for String.format.
+     * Returns an IllegalArgumentException with specified message. Arguments MSG
+     * and ARGS are as for String.format.
      */
     static IllegalArgumentException err(String msg, Object... args) {
         return new IllegalArgumentException(String.format(msg, args));
