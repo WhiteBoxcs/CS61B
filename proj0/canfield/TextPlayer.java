@@ -17,7 +17,6 @@ class TextPlayer extends Player {
     /** A TextPlayer that makes moves on GAME. */
     TextPlayer(Game game) {
         super(game);
-        System.setErr(System.out);
         this._inp = new Scanner(System.in);
     }
 
