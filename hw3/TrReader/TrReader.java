@@ -38,7 +38,7 @@ public class TrReader extends Reader {
   public int read(char[] cbuf, int off, int len) throws IOException {
     int readStatus = this.source.read(cbuf, off, len);
 
-    for (int i = off; i < len; i++) {
+    for (int i = off; i < off+len; i++) {
 
       cbuf[i] = this.map(cbuf[i]);
     }

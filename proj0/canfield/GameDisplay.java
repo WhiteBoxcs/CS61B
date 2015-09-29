@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 
@@ -188,7 +189,7 @@ class GameDisplay extends Pad {
             /* IF THERE IS AN EMPTY TAB */
             if (tabSize <= 0) {
                 this.cards
-                        .add(new GUIEmptyCard(CardType.TABLEAU_EMPTY, basis));
+                .add(new GUIEmptyCard(CardType.TABLEAU_EMPTY, basis));
                 continue;
             }
 
@@ -209,7 +210,7 @@ class GameDisplay extends Pad {
                 boolean base = i == this._game.tableauSize(x) - 1;
                 tabPile.add(new GUIStackedCard(this._game.getTableau(x, i),
                         base ? CardType.TABLEAU_BASE : CardType.TABLEAU_NORM,
-                        cPos, tabPile.get(tabPile.size() - 1), base));
+                                cPos, tabPile.get(tabPile.size() - 1), base));
             }
             if (!tabPile.isEmpty()) {
                 this.cards.addAll(tabPile);
@@ -294,11 +295,17 @@ class GameDisplay extends Pad {
                 satisfying.add(card);
             }
         }
-        satisfying.sort((o1, o2) -> {
-            double px = with.getCenter().getX();
-            double py = with.getCenter().getY();
-            return (int) o2.getPos().distance(px, py)
-                    - (int) o1.getPos().distance(px, py);
+        satisfying.sort(new Comparator<GUICard>(){
+
+            @Override
+            public int compare(GUICard o1, GUICard o2) {
+
+                double px = with.getCenter().getX();
+                double py = with.getCenter().getY();
+                return (int) o2.getPos().distance(px, py)
+                        - (int) o1.getPos().distance(px, py);
+            }
+            
         });
 
         return satisfying;
