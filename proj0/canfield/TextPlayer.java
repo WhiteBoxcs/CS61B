@@ -102,7 +102,9 @@ class TextPlayer extends Player {
             }
             Scanner inp = new Scanner(line);
             try {
-                process(inp);
+                if (process(inp)) {
+                    return;
+                }
             } catch (IllegalArgumentException excp) {
                 this.error(String.format(excp.getMessage()));
             } catch (NoSuchElementException excp) {
@@ -116,8 +118,9 @@ class TextPlayer extends Player {
      * the input processor.
      * @param inp
      *            the inpit.
+     * @return if it quits.
      */
-    private void process(Scanner inp) {
+    private boolean process(Scanner inp) {
         switch (inp.next().toLowerCase()) {
         case "card":
         case "c":
@@ -159,7 +162,7 @@ class TextPlayer extends Player {
         case "quit":
         case "q":
             if (this.endGame()) {
-                return;
+                return true;
             }
             break;
         case "undo":
@@ -170,6 +173,7 @@ class TextPlayer extends Player {
         default:
             throw new IllegalArgumentException("Unknown command");
         }
+        return false;
     }
 
     /** Respond to QUESTION. Returns true iff answer is yes. */
