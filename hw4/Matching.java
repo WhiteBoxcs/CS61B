@@ -1,28 +1,29 @@
 import java.util.Scanner;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-
-/** A simple test framework for playing around with Patterns.
- *  @author P. N. Hilfinger.
+/**
+ * A simple test framework for playing around with Patterns.
+ * @author P. N. Hilfinger.
  */
 public class Matching {
-    /** java Matching reads in pairs of potentially multi-line
-     *  strings, with each string terminated by the sequence
-     *  "/<newline>".  For each pair, S and P, it interprets P as a
-     *  Pattern and reports whether it matches the string S.  If they
-     *  match, it additionally prints out the captured groups,
-     *  specified in P by parentheses.  Input terminates at the
-     *  string "QUIT/<newline>" */
+    /**
+     * java Matching reads in pairs of potentially multi-line strings, with
+     * each string terminated by the sequence "/<newline>". For each pair, S
+     * and P, it interprets P as a Pattern and reports whether it matches the
+     * string S. If they match, it additionally prints out the captured groups,
+     * specified in P by parentheses. Input terminates at the string
+     * "QUIT/<newline>"
+     */
     public static void main(String[] ignored) {
         Scanner inp = new Scanner(System.in);
         System.out.println("  Alternately strings to match and patterns to");
         System.out.println("  match against them.  Use \\ at the end of line");
         System.out.println("  to enter multi-line strings or patterns (\\");
         System.out.println("  are removed, leaving newlines).");
-        System.out.println("  The program will indicate whether each pattern "
-                           + "matches");
+        System.out.println("  The program  will indicate whether each pattern "
+                + "matches");
         System.out.println("  the ENTIRE preceding string.");
         System.out.println("  Enter QUIT to end the program.");
         while (true) {
@@ -41,8 +42,8 @@ public class Matching {
                 if (mat.matches()) {
                     System.out.println("Matches.");
                     for (int i = 1; i <= mat.groupCount(); i += 1) {
-                        System.out.printf("  Group %d: '%s'%n",
-                                          i, mat.group(i));
+                        System.out.printf("  Group %d: '%s'%n", i,
+                                mat.group(i));
                     }
                 } else {
                     System.out.println("No match.");
@@ -53,8 +54,10 @@ public class Matching {
         }
     }
 
-    /** Return a line of line from INP.  If a line ends in "\",
-     *  concatenates the next line as well, preceded by a newline. */
+    /**
+     * Return a line of line from INP. If a line ends in "\", concatenates the
+     * next line as well, preceded by a newline.
+     */
     private static String getInput(Scanner inp) {
         if (!inp.hasNext() || inp.hasNext("QUIT")) {
             return null;

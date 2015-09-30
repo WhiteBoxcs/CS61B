@@ -1,14 +1,17 @@
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.util.List;
-import java.util.InputMismatchException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-/** Runs tests of ReadInts class
- *  @author Josh Hug
+import java.util.InputMismatchException;
+import java.util.List;
+
+import org.junit.Test;
+
+/**
+ * Runs tests of ReadInts class
+ * @author Josh Hug
  */
 
 public class TestReadInts {
-
 
     @Test
     /* For human evaluation. No automated testing here. */
