@@ -8,6 +8,9 @@ package canfield.actions;
  * @author MadcowD
  */
 public abstract class Action {
+    /**
+     * If the action was applied.
+     */
     private boolean applied = false;
 
     /**
@@ -34,12 +37,12 @@ public abstract class Action {
     }
 
     /**
-     * Acts in the forward direction (with respect to time)
+     * Acts in the forward direction (with respect to time).
      */
     protected abstract void act();
 
     /**
-     * The direct inverse of Action.act (with respect to time)
+     * The direct inverse of Action.act (with respect to time).
      */
     protected abstract void undo();
 }
