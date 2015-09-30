@@ -11,6 +11,6 @@ Books:
 
 
 Login:  cs61b-gh
-Initial Password:   2-fPvJF<
 Email Address:  cs61b-gh@imail.eecs.berkeley.edu
 Mail Server (IMAPS):    imail.eecs.berkeley.edu
+\(((0|[1-9]\d*),(\s*))*(0|[1-9]\d*)\)
