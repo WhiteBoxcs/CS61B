@@ -9,7 +9,6 @@ package canfield;
 interface GameListener {
     /**
      * Called whe nthe game is changed.
-     *
      * @param changedGame
      *            The game which was changed.
      */

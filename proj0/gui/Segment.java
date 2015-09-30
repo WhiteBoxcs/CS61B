@@ -4,7 +4,6 @@ import java.awt.Point;
 
 /**
  * Represents a line segment as a pair of Points.
- * 
  * @author P. N. Hilfinger.
  */
 class Segment {
@@ -31,7 +30,8 @@ class Segment {
     @Override
     public boolean equals(Object L) {
         Segment s = (Segment) L;
-        return this._p0 == s._p0 && this._p1 == s._p1 || this._p0 == s._p1 && this._p1 == s._p0;
+        return this._p0 == s._p0 && this._p1 == s._p1
+                || this._p0 == s._p1 && this._p1 == s._p0;
     }
 
     @Override

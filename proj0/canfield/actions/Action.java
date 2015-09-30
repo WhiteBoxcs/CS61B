@@ -5,7 +5,6 @@ package canfield.actions;
 
 /**
  * The action abstract class for bijective functions on gamestates.
- *
  * @author MadcowD
  */
 public abstract class Action {

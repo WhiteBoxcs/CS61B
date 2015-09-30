@@ -42,7 +42,6 @@ import ucb.gui.TopLevel;
 
 /**
  * A sample GUI.
- * 
  * @author P. N. Hilfinger
  */
 class SampleGUI extends TopLevel {
@@ -50,7 +49,13 @@ class SampleGUI extends TopLevel {
     /** Size of the area displaying points and lines. */
     static final int WIDTH = 300, HEIGHT = 300;
 
-    /** A new window with given TITLE and displaying DATA. */
+    /**
+     * A new window with given TITLE and displaying DATA.
+     * @param title
+     *            the tile of the GUI.
+     * @param data
+     *            The data of the GUI.
+     */
     SampleGUI(String title, SampleData data) {
         super(title, true);
         this._data = data;
@@ -58,7 +63,8 @@ class SampleGUI extends TopLevel {
         this.addMenuButton("Data->Clear", "clear");
         this.addMenuButton("Data->Quit", "quit");
         this.add(this._display, new LayoutSpec("y", 0, "width", 2));
-        this.addLabel("Points: 0", "pointCount", new LayoutSpec("y", 1, "x", 0));
+        this.addLabel("Points: 0", "pointCount",
+                new LayoutSpec("y", 1, "x", 0));
         this.addLabel("Lines: 0", "lineCount", new LayoutSpec("y", 1, "x", 1));
         this._display.setMouseHandler("click", this, "mouseClicked");
         this._display.setMouseHandler("move", this, "mouseMoved");
@@ -67,24 +73,38 @@ class SampleGUI extends TopLevel {
         this.display(true);
     }
 
-    /** Response to "Quit" menu item.. */
+    /**
+     * Response to "Quit" menu item..
+     * @param dummy
+     *            The dummy string.
+     */
     public void quit(String dummy) {
-        if (this.showOptions("Really quit?", "Quit?", "question", "Yes", "Yes", "No") == 0) {
+        if (this.showOptions("Really quit?", "Quit?", "question", "Yes", "Yes",
+                "No") == 0) {
             System.exit(1);
         }
     }
 
-    /** Response to "Clear" menu item. */
+    /**
+     * Response to "Clear" menu item.
+     * @param dummy
+     *            The dummy string.
+     */
     public void clear(String dummy) {
         this._data.clear();
         this.updateCounts();
         this._display.repaint();
     }
 
-    /** Action in response to mouse-clicking event EVENT. */
+    /**
+     * Action in response to mouse-clicking event EVENT.
+     * @param event
+     *            the mouse event.
+     */
     public void mouseClicked(MouseEvent event) {
         int x = event.getX(), y = event.getY();
-        Point existing = this._data.findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
+        Point existing = this._data.findPoint(x, y,
+                DataDisplay.MOUSE_TOLERANCE);
         if (existing == null) {
             if (this._clickedPoint == null) {
                 this._data.addPoint(x, y);
@@ -93,7 +113,8 @@ class SampleGUI extends TopLevel {
             this._display.removeIncompleteSegment();
         } else if (this._clickedPoint == null) {
             this._clickedPoint = existing;
-            this._display.setIncompleteSegment(this._clickedPoint, this._clickedPoint);
+            this._display.setIncompleteSegment(this._clickedPoint,
+                    this._clickedPoint);
         } else if (this._clickedPoint != existing) {
             this._data.addLine(this._clickedPoint, existing);
             this._clickedPoint = null;
@@ -106,11 +127,16 @@ class SampleGUI extends TopLevel {
         this._display.repaint();
     }
 
-    /** Action in response to mouse-dragging event EVENT. */
+    /**
+     * Action in response to mouse-dragging event EVENT.
+     * @param event
+     *            The mouse event.
+     */
     public void mouseDragged(MouseEvent event) {
         int x = event.getX(), y = event.getY();
         if (this._draggedPoint == null) {
-            this._draggedPoint = this._data.findPoint(x, y, DataDisplay.MOUSE_TOLERANCE);
+            this._draggedPoint = this._data.findPoint(x, y,
+                    DataDisplay.MOUSE_TOLERANCE);
         } else {
             this._draggedPoint.move(event.getX(), event.getY());
         }
@@ -120,12 +146,20 @@ class SampleGUI extends TopLevel {
         this._display.repaint();
     }
 
-    /** Action in response to release of mouse button. */
+    /**
+     * Action in response to release of mouse button.
+     * @param ignored
+     *            the ignored args.
+     */
     public void mouseReleased(MouseEvent ignored) {
         this._draggedPoint = null;
     }
 
-    /** Action in response to mouse-moving event EVENT. */
+    /**
+     * Action in response to mouse-moving event EVENT.
+     * @param event
+     *            The mouse event.
+     */
     public void mouseMoved(MouseEvent event) {
         if (this._clickedPoint != null) {
             this._display.setIncompleteSegment(this._clickedPoint,
@@ -136,8 +170,10 @@ class SampleGUI extends TopLevel {
 
     /** Display number of points and lines. */
     void updateCounts() {
-        this.setLabel("pointCount", String.format("Points: %d", this._data.numPoints()));
-        this.setLabel("lineCount", String.format("Lines: %d", this._data.numLines()));
+        this.setLabel("pointCount",
+                String.format("Points: %d", this._data.numPoints()));
+        this.setLabel("lineCount",
+                String.format("Lines: %d", this._data.numLines()));
     }
 
     /** Point being dragged. */

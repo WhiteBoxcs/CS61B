@@ -8,13 +8,18 @@ import ucb.gui.TopLevel;
 
 /**
  * A top-level GUI for Canfield solitaire.
- *
  * @author Paul N. Hilfiger
  * @author William Guss
  */
 class CanfieldGUI extends TopLevel implements GameListener {
 
-    /** A new window with given TITLE and displaying GAME. */
+    /**
+     * A new window with given TITLE and displaying GAME.
+     * @param title
+     *            the tilte of the game.
+     * @param game
+     *            the game.
+     */
     CanfieldGUI(String title, Game game) {
         super(title, true);
         this._game = game;
@@ -24,7 +29,8 @@ class CanfieldGUI extends TopLevel implements GameListener {
         this.addMenuButton("Game->Undo", "undo");
         this.addMenuButton("Game->Quit", "quit");
 
-        this.addLabel("New game started!", "messageLabel", new LayoutSpec("y", 1, "x", 0));
+        this.addLabel("New game started!", "messageLabel",
+                new LayoutSpec("y", 1, "x", 0));
 
         this._display = new GameDisplay(game);
         this.add(this._display, new LayoutSpec("y", 0, "width", 2));
@@ -37,7 +43,6 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Creates a new game.
-     *
      * @param dummy
      */
     public void newGame(String dummy) {
@@ -46,7 +51,6 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Undoes a move if there is one to undo.
-     *
      * @param dummy
      */
     public void undo(String dummy) {
@@ -59,7 +63,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
         this._display.repaint();
     }
 
-    /** Respond to "Quit" button. */
+    /**
+     * Respond to "Quit" button.
+     * @param dummy
+     *            the dummy string as input.
+     */
     public void quit(String dummy) {
         System.exit(1);
     }
@@ -78,7 +86,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /* =========== INPUT LISTENER ============== */
 
-    /** Action in response to mouse-clicking event EVENT. */
+    /**
+     * Action in response to mouse-clicking event EVENT.
+     * @param event
+     *            The mouse event.
+     */
     public synchronized void mouseClicked(MouseEvent event) {
         GUICard top = this._display.getTopCardAt(event.getPoint());
         if (top != null) {
@@ -93,7 +105,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
         this._display.repaint();
     }
 
-    /** Action in response to mouse-dragging event EVENT. */
+    /**
+     * Action in response to mouse-dragging event EVENT.
+     * @param event
+     *            the mouse event.
+     */
     public synchronized void mouseDragged(MouseEvent event) {
         if (this.selectedCard == null) {
             this.selectedCard = this._display.getTopCardAt(event.getPoint());
@@ -112,7 +128,10 @@ class CanfieldGUI extends TopLevel implements GameListener {
     }
 
     /**
-     * Action in response to mouse-released event EVENT. Occurs only after drag.
+     * Action in response to mouse-released event EVENT. Occurs only after
+     * drag.
+     * @param event
+     *            The mouse wevent.
      */
     public synchronized void mouseReleased(MouseEvent event) {
 
@@ -137,7 +156,8 @@ class CanfieldGUI extends TopLevel implements GameListener {
      */
     private void processInput() {
         /* see if there was another card. */
-        ArrayList<GUICard> colliding = this._display.getCollision(this.selectedCard);
+        ArrayList<GUICard> colliding = this._display
+                .getCollision(this.selectedCard);
         if (!colliding.isEmpty()) {
 
             GUICard other = colliding.get(0);
@@ -147,93 +167,23 @@ class CanfieldGUI extends TopLevel implements GameListener {
                 switch (this.selectedCard.getType()) {
 
                 case WASTE:
-
-                    switch (other.getType()) {
-                    case FOUNDATION:
-                        this._game.wasteToFoundation();
-                        break;
-                    case TABLEAU_BASE:
-                    case TABLEAU_HEAD:
-                    case TABLEAU_NORM:
-                        this._game.wasteToTableau(this._game.tableauPileOf(other.getRepr()));
-                        break;
-                    case TABLEAU_EMPTY:
-                        this._game.wasteToTableau(this._game.getEmptyTableau());
-                    default:
-                        break;
-                    }
+                    wasteTo(colliding, other);
                     break;
 
                 case TABLEAU_HEAD:
-
-                    if (other.getType() == CardType.FOUNDATION) {
-                        this._game.tableauToFoundation(
-                                this._game.tableauPileOf(this.selectedCard.getRepr()));
-                    }
+                    tableauHeadTo(colliding, other);
                     break;
 
                 case TABLEAU_BASE:
-                    int tabPile = this._game.tableauPileOf(this.selectedCard.getRepr());
-                    boolean satisfied = false;
-
-                    for (int i = 0; i < colliding.size() && !satisfied; i++) {
-                        GUICard colCard = colliding.get(i);
-                        switch (colCard.getType()) {
-
-                        case TABLEAU_BASE:
-                        case TABLEAU_HEAD:
-
-                            int otherTabPile = this._game.tableauPileOf(colCard.getRepr());
-                            if (otherTabPile != tabPile) {
-                                this._game.tableauToTableau(tabPile,
-                                        this._game.tableauPileOf(colCard.getRepr()));
-                                satisfied = true;
-                            }
-
-                            break;
-
-                        case FOUNDATION:
-
-                            if (this._game.tableauSize(tabPile) == 1) {
-                                this._game.tableauToFoundation(tabPile);
-                                satisfied = true;
-                            }
-                            break;
-                        default:
-                            break;
-                        }
-                    }
-
+                    tableauBaseTo(colliding, other);
                     break;
 
                 case FOUNDATION:
-                    switch (other.getType()) {
-                    case TABLEAU_BASE:
-                    case TABLEAU_HEAD:
-                    case TABLEAU_NORM:
-                        this._game.foundationToTableau(
-                                this._game.foundationPileOf(this.selectedCard.getRepr()),
-                                this._game.tableauPileOf(other.getRepr()));
-                        break;
-                    default:
-                        break;
-                    }
+                    foundationTo(colliding, other);
                     break;
 
                 case RESERVE:
-                    switch (other.getType()) {
-                    case TABLEAU_BASE:
-                    case TABLEAU_HEAD:
-                    case TABLEAU_NORM:
-                        this._game.reserveToTableau(this._game.tableauPileOf(other.getRepr()));
-                        break;
-
-                    case FOUNDATION:
-                        this._game.reserveToFoundation();
-                        break;
-                    default:
-                        break;
-                    }
+                    reserveTo(colliding, other);
 
                     break;
                 default:
@@ -247,11 +197,144 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     }
 
+    /* ==================== GAME LOGIC =============== */
+
+    /**
+     * Handles reserve to logic.
+     * @param colliding
+     *            the colliding cards.
+     * @param other
+     *            the best nmatch colliding cards.
+     */
+    private void reserveTo(ArrayList<GUICard> colliding, GUICard other) {
+        switch (other.getType()) {
+        case TABLEAU_BASE:
+        case TABLEAU_HEAD:
+        case TABLEAU_NORM:
+            this._game.reserveToTableau(
+                    this._game.tableauPileOf(other.getCard()));
+            break;
+
+        case FOUNDATION:
+            this._game.reserveToFoundation();
+            break;
+        default:
+            break;
+        }
+    }
+
+    /**
+     * Handles foundation to logic.
+     * @param colliding
+     *            the colliding cards.
+     * @param other
+     *            the best nmatch colliding cards.
+     */
+    private void foundationTo(ArrayList<GUICard> colliding, GUICard other) {
+        switch (other.getType()) {
+        case TABLEAU_BASE:
+        case TABLEAU_HEAD:
+        case TABLEAU_NORM:
+            this._game.foundationToTableau(
+                    this._game.foundationPileOf(this.selectedCard.getCard()),
+                    this._game.tableauPileOf(other.getCard()));
+            break;
+        default:
+            break;
+        }
+
+    }
+
+    /**
+     * Handles tableau head to logic.
+     * @param colliding
+     *            the colliding cards.
+     * @param other
+     *            the best nmatch colliding cards.
+     */
+    private void tableauHeadTo(ArrayList<GUICard> colliding, GUICard other) {
+
+        if (other.getType() == CardType.FOUNDATION) {
+            this._game.tableauToFoundation(
+                    this._game.tableauPileOf(this.selectedCard.getCard()));
+        }
+
+    }
+
+    /**
+     * Handles waste to logic.
+     * @param colliding
+     *            the colliding cards.
+     * @param other
+     *            the best nmatch colliding cards.
+     */
+    private void wasteTo(ArrayList<GUICard> colliding, GUICard other) {
+
+        switch (other.getType()) {
+        case FOUNDATION:
+            this._game.wasteToFoundation();
+            break;
+
+        case TABLEAU_BASE:
+        case TABLEAU_HEAD:
+        case TABLEAU_NORM:
+            this._game
+                    .wasteToTableau(this._game.tableauPileOf(other.getCard()));
+            break;
+        case TABLEAU_EMPTY:
+            this._game.wasteToTableau(this._game.getEmptyTableau());
+            break;
+        default:
+            break;
+        }
+    }
+
+    /**
+     * Handles tabvleuBaseTo logic.
+     * @param colliding
+     *            the colliding cards.
+     * @param other
+     *            the best nmatch colliding cards.
+     */
+    private void tableauBaseTo(ArrayList<GUICard> colliding, GUICard other) {
+        int tabPile = this._game.tableauPileOf(this.selectedCard.getCard());
+        boolean satisfied = false;
+
+        for (int i = 0; i < colliding.size() && !satisfied; i++) {
+            GUICard colCard = colliding.get(i);
+            switch (colCard.getType()) {
+
+            case TABLEAU_BASE:
+            case TABLEAU_HEAD:
+
+                int otherTabPile = this._game.tableauPileOf(colCard.getCard());
+                if (otherTabPile != tabPile) {
+                    this._game.tableauToTableau(tabPile,
+                            this._game.tableauPileOf(colCard.getCard()));
+                    satisfied = true;
+                }
+
+                break;
+
+            case FOUNDATION:
+
+                if (this._game.tableauSize(tabPile) == 1) {
+                    this._game.tableauToFoundation(tabPile);
+                    satisfied = true;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+
+    }
+
     /* ================ MESSAGE STUFF =================== */
     /**
      * Writes an error message to the label.
-     *
      * @param exp
+     *            the expression.
      */
     private void error(Exception exp) {
         String errorMsg = String.format(exp.getMessage());
@@ -262,15 +345,19 @@ class CanfieldGUI extends TopLevel implements GameListener {
 
     /**
      * Writes a simple message to the label.
-     *
      * @param message
+     *            the message.
      */
     private void message(String message) {
         this.setLabel("messageLabel", message);
     }
 
+    /**
+     * called upon victory.
+     */
     private void victory() {
-        int result = this.showOptions("You won with score " + this._game.getScore() + "!",
+        int result = this.showOptions(
+                "You won with score " + this._game.getScore() + "!",
                 "Victory!", "information", null, "New Game", "Quit");
         if (result == 0) {
             this.newGame(null);
@@ -286,8 +373,11 @@ class CanfieldGUI extends TopLevel implements GameListener {
     /** The game I am consulting. */
     private final Game _game;
 
-    /** The card I am selectiong **/
+    /** The card I am selectiong. **/
     private GUICard selectedCard = null;
+    /**
+     * The selectdd layer.
+     */
     private int selectedLayer = 0;
 
 }

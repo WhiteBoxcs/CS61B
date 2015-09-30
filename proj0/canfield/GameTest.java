@@ -246,16 +246,14 @@ public class GameTest {
                 g.reserveToFoundation();
                 g.wasteToTableau(1);
                 g.wasteToFoundation();
-            } catch (Exception exp) {
-
+            } catch (IllegalArgumentException exp) {
+                continue;
             }
         }
 
         for (int i = 0; i < 10000; i++) {
-            try {
-                g.undo();
-            } catch (Exception exp) {
-            }
+
+            g.undo();
 
         }
         assertEquals(g.topReserve(), solid.topReserve());

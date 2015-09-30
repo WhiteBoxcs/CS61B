@@ -13,7 +13,6 @@ import java.util.Set;
 /**
  * A set of points and line segments joining some of them in 2-dimensional
  * space.
- * 
  * @author P. N. Hilfinger
  */
 class SampleData {
@@ -68,6 +67,10 @@ class SampleData {
     /**
      * Return any point that is within DELTA units of distance from (X, Y), or
      * null if there are none.
+     * @param x the x of other.
+     * @param y the y of other.
+     * @param delta the tolerance.
+     * @return the return.
      */
     Point findPoint(int x, int y, double delta) {
         double d2 = delta * delta;

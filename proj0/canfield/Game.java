@@ -10,7 +10,6 @@ import canfield.actions.Action;
 
 /**
  * Represents the state of a game of Canfield.
- *
  * @author P. N. Hilfinger
  */
 class Game {
@@ -38,7 +37,11 @@ class Game {
         }
     }
 
-    /** A new Game, copied from GAME0. No state is shared with GAME0. */
+    /**
+     * A new Game, copied from GAME0. No state is shared with GAME0.
+     * @param game0
+     *            the game.
+     */
     Game(Game game0) {
         this();
         this.copyFrom(game0);
@@ -94,7 +97,8 @@ class Game {
 
     /** Return true iff the game is won. */
     boolean isWon() {
-        return this.getScore() == Card.NUM_SUITS * Card.NUM_RANKS * POINTS_PER_CARD;
+        return this.getScore() == Card.NUM_SUITS * Card.NUM_RANKS
+                * POINTS_PER_CARD;
     }
 
     /** Return the current score. */
@@ -146,7 +150,8 @@ class Game {
 
     /**
      * Return the number of cards in tableau pile #K, where 1 <= K <=
-     * Card.TABLEAU_SIZE. Throws IllegalArgumentException iff K is out of range.
+     * Card.TABLEAU_SIZE. Throws IllegalArgumentException iff K is out of
+     * range.
      */
     int tableauSize(int k) {
         return this.tableau(k).size();
@@ -202,18 +207,16 @@ class Game {
 
     /**
      * Gets the kth card from the top of the waste.
-     *
      * @param k
      *            0 <= K < waste.size()
-     * @return
+     * @return the return.
      */
     Card getWaste(int k) {
         return this._waste.get(k);
     }
 
     /**
-     * Gives the waste size
-     *
+     * Gives the waste size.
      * @return the size of the waste.
      */
     int wasteSize() {
@@ -222,18 +225,16 @@ class Game {
 
     /**
      * Gets the kth card from the top of the reserve.
-     *
      * @param k
      *            0 <= K < reserve.size()
-     * @return
+     * @return the reserve.
      */
     Card getReserve(int k) {
         return this._reserve.get(k);
     }
 
     /**
-     * Gives the reserve size
-     *
+     * Gives the reserve size.
      * @return the size of the reserve.
      */
     int reserveSize() {
@@ -241,8 +242,7 @@ class Game {
     }
 
     /**
-     * Gets an index of an empty yableau pile/
-     *
+     * Gets an index of an empty yableau pile.
      * @return 1 <= K <= TABLEAU_SIZE if there is an empty tableau pile, or -1.
      */
     public int getEmptyTableau() {
@@ -259,16 +259,12 @@ class Game {
     /* === Undo Code === */
     /**
      * Applies an action and stores it to the history.
-     *
-     * @param act
+     * @param action
      *            The action to enact.
      * @return Returns the enacted action.
      */
     Action apply(Action action) {
         action.apply();
-
-        // It is important that we add the action to the history after it has
-        // been applied.
         this.history.push(action);
 
         for (GameListener listener : this.listeners) {
@@ -279,9 +275,8 @@ class Game {
     }
 
     /**
-     * Undoes the action on the top of the stack./
-     *
-     * @return
+     * Undoes the action on the top of the stack.
+     * @return if the undo occured.
      */
     boolean undo() {
         if (this.history.isEmpty()) {
@@ -298,6 +293,11 @@ class Game {
         return true;
     }
 
+    /**
+     * Adds a listener to the game.
+     * @param listener
+     *            the lister to add.
+     */
     public void addListener(GameListener listener) {
         this.listeners.add(listener);
     }
@@ -313,9 +313,6 @@ class Game {
         this.apply(new Action() {
             private int num = 0;
 
-            /**
-             * Takes a pile off the stack of the stock.
-             */
             @Override
             protected void act() {
                 this.num = Math.min(Game.this._stock.size(), 3);
@@ -344,8 +341,6 @@ class Game {
         });
     }
 
-    // ======================================================================\\
-
     /**
      * Move the top card of the waste to a suitable foundation pile. Throws
      * IllegalArgumentException if this is not a legal move.
@@ -355,9 +350,6 @@ class Game {
             private Pile foundPile;
 
             @Override
-            /**
-             * Moves a waste card to the foundation
-             */
             protected void act() {
                 Pile p = Game.this.findFoundation(Game.this.topWaste());
                 Game.this.checkFoundationAdd(Game.this.topWaste(), p);
@@ -366,17 +358,12 @@ class Game {
 
             }
 
-            /**
-             * Undoes that action Suppose that act has been called.
-             */
             @Override
             protected void undo() {
                 Game.this._waste.move(this.foundPile, 1);
             }
         });
     }
-
-    // ======================================================================\\
 
     /**
      * Move the top card of the reserve to a suitable foundation pile. Throws
@@ -386,9 +373,6 @@ class Game {
         this.apply(new Action() {
             private Pile foundPile;
 
-            /**
-             * Moves the reserve to the foundation.
-             */
             @Override
             protected void act() {
                 Pile p = Game.this.findFoundation(Game.this.topReserve());
@@ -405,8 +389,6 @@ class Game {
         });
     }
 
-    // ======================================================================\\
-
     /**
      * Move a card from tableau pile #T, 1 <= T <= TABLEAU_SIZE, to a suitable
      * foundation pile. Throws IllegalArgumentException if this is not a legal
@@ -418,9 +400,6 @@ class Game {
             private Pile foundation;
             private boolean filled;
 
-            /**
-             * Moves the card
-             */
             @Override
             protected void act() {
                 this.tableau = Game.this.tableau(t);
@@ -428,14 +407,12 @@ class Game {
                     throw err("No cards in that pile");
                 }
                 this.foundation = Game.this.findFoundation(this.tableau.top());
-                Game.this.checkFoundationAdd(this.tableau.top(), this.foundation);
+                Game.this.checkFoundationAdd(this.tableau.top(),
+                        this.foundation);
                 this.foundation.move(this.tableau, 1);
                 this.filled = Game.this.fillFromReserve(this.tableau);
             }
 
-            /**
-             * Inverts the action.
-             */
             @Override
             protected void undo() {
                 if (this.filled) {
@@ -446,8 +423,6 @@ class Game {
             }
         });
     }
-
-    // ======================================================================\\
 
     /**
      * Move tableau pile #K0 to tableau pile #K1, where K0, K1 in 1 ..
@@ -460,10 +435,6 @@ class Game {
             private Pile t0;
             private Pile t1;
 
-            /**
-             * Move tableau pile #K0 to tableau pile #K1, where K0, K1 in 1 ..
-             * TABLEAU_SIZE.
-             */
             @Override
             protected void act() {
                 this.t0 = Game.this.tableau(k0);
@@ -486,9 +457,6 @@ class Game {
                 this.filled = Game.this.fillFromReserve(this.t0);
             }
 
-            /**
-             * Assumes there was successful application.
-             */
             @Override
             protected void undo() {
                 if (this.filled) {
@@ -501,21 +469,17 @@ class Game {
         });
     }
 
-    // ======================================================================\\
-
     /**
-     * Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to tableau
-     * pile #T, 1 <= T <= TABLEAU_SIZE.
+     * Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to
+     * tableau pile #T, 1 <= T <= TABLEAU_SIZE.
+     * @param f the foundation pile.
+     * @param t the rtableau pile.
      */
     void foundationToTableau(final int f, final int t) {
         this.apply(new Action() {
             private Pile tableau;
             private Pile foundation;
 
-            /**
-             * Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to
-             * tableau pile #T, 1 <= T <= TABLEAU_SIZE.
-             */
             @Override
             protected void act() {
                 this.foundation = Game.this.foundation(f);
@@ -529,9 +493,6 @@ class Game {
                 this.tableau.move(this.foundation, 1);
             }
 
-            /**
-             * Presuming the forward action has been satisfied.
-             */
             @Override
             protected void undo() {
                 this.foundation.move(this.tableau, 1);
@@ -541,23 +502,18 @@ class Game {
         });
     }
 
-    // ======================================================================\\
-
     /**
      * Move the top card of the waste to tableau pile #K, 1 <= K <=
      * TABLEAU_SIZE. Throws IllegalArgumentException if K is is out of bounds,
-     * there is no such card, or the move is illegal
+     * there is no such card, or the move is illegal.
+     * @param kIndex
+     *            the kIndex.
      */
     void wasteToTableau(final int kIndex) {
         this.apply(new Action() {
 
             private Pile tabPile;
 
-            /**
-             * Move the top card of the waste to tableau pile #K, 1 <= K <=
-             * TABLEAU_SIZE. Throws IllegalArgumentException if K is is out of
-             * bounds, there is no such card, or the move is illegal
-             */
             @Override
             protected void act() {
                 Pile p = Game.this.tableau(kIndex);
@@ -571,9 +527,6 @@ class Game {
                 this.tabPile = p;
             }
 
-            /**
-             * Moves the top of the tab pile back to the waste.
-             */
             @Override
             protected void undo() {
                 Game.this._waste.move(this.tabPile, 1);
@@ -581,21 +534,16 @@ class Game {
         });
     }
 
-    // ======================================================================\\
-
     /**
      * Move the top card of the waste to tableau pile #K, 1 <= K <=
      * TABLEAU_SIZE. Throws IllegalArgumentException if K is is out of bounds,
      * there is no such card, or the move is illegal
+     * @param kIndex
+     *            the tabIndex.
      */
     void reserveToTableau(int kIndex) {
         this.apply(new Action() {
 
-            /**
-             * Move the top card of the waste to tableau pile #K, 1 <= K <=
-             * TABLEAU_SIZE. Throws IllegalArgumentException if K is is out of
-             * bounds, there is no such card, or the move is illegal
-             */
             @Override
             protected void act() {
                 Pile p = Game.this.tableau(kIndex);
@@ -612,14 +560,11 @@ class Game {
         });
     }
 
-    // ======================================================================\\
-
     /* === Internal methods === */
 
     /**
-     * If P is empty and the reserve is not, move the top card of the reserve to
-     * P.
-     *
+     * If P is empty and the reserve is not, move the top card of the reserve
+     * to P.
      * @param p
      *            The pile to fill.
      * @return If the pile was filled.
@@ -631,8 +576,6 @@ class Game {
         }
         return false;
     }
-
-    private boolean reserveDepleted = false;
 
     /**
      * Return foundation pile #K, 1<=K<=Card.NUM_SUITS. Throws
@@ -650,6 +593,8 @@ class Game {
      * Return the foundation pile whose suit matches that of CARD. Returns an
      * empty foundation pile if there is no current foundation pile with the
      * right suit.
+     * @param card the foundation of the card.
+     * @return the founcation.
      */
     private Pile findFoundation(Card card) {
         if (card == null) {
@@ -657,7 +602,8 @@ class Game {
         }
         int suit = card.suit();
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
-            if (!this.foundation(i).isEmpty() && suit == this.foundation(i).top().suit()) {
+            if (!this.foundation(i).isEmpty()
+                    && suit == this.foundation(i).top().suit()) {
                 return this.foundation(i);
             }
         }
@@ -682,8 +628,8 @@ class Game {
     }
 
     /**
-     * Assuming P is a foundation pile, checks whether CARD may be placed on it,
-     * throwing an IllegalArgumentException if not.
+     * Assuming P is a foundation pile, checks whether CARD may be placed on
+     * it, throwing an IllegalArgumentException if not.
      */
     private void checkFoundationAdd(Card card, Pile p) {
         Card f = p.top();
@@ -692,7 +638,8 @@ class Game {
         }
         if (f == null) {
             if (card.rank() != this._base.rank()) {
-                throw err("foundation piles must start at %s", this._base.rankName());
+                throw err("foundation piles must start at %s",
+                        this._base.rankName());
             }
         } else if (card.suit() != f.suit()) {
             throw err("foundations build up in suit");
@@ -714,7 +661,8 @@ class Game {
             throw err("%s must go to the foundation", card);
         } else if (t != null && t.isRed() == card.isRed()) {
             throw err("tableau is built down in alternating colors");
-        } else if (t != null && (t.rank() - card.rank() + Card.NUM_RANKS) % Card.NUM_RANKS != 1) {
+        } else if (t != null && (t.rank() - card.rank() + Card.NUM_RANKS)
+                % Card.NUM_RANKS != 1) {
             throw err("tableau is built down in sequence");
         }
     }
@@ -733,10 +681,10 @@ class Game {
     /** The tableau piles. */
     private final ArrayList<Pile> _tableau = new ArrayList<>();
 
-    /* The game history */
+    /** The game history. */
     private Stack<Action> history;
 
-    /* The game listeners */
+    /** The game listeners. */
     private ArrayList<GameListener> listeners;
 
     /** Source of random numbers for dealing. */

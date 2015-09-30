@@ -2,9 +2,15 @@ package canfield;
 
 import ucb.junit.textui;
 
+/**
+ * @author William A basic unit test class for textui.
+ */
 public class UnitTest {
 
-    /* Run the unit tests in this file. */
+    /**
+     * @param args
+     *            The arguments to the unit test
+     */
     public static void main(String... args) {
         System.exit(textui.runClasses(GameTest.class));
     }

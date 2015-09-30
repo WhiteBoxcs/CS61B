@@ -58,7 +58,14 @@ public class GUIMoveableCard extends GUICard {
 
     /* ==== Fields ==== */
 
+    /**
+     * THe old position of the card befoire it was moved.
+     */
     private Point oldPos;
+
+    /**
+     * The offset of the click from the card.
+     */
     private Point offset;
 
 }
