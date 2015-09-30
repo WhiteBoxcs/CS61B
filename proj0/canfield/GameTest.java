@@ -374,8 +374,31 @@ public class GameTest {
      */
     @Test
     public void testFoundationToTableau() {
-        this.setUpGame(7);
+        Game g = this.setUpGame(7);
+        g.stockToWaste();
+        g.wasteToFoundation();
+        g.tableauToFoundation(3);
+        g.tableauToFoundation(4);
+        g.tableauToTableau(2, 4);
+        g.stockToWaste();
+        g.stockToWaste();
+        g.wasteToTableau(4);
+        g.stockToWaste();
+        g.stockToWaste();
+        g.stockToWaste();
+        g.stockToWaste();
+        g.wasteToTableau(4);
 
+        g.stockToWaste();
+        g.tableauToTableau(2, 4);
+
+        assertEquals(g.topTableau(4), Card.H10);
+        g.foundationToTableau(1, 4);
+        assertEquals(g.topTableau(4), Card.C9);
+        g.undo();
+
+        assertEquals(g.topTableau(4), Card.H10);
+        assertEquals(g.topFoundation(1), Card.C9);
     }
 
     /**
