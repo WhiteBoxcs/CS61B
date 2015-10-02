@@ -1,13 +1,17 @@
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
+
+import org.junit.Test;
+
 import utils.Filter;
 import utils.Predicate;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
-/** FIXME
- *  @author Josh Hug
+/**
+ * FIXME
+ * @author Josh Hug
  */
 
 public class TestFilters {
@@ -60,8 +64,8 @@ public class TestFilters {
         List<Integer> L = Arrays.asList(1, 2, 3, 3, 2, 1, 5);
         List<Integer> expected = Arrays.asList(1, 2, 3, 3, 2, 1);
         List<Integer> actual = new ArrayList<Integer>();
-        Filter<Integer> tf = new PredicateFilter<Integer>(
-                                 new LessThanFive(), L.iterator());
+        Filter<Integer> tf = new PredicateFilter<Integer>(new LessThanFive(),
+                L.iterator());
         for (int i : tf) {
             actual.add(i);
         }
@@ -76,7 +80,8 @@ public class TestFilters {
         }
     }
 
-    /** Tests your filters
+    /**
+     * Tests your filters
      */
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(TestFilters.class));
