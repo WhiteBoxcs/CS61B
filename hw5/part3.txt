@@ -4,19 +4,28 @@ HW #5.
 Question D.
 
 1. Omega(x^2), O(x^2) => Theta(x^2)
-
+By observation
 
 2. Omega(log(x)), O(log(x)) => Theta(log(x))
+By 7 and its complinment which were not proven.
 
-
-3. f(N) in Theta(N^3)
+3. f(N) in Theta(N^3) by
+Sum i = j(j+1)/2
+Sum j(jh+1)/2 = N(N+1)(N+2)/6
+=> f(N) in theta(N).
 
 
 4. a(N,M) in Theta(N + M)
-
+j iterates to at most M once
+i iterates to at most N once
+thus the hypothesis.
 
 5. Theta(n log n)
-
+a_n = n + 2(n/2 + a_n/4)
+    = n + n + a_n/4
+    which happens log_2 n times
+    thus
+    f(n) in Theta n log n
 
 6. Proof. We assume that there exists 
 an x_1 such that f(x) > 1 for all x

@@ -71,13 +71,14 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
         @Override
         public T next() {
         	if(_next == -1)
-        		throw new ArrayIndexOutOfBoundsException();
+        		throw new IllegalStateException();
         	
+        	T elem = _data[_next];
+        	int oldNext = _next;
+        	_next = _link[_next]^_prev;
+        	_prev = oldNext;
         	
-        	_prev = _next;
-        	_next = _link[++_nextIndex]^_prev;
-        	
-            return _data[_prev]; // REPLACE WITH SOLUTION
+            return elem;
         }
 
         @Override
@@ -92,10 +93,15 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T previous() {
-        	
-        	_next = _prev;
-        	_prev = _link[--_nextIndex]^_next;
-            return null; // REPLACE WITH SOLUTION
+            if(_prev == -1)
+                throw new IllegalStateException();
+            
+        	T elem = _data[_prev];
+        	int oldPrev = _prev;
+        	_prev = _link[_prev]^_next;
+            _next = oldPrev;
+            int b;
+            return elem;
         }
 
         @Override
@@ -118,6 +124,25 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * then removed).  For this exercise, you needn't bother. */
             if(_size == _data.length)
             	throw new IllegalStateException();
+            
+            _data[_size] = obj;
+            
+            _link[_size] = _next^_prev;
+            
+            if(_prev == -1)
+                _first = _size;
+            else
+                _link[_prev] ^= _next^_size;
+            
+                
+            
+            if(_next == -1)
+                _last = _size;
+            else
+                _link[_next] ^= _prev^_size;
+            
+            _prev = _size;
+            _size++;
             
         }
 
