@@ -1,4 +1,5 @@
 .DS_Store
+.sentinel
 
 # Created by https://www.gitignore.io/api/java,eclipse,intellij,emacs,vim
 
