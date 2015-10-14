@@ -47,7 +47,7 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * Since CompactIterator is an inner class, we can reference
              * instance variables of the containing CompactLinkedList
              * by their names (e.g., _first). */
-            // FILL IN IF NEEDED
+            
             if (k < _size - k) {
                 _prev = -1;
                 _next = _first;
@@ -70,7 +70,14 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T next() {
-            return null; // REPLACE WITH SOLUTION
+        	if(_next == -1)
+        		throw new ArrayIndexOutOfBoundsException();
+        	
+        	
+        	_prev = _next;
+        	_next = _link[++_nextIndex]^_prev;
+        	
+            return _data[_prev]; // REPLACE WITH SOLUTION
         }
 
         @Override
@@ -85,6 +92,9 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T previous() {
+        	
+        	_next = _prev;
+        	_prev = _link[--_nextIndex]^_next;
             return null; // REPLACE WITH SOLUTION
         }
 
@@ -106,7 +116,9 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * require some other way of finding indices that are
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
-            // FILL IN
+            if(_size == _data.length)
+            	throw new IllegalStateException();
+            
         }
 
 

@@ -12,8 +12,7 @@ public class LastBit {
      *      lastBit(4) == lastBit(12) == lastBit(2052) == 4.
      */
     public static int lastBit(int n) {
-        return 0; // REPLACE *ONLY* 0 WITH SOLUTION.
-                  //DO NOT ADD EXTRA STATEMENTS.
+        return n & -n;
     }
 
 }
