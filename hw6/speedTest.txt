@@ -1,0 +1,7 @@
+Results for InsertRandomSpeedTest:
+
+
+Results for InsertInOrderSpeedTest:
+
+
+Explain anything interesting that you might have observed above:
