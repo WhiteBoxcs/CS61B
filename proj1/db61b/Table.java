@@ -147,7 +147,10 @@ class Table implements Iterable<Row> {
     /** Print my contents on the standard output, separated by spaces
      *  and indented by two spaces. */
     void print() {
-        // FILL IN
+        System.out.println(Arrays.toString(_titles).replace("\\s",""));
+        for(Row row : _rows){
+        	System.out.println(row.toString());
+        }
     }
 
     /** My name. */

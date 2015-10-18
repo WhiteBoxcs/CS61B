@@ -65,6 +65,13 @@ class Row {
     public int hashCode() {
         return Arrays.hashCode(_data);
     }
+    
+    
+    @Override
+    public String toString()
+    {
+		return Arrays.toString(_data).replace("\\s","");
+    }
 
     /** Contents of this row. */
     private String[] _data;
