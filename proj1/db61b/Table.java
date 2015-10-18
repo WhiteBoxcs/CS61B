@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,7 +28,9 @@ class Table implements Iterable<Row> {
      *  which must be distinct (else exception thrown). */
     Table(String name, String[] columnTitles) {
         _name = name;
-        // FILL IN
+        _rows = new ArrayList<Row>();
+        _titles = columnTitles;
+        
     }
 
     /** A new Table named NAME whose column names are give by COLUMNTITLES. */
@@ -53,7 +56,7 @@ class Table implements Iterable<Row> {
     /** Returns an iterator that returns my rows in an unspecfied order. */
     @Override
     public Iterator<Row> iterator() {
-        return null;  // REPLACE WITH SOLUTION
+        return _rows.iterator();
     }
 
     /** Return the title of the Kth column.  Requires 0 <= K < columns(). */
@@ -138,6 +141,7 @@ class Table implements Iterable<Row> {
     private final String _name;
     /** My column titles. */
     private String[] _titles;
-    // OTHER FIELDS MIGHT GO HERE
+    
+    private List<Row> _rows;
 }
 

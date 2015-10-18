@@ -1,10 +1,3 @@
-// This is a SUGGESTED skeleton for a class that describes a single Row of a
-// Table. You can throw this away if you want, but it is a good idea to try to
-// understand it first.  Our solution changes or adds about 10 lines in this
-// skeleton.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package db61b;
 
 import java.util.List;
@@ -15,7 +8,7 @@ import static db61b.Utils.*;
  *  turn is an object that iterates through the rows of a Table.
  *  @author
 */
-class Column {
+public class Column {
 
     /** A Column named NAME selected from TABLE.  The Column is
      *  initially unresolved; that is, it is not attached to a

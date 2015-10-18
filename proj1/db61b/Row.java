@@ -23,13 +23,15 @@ class Row {
     /** Return a Row formed from the current values of COLUMNS (in order).
      *  COLUMNS must all have been resolved to non-empty TableIterators. */
     static Row make(List<Column> columns) {
-        return null;  // REPLACE WITH SOLUTION
+        return new Row(columns);  
     }
 
     /** A Row whose column values are extracted by COLUMNS from ROWS (see
      *  {@link db61b.Column#Column}). */
     Row(List<Column> columns) {
-        // REPLACE WITH SOLUTION
+        this(Arrays.copyOf(columns.stream()
+        		.map(x -> x.value())
+        		.toArray(), columns.size(), String[].class));
     }
 
     /** Return my number of columns. */
