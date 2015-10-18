@@ -1,10 +1,3 @@
-// This is a SUGGESTED skeleton for a class that describes a single Row of a
-// Table. You can throw this away if you want, but it is a good idea to try to
-// understand it first.  Our solution changes or adds about 10 lines in this
-// skeleton.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package db61b;
 
 import java.io.BufferedReader;
@@ -108,7 +101,20 @@ class Table implements Iterable<Row> {
                 throw error("missing header in DB file");
             }
             String[] columnNames = header.split(",");
-            // FILL IN
+            table = new Table(name, columnNames);
+            
+            String cur;
+            while((cur = input.readLine()) != null){
+            	String[] data = cur.split(",");
+            	
+            	if(data.length != columnNames.length){
+            		throw error("unmathched row content and collumn count in DB file.");
+            	}
+            	
+            	table.add(new Row(data));
+            }
+            
+            
         } catch (FileNotFoundException e) {
             throw error("could not find %s.db", name);
         } catch (IOException e) {
@@ -131,10 +137,15 @@ class Table implements Iterable<Row> {
         PrintStream output;
         output = null;
         try {
-            String sep;
-            sep = "";
             output = new PrintStream(name + ".db");
-            // FILL IN
+            
+            output.println(Arrays.toString(_titles).replace("\\s",""));
+            
+            for(Row row : _rows){
+            	output.println(row.toDBFormat());
+            }
+            
+            
         } catch (IOException e) {
             throw error("trouble writing to %s.db", name);
         } finally {
@@ -147,9 +158,9 @@ class Table implements Iterable<Row> {
     /** Print my contents on the standard output, separated by spaces
      *  and indented by two spaces. */
     void print() {
-        System.out.println(Arrays.toString(_titles).replace("\\s",""));
+        System.out.println("  " + Arrays.toString(_titles).replace(",",""));
         for(Row row : _rows){
-        	System.out.println(row.toString());
+        	System.out.println("  " + row.toString());
         }
     }
 

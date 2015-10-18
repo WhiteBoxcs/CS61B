@@ -70,6 +70,11 @@ class Row {
     @Override
     public String toString()
     {
+		return Arrays.toString(_data).replace(",","");
+    }
+    
+    public String toDBFormat()
+    {
 		return Arrays.toString(_data).replace("\\s","");
     }
 
