@@ -202,7 +202,13 @@ class CommandInterpreter {
 
     /** Parse and execute a load statement from the token stream. */
     private void loadStatement() {
-        // FILL THIS IN
+        _input.next("load");
+        String tableName = name();
+        
+        Table loadedTab = Table.readTable(tableName + ".db");
+        this._database.put(tableName, loadedTab);
+        
+        _input.next(";");
     }
 
     /** Parse and execute a store statement from the token stream. */
