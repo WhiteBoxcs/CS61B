@@ -67,18 +67,31 @@ class Table implements Iterable<Row> {
     /** Return the number of the column whose title is TITLE, or -1 if
      *  there isn't one. */
     int columnIndex(String title) {
-        return -1;  // REPLACE WITH SOLUTION
+    	for(int i = 0; i < _titles.length; i++)
+    	{
+    		if(_titles[i].equals(title))
+    		{
+    			return i;
+    		}
+    	}
+        return -1; 
     }
 
     /** Return the number of Rows in this table. */
     int size() {
-        return 0;  // REPLACE WITH SOLUTION
+        return _rows.size();
     }
 
     /** Add ROW to THIS if no equal row already exists.  Return true if anything
      *  was added, false otherwise. */
     boolean add(Row row) {
-        return false;  // REPLACE WITH SOLUTION
+    	if(row.size() != this.numColumns() || _rows.contains(row)){
+    		return false;
+    	}
+    	
+    	this.add(row);
+    	
+        return true; 
     }
 
     /** Read the contents of the file NAME.db, and return as a Table.
