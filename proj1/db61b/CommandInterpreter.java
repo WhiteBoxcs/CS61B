@@ -234,7 +234,7 @@ class CommandInterpreter {
 
     /** Parse and execute a select statement from the token stream. */
     private void selectStatement() {
-        // FILL THIS IN
+    	
     }
 
     /** Parse and execute a table definition for a Table named NAME,
