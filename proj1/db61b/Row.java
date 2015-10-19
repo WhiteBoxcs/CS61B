@@ -78,7 +78,10 @@ class Row {
     
     public String toDBFormat()
     {
-		return Arrays.toString(_data).replace("\\s","");
+		return Arrays.toString(_data)
+        		.replace(" ","")
+        		.replace("[", "")
+    	        .replace("]", "");
     }
 
     /** Contents of this row. */

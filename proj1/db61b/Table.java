@@ -139,7 +139,10 @@ class Table implements Iterable<Row> {
         try {
             output = new PrintStream(name + ".db");
             
-            output.println(Arrays.toString(_titles).replace("\\s",""));
+            output.println(Arrays.toString(_titles)
+            		.replace(" ","")
+            		.replace("[", "")
+        	        .replace("]", ""));
             
             for(Row row : _rows){
             	output.println(row.toDBFormat());

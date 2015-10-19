@@ -206,11 +206,11 @@ class CommandInterpreter {
     private void loadStatement() {
         _input.next("load");
         String tableName = name();
+        _input.next(";");
+        
         
         Table loadedTab = Table.readTable(tableName);
         this._database.put(tableName, loadedTab);
-        
-        _input.next(";");
     }
 
     /** Parse and execute a store statement from the token stream. */
@@ -218,18 +218,18 @@ class CommandInterpreter {
         _input.next("store");
         String name = _input.peek();
         Table table = tableName();
+        _input.next(";");
         
         table.writeTable(name);
-        
-        _input.next(";");
     }
 
     /** Parse and execute a print statement from the token stream. */
     private void printStatement() {
         _input.next("print");
         Table table = tableName();
-        table.print();
         _input.next(";");
+        
+        table.print();
     }
 
     /** Parse and execute a select statement from the token stream. */
