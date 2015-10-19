@@ -242,11 +242,22 @@ class CommandInterpreter {
     Table tableDefinition(String name) {
         // FILL THIS IN
         if (_input.nextIf("(")) {
-            // FILL THIS IN
+            ArrayList<String> columnNames
+            	= new ArrayList<String>();
+            columnNames.add(name());
+            while(_input.nextIf(",")){
+            	columnNames.add(name());
+            }
+            
+        	_input.next(")");
+        	
+        	return new Table(name,columnNames);
+        	
         } else {
-            // FILL THIS IN
+        	_input.next("as");
+        	return selectClause(name);
+        	
         }
-        return null;  // REPLACE WITH SOLUTION
     }
 
     /** Parse and execute a select clause from the token stream, returning the
