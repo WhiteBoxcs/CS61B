@@ -171,7 +171,9 @@ class CommandInterpreter {
         _input.next("table");
         String name = name();
         Table table = tableDefinition(name);
-        // FILL THIS IN
+        
+        this._database.put(name, table);
+        
         _input.next(";");        
     }
 
@@ -205,7 +207,7 @@ class CommandInterpreter {
         _input.next("load");
         String tableName = name();
         
-        Table loadedTab = Table.readTable(tableName + ".db");
+        Table loadedTab = Table.readTable(tableName);
         this._database.put(tableName, loadedTab);
         
         _input.next(";");
@@ -216,13 +218,18 @@ class CommandInterpreter {
         _input.next("store");
         String name = _input.peek();
         Table table = tableName();
-        // FILL THIS IN
+        
+        table.writeTable(name);
+        
         _input.next(";");
     }
 
     /** Parse and execute a print statement from the token stream. */
     private void printStatement() {
-        // FILL THIS IN
+        _input.next("print");
+        Table table = tableName();
+        table.print();
+        _input.next(";");
     }
 
     /** Parse and execute a select statement from the token stream. */

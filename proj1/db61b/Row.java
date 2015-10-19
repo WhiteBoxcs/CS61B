@@ -70,7 +70,10 @@ class Row {
     @Override
     public String toString()
     {
-		return Arrays.toString(_data).replace(",","");
+		return Arrays.toString(_data)
+				.replace(",","")
+		        .replace("[", "")
+		        .replace("]", "");
     }
     
     public String toDBFormat()
