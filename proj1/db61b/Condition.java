@@ -17,13 +17,41 @@ class Condition {
      *  bits denote whether the relation allows the left value to be
      *  greater than the right (GT), equal to it (EQ),
      *  or less than it (LT). */
-    private static final int GT = 1, EQ = 2, LT = 4;
+    private static final int GT = 0b001,
+    		EQ = 0b010,
+    		LT = 0b100;
+   
 
     /** A Condition representing COL1 RELATION COL2, where COL1 and COL2
      *  are column designators. and RELATION is one of the
      *  strings "<", ">", "<=", ">=", "=", or "!=". */
     Condition(Column col1, String relation, Column col2) {
-        // YOUR CODE HERE
+        this.col1 = col1;
+        this.col2 = col2;
+        this.compRep = 0b000;
+        
+        switch(relation){
+	        case "<=":
+	        	compRep |= EQ;
+	        case "<":
+	        	compRep |= LT;
+	        	break;
+	        case ">=":
+	        	compRep |= EQ;
+	        case ">":
+	        	compRep |= GT;
+	        	break;
+	        case "=":
+	        	compRep |= EQ;
+	        	break;
+	        case "!=":
+	        	compRep = (GT | LT) & ~EQ;
+	        	break;
+        	default:
+        		throw new DBException("Error: invalid relation.");
+        }
+        
+       
     }
 
     /** A Condition representing COL1 RELATION 'VAL2', where COL1 is
@@ -39,13 +67,26 @@ class Condition {
      *  my columns are selected, returns the result of performing the test I
      *  denote. */
     boolean test() {
-        return false; // REPLACE WITH SOLUTION
+    	int comp = col1.value().compareTo(col2.value());
+    	if(comp < 0 && (compRep & LT) != 0
+    			|| comp > 0 && (compRep & GT) != 0
+    			|| comp == 0 && (compRep & EQ) !=0){
+    		return true;
+    	}
+        return false;
     }
 
     /** Return true iff all CONDITIONS are satified. */
     static boolean test(List<Condition> conditions) {
-        return true; // REPLACE WITH SOLUTION        
+        for(Condition cond : conditions){
+        	if(!cond.test()){
+        		return false;
+        	}
+        }
+        return true;
     }
 
-    // ADD ADDITIONAL FIELDS HERE
+	private Column col1;
+	private Column col2;
+	private int compRep;
 }

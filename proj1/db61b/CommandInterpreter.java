@@ -272,8 +272,9 @@ class CommandInterpreter {
      *  resulting table, with name TABLENAME. */
     Table selectClause(String tableName) {
     	ArrayList<Column> cols = new ArrayList<Column>();
-    	ArrayList<TableIterator> iterators = 
+    	List<TableIterator> iterators = 
     			new ArrayList<TableIterator>();
+    	List<Condition> conditions;
     	
     	_input.next("select");
     	
@@ -287,28 +288,20 @@ class CommandInterpreter {
     	if(_input.nextIf(",")){
     		iterators.add(tableName().tableIterator());
     	}
+    	conditions = conditionClause(iterators);
     	
-    	for(Column col : cols){
-    		col.resolve(iterators);
-    	}
-    	
-    	
-    	 
+    	cols.stream()
+			.forEach(x -> x.resolve(iterators));
+
     	Table table = new Table(tableName,
     			cols.stream()
     			.map(x -> x.alias())
     			.toArray(size -> new String[size]));
     	
-    	//TODO: ACTUALLY CHECK.
-    	while(iterators.stream()
-    			.allMatch(x -> x.hasRow())){
-    		table.add(new Row(cols));
-    		
-    		iterators.forEach(x -> x.next());
-    	}
+    	select(table, cols, iterators, conditions);
     	
     	
-        return table; // REPLACE WITH SOLUTION
+        return table; 
     }
 
     /** Parse and return a valid name (identifier) from the token stream.
@@ -372,19 +365,49 @@ class CommandInterpreter {
         String lit = _input.next(Tokenizer.LITERAL);
         return lit.substring(1, lit.length() - 1).trim();
     }
+    
+    /**
+     * Grabs a relation from the input stream. 
+     * @return The relation grabbed.
+     */
+    String relation(){
+    	String rel = _input.next(Tokenizer.RELATION);
+    	return rel;
+    }
 
     /** Parse and return a list of Conditions that apply to TABLES from the
      *  token stream.  This denotes the conjunction (`and') of zero
      *  or more Conditions.  Resolves all Columns within the clause
      *  against ITERATORS. */
     List<Condition> conditionClause(List<TableIterator> iterators) {
-        return null;  // REPLACE WITH SOLUTION
+    	List<Condition> conditions = new ArrayList<Condition>();
+    	
+    	if(_input.nextIf("where")){
+    		do{
+    			conditions.add(condition(iterators));
+    		}
+    		while(_input.nextIf("and"));
+    	}
+    	
+		return conditions;
     }
 
     /** Parse and return a Condition that applies to ITERATORS from the
      *  token stream. */
     Condition condition(List<TableIterator> iterators) {
-        return null; // REPLACE WITH SOLUTION
+    	Column col1 = columnSelector();
+    	String rel = relation();
+    	Column col2;
+    	
+    	if(_input.peek().startsWith("'"))
+    		col2 = new Literal(literal());
+    	else
+    		col2 = columnSelector();
+    	
+    	col1.resolve(iterators);
+    	col2.resolve(iterators);
+    	
+        return new Condition(col1, rel, col2); 
     }
 
     /** Fill TABLE with the result of selecting COLUMNS from the rows returned
@@ -395,7 +418,14 @@ class CommandInterpreter {
     private void select(Table table, ArrayList<Column> columns,
                         List<TableIterator> iterators,
                         List<Condition> conditions) {
-        // FILL THIS IN
+    	while(iterators.stream()
+    			.allMatch(x -> x.hasRow())){
+    		if(Condition.test(conditions))
+    			table.add(new Row(columns));
+    		
+    		iterators.forEach(x -> x.next());
+    	}
+    	
     }
 
     /** Advance the input past the next semicolon. */
