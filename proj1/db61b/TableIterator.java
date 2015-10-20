@@ -37,7 +37,10 @@ class TableIterator {
     /** Proceed to the next row.  Assumes that hasRow() is true.  Return
      *  the new value of hasRow(). */
     Row next() {
-        _row = _rowIterator.next();
+    	if(_rowIterator.hasNext())
+    		_row = _rowIterator.next();
+    	else
+    		_row = null;
         return _row;
     }
 
