@@ -171,10 +171,11 @@ class CommandInterpreter {
         _input.next("table");
         String name = name();
         Table table = tableDefinition(name);
+        _input.next(";");
         
         this._database.put(name, table);
         
-        _input.next(";");        
+        
     }
 
     /** Parse and execute an exit or quit statement. Actually does nothing
@@ -198,8 +199,9 @@ class CommandInterpreter {
         while (_input.nextIf(",")) {
             values.add(literal());
         }
-        table.add(new Row(values.toArray(new String[values.size()])));
         _input.next(";");
+        table.add(new Row(values.toArray(new String[values.size()])));
+
     }
 
     /** Parse and execute a load statement from the token stream. */
@@ -226,6 +228,8 @@ class CommandInterpreter {
     /** Parse and execute a print statement from the token stream. */
     private void printStatement() {
         _input.next("print");
+        if(_input.nextIf("."))
+        	_input.next("cat");
         Table table = tableName();
         _input.next(";");
         
@@ -234,13 +238,17 @@ class CommandInterpreter {
 
     /** Parse and execute a select statement from the token stream. */
     private void selectStatement() {
+    	Table selecter = selectClause("selecter");
+    	_input.next(";");
+    	
+    	selecter.print();
+    	
     	
     }
 
     /** Parse and execute a table definition for a Table named NAME,
      *  returning the specified table. */
     Table tableDefinition(String name) {
-        // FILL THIS IN
         if (_input.nextIf("(")) {
             ArrayList<String> columnNames
             	= new ArrayList<String>();
@@ -263,6 +271,23 @@ class CommandInterpreter {
     /** Parse and execute a select clause from the token stream, returning the
      *  resulting table, with name TABLENAME. */
     Table selectClause(String tableName) {
+    	ArrayList<Column> cols = new ArrayList<Column>();
+    	ArrayList<Table> tables = new ArrayList<Table>();
+    	
+    	_input.next("select");
+    	
+    	do{
+    		cols.add(columnSpec());
+    	} while(_input.nextIf(","));
+    	
+    	_input.next("from");
+    	
+    	tables.add(tableName());
+    	if(_input.nextIf(",")){
+    		tables.add(tableName());
+    	}
+    	
+    	
         return null; // REPLACE WITH SOLUTION
     }
 
@@ -275,7 +300,14 @@ class CommandInterpreter {
     /** Parse valid column designation (name or table.name), and
      *  return as an unresolved Column. */
     Column columnSelector() {
-        return null;  // REPLACE WITH SOLUTION
+    	String name = name();
+    	Table table = null;
+    	if(_input.nextIf(".")){
+    		table = tableName(name);
+    		name = name();
+    	}
+    	
+    	return new Column(table, name);
     }
 
     /** Parse and return a column designator, after resolving against
@@ -285,11 +317,28 @@ class CommandInterpreter {
         col.resolve(iterators);
         return col;
     }
+    
+    Column columnSpec(){
+    	Column selected = columnSelector();
+    	if(_input.nextIf("as")){
+    		String colName = name();
+    		//TODO: ALIAZE
+    	   
+    	}
+		return selected;
+    }
 
     /** Parse a valid table name from the token stream, and return the Table
      *  that it designates, which must be loaded. */
     Table tableName() {
         String name = name();
+        
+        return tableName(name);
+    }
+    
+    /** Parse a valid table name from the token stream, and return the Table
+     *  that it designates, which must be loaded. */
+    Table tableName(String name) {
         Table table = _database.get(name);
         if (table == null) {
             throw error("unknown table: %s", name);
