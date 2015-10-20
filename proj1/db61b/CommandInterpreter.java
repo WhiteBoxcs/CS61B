@@ -213,6 +213,8 @@ class CommandInterpreter {
         
         Table loadedTab = Table.readTable(tableName);
         this._database.put(tableName, loadedTab);
+        
+        System.out.printf("Loaded %s.db%n", tableName);
     }
 
     /** Parse and execute a store statement from the token stream. */
@@ -232,7 +234,7 @@ class CommandInterpreter {
         	_input.next("cat");
         Table table = tableName();
         _input.next(";");
-        
+        System.out.printf("Contents of %s:%n",table.name());
         table.print();
     }
 
@@ -241,6 +243,7 @@ class CommandInterpreter {
     	Table selecter = selectClause("selecter");
     	_input.next(";");
     	
+    	System.out.println("Search results:");
     	selecter.print();
     	
     	
@@ -418,12 +421,30 @@ class CommandInterpreter {
     private void select(Table table, ArrayList<Column> columns,
                         List<TableIterator> iterators,
                         List<Condition> conditions) {
-    	while(iterators.stream()
-    			.allMatch(x -> x.hasRow())){
-    		if(Condition.test(conditions))
-    			table.add(new Row(columns));
-    		
-    		iterators.forEach(x -> x.next());
+    	
+    	if(iterators.size() > 2 || iterators.size() < 0)
+    		throw error("Improper cartesian product size.");
+    	
+    	TableIterator i1 = iterators.get(0);
+    	TableIterator i2 = null;
+    	if(iterators.size() > 1){
+    		i2 = iterators.get(1);
+    	}
+    	
+    	while(i1.hasRow()){
+    		if(i2 != null){
+    			i2.reset();
+    			while(i2.hasRow()){
+        			if(Condition.test(conditions))
+            			table.add(new Row(columns));
+        			i2.next();
+        		}
+    		}
+    		else{
+    			if(Condition.test(conditions))
+        			table.add(new Row(columns));
+    		}
+    		i1.next();
     	}
     	
     }

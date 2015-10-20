@@ -161,10 +161,7 @@ class Table implements Iterable<Row> {
     /** Print my contents on the standard output, separated by spaces
      *  and indented by two spaces. */
     void print() {
-        System.out.println("  " + Arrays.toString(_titles)
-	        .replace(",","")
-	        .replace("[", "")
-	        .replace("]", ""));
+
         for(Row row : _rows){
         	System.out.println("  " + row.toString());
         }
