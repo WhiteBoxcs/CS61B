@@ -84,7 +84,23 @@ public class Column {
         return _rowSource.value(_index);
     }
 
-    /** Column name denoted by THIS. */
+    public String alias() {
+    	if(_alias == null)
+    	{
+    		return this._columnName;
+    	}
+    	else
+    	{
+    		return _alias;
+    	}
+		
+	}
+
+	public void setAlias(String _alias) {
+		this._alias = _alias;
+	}
+
+	/** Column name denoted by THIS. */
     private String _columnName;
     /** Index of the column from which to extract a value. */
     private int _index;
@@ -94,4 +110,6 @@ public class Column {
     private TableIterator _rowSource;
     /** If non-null, the (fixed) value of this Column. */
     private String _value;
+    /** If non-null, the name of this Column*/
+    private String _alias = null;
 }

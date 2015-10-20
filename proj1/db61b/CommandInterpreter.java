@@ -272,7 +272,8 @@ class CommandInterpreter {
      *  resulting table, with name TABLENAME. */
     Table selectClause(String tableName) {
     	ArrayList<Column> cols = new ArrayList<Column>();
-    	ArrayList<Table> tables = new ArrayList<Table>();
+    	ArrayList<TableIterator> iterators = 
+    			new ArrayList<TableIterator>();
     	
     	_input.next("select");
     	
@@ -282,13 +283,32 @@ class CommandInterpreter {
     	
     	_input.next("from");
     	
-    	tables.add(tableName());
+    	iterators.add(tableName().tableIterator());
     	if(_input.nextIf(",")){
-    		tables.add(tableName());
+    		iterators.add(tableName().tableIterator());
+    	}
+    	
+    	for(Column col : cols){
+    		col.resolve(iterators);
     	}
     	
     	
-        return null; // REPLACE WITH SOLUTION
+    	 
+    	Table table = new Table(tableName,
+    			cols.stream()
+    			.map(x -> x.alias())
+    			.toArray(size -> new String[size]));
+    	
+    	//TODO: ACTUALLY CHECK.
+    	while(iterators.stream()
+    			.allMatch(x -> x.hasRow())){
+    		table.add(new Row(cols));
+    		
+    		iterators.forEach(x -> x.next());
+    	}
+    	
+    	
+        return table; // REPLACE WITH SOLUTION
     }
 
     /** Parse and return a valid name (identifier) from the token stream.
@@ -321,8 +341,8 @@ class CommandInterpreter {
     Column columnSpec(){
     	Column selected = columnSelector();
     	if(_input.nextIf("as")){
-    		String colName = name();
-    		//TODO: ALIAZE
+    		String alias = name();
+    		selected.setAlias(alias);
     	   
     	}
 		return selected;
