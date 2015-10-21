@@ -44,6 +44,8 @@ default:
 check: $(CLASSES)
 	@echo "Testing application $(MAIN)..."
 	@CLASSPATH=$(CPATH) python3 tester.py $(TESTER_FLAGS) $(TESTS)
+	@echo "Performing Unit Tests"
+	@CLASSPATH=$(CPATH) java -ea db61b.UnitTests
 
 # 'make clean' will clean up stuff you can reconstruct.
 clean:
