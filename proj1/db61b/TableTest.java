@@ -60,17 +60,19 @@ public class TableTest {
 
 	@Test
 	public void testSize() {
-		fail("Not yet implemented");
+		for(Row row : ROWS){
+			tab.add(row);
+		}
+		
+		assertEquals(ROWS.size(), tab.size());
 	}
 
 	@Test
 	public void testAdd() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testPrint() {
-		fail("Not yet implemented");
+		for(int i = 0 ; i < ROWS.size(); i++){
+			tab.add(ROWS.get(i));
+			assertEquals(i+1, tab.size());
+		}
 	}
 
 }
