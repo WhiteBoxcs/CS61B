@@ -12,6 +12,7 @@ public class UnitTests {
         System.exit(textui.runClasses(
         		RowTest.class,
         		TableIteratorTest.class,
-        		TableTest.class));
+        		TableTest.class,
+        		ConditionTest.class));
     }
 }
