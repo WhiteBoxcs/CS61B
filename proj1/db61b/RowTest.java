@@ -20,6 +20,8 @@ public class RowTest {
 	public void testSize() {
 		Row rTest = new Row(new String[] {"Test", "Box","Other"});
 		assertEquals(rTest.size(),3);
+		Row rEmpty = new Row(new String[] {});
+		assertEquals(rEmpty.size(), 0);
 	}
 
 	@Test
@@ -34,6 +36,8 @@ public class RowTest {
 	public void testToDBFormat() {
 		Row rTest = new Row(new String[] {"Test", "Box","Other"});
 		assertEquals("Test,Box,Other", rTest.toDBFormat());
+		Row rEmpty = new Row(new String[] {});
+		assertEquals("",rEmpty.toDBFormat());
 	}
 	
 

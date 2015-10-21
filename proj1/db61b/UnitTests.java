@@ -13,6 +13,7 @@ public class UnitTests {
         		RowTest.class,
         		TableIteratorTest.class,
         		TableTest.class,
-        		ConditionTest.class));
+        		ConditionTest.class,
+        		ColumnTest.class));
     }
 }
