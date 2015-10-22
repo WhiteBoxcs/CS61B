@@ -24,18 +24,16 @@ STYLEPROG = style61b
 .PHONY: default check clean style
 
 default:
-    $(MAKE) -C $(PACKAGE) default
+	$(MAKE) -C $(PACKAGE) default
 
 check: default
-    $(MAKE) -C testing check
+	$(MAKE) -C testing check
 
 style:
-    $(MAKE) -C $(PACKAGE) STYLEPROG=$(STYLEPROG) style
+	$(MAKE) -C $(PACKAGE) STYLEPROG=$(STYLEPROG) style
 
 # 'make clean' will clean up stuff you can reconstruct.
 clean:
-    $(RM) *~ 
-    $(MAKE) -C $(PACKAGE) clean
-    $(MAKE) -C testing clean
-
-
+	$(RM) *~ 
+	$(MAKE) -C $(PACKAGE) clean
+	$(MAKE) -C testing clean
