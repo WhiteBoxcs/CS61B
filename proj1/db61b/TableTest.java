@@ -12,18 +12,18 @@ import org.junit.Test;
 public class TableTest {
 
     private Table tab;
-    private static List<Row> ROWS;
+    private static List<Row> _rows;
     private static final String[] COLS =
             new String[] { "SID", "NAME", "LEVEL", "CLASS" };
     private static final String NAME = "TEST";
 
     @BeforeClass
     public static void setUpOnce() {
-        ROWS = new ArrayList<Row>();
-        ROWS.add(new Row(new String[] { "1", "Timmy", "10", "Mage" }));
-        ROWS.add(new Row(new String[] { "23", "Basd", "1", "Magec" }));
-        ROWS.add(new Row(new String[] { "45", "Geortge", "10", "Maper" }));
-        ROWS.add(new Row(new String[] { "231", "Halo", "10", "Warrior" }));
+        _rows = new ArrayList<Row>();
+        _rows.add(new Row(new String[] { "1", "Timmy", "10", "Mage" }));
+        _rows.add(new Row(new String[] { "23", "Basd", "1", "Magec" }));
+        _rows.add(new Row(new String[] { "45", "Geortge", "10", "Maper" }));
+        _rows.add(new Row(new String[] { "231", "Halo", "10", "Warrior" }));
     }
 
     @Before
@@ -60,17 +60,17 @@ public class TableTest {
 
     @Test
     public void testSize() {
-        for (Row row : ROWS) {
+        for (Row row : _rows) {
             this.tab.add(row);
         }
 
-        assertEquals(ROWS.size(), this.tab.size());
+        assertEquals(_rows.size(), this.tab.size());
     }
 
     @Test
     public void testAdd() {
-        for (int i = 0; i < ROWS.size(); i++) {
-            this.tab.add(ROWS.get(i));
+        for (int i = 0; i < _rows.size(); i++) {
+            this.tab.add(_rows.get(i));
             assertEquals(i + 1, this.tab.size());
         }
     }

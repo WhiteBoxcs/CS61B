@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * A single table in a database.
- * @author
+ * @author William Guss.
  */
 class Table implements Iterable<Row> {
     /**
@@ -29,7 +29,8 @@ class Table implements Iterable<Row> {
             for (int j = i + 1; j < columnTitles.length; j++) {
                 if (columnTitles[i].equals(columnTitles[j])) {
                     throw error(
-                            "non-distinct column title (%s), table not created.",
+                            "non-distinct column"
+                            + " title (%s), table not created.",
                             columnTitles[i]);
                 }
             }
@@ -131,7 +132,8 @@ class Table implements Iterable<Row> {
 
                 if (data.length != columnNames.length) {
                     throw error(
-                            "unmathched row content and collumn count in DB file.");
+                            "unmathched row content"
+                            + " and collumn count in DB file.");
                 }
 
                 table.add(new Row(data));
@@ -195,5 +197,6 @@ class Table implements Iterable<Row> {
     /** My column titles. */
     private String[] _titles;
 
+    /** The rows contained in the table. */
     private List<Row> _rows;
 }

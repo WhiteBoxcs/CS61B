@@ -1,10 +1,3 @@
-// This is a SUGGESTED skeleton for a class that describes a single Row of a
-// Table. You can throw this away if you want, but it is a good idea to try to
-// understand it first.  Our solution changes or adds about 10 lines in this
-// skeleton.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package db61b;
 
 import java.util.Arrays;
@@ -12,7 +5,7 @@ import java.util.List;
 
 /**
  * A single row of a database.
- * @author
+ * @author William Guss.
  */
 class Row {
     /**
@@ -79,6 +72,10 @@ class Row {
                 .replace("]", "");
     }
 
+    /**
+     * Converts the Row to DBFormat.
+     * @return The DBFormat string of the Row.
+     */
     public String toDBFormat() {
         return Arrays.toString(this._data).replace(" ", "").replace("[", "")
                 .replace("]", "");

@@ -1,17 +1,10 @@
-// This is a SUGGESTED skeleton for a class that describes a single
-// Condition (such as CCN = '99776').  You can throw this away if you
-// want,  but it is a good idea to try to understand it first.
-// Our solution changes or adds about 30 lines in this skeleton.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package db61b;
 
 import java.util.List;
 
 /**
  * Represents a single 'where' condition in a 'select' command.
- * @author
+ * @author William Guss
  */
 class Condition {
 
@@ -28,18 +21,22 @@ class Condition {
      * ">=", "=", or "!=".
      */
     Condition(Column col1, String relation, Column col2) {
-        this.col1 = col1;
-        this.col2 = col2;
-        this.compRep = 0b000;
+        this._col1 = col1;
+        this._col2 = col2;
+        this.compRep = 0;
 
         switch (relation) {
         case "<=":
             this.compRep |= EQ;
+            this.compRep |= LT;
+            break;
         case "<":
             this.compRep |= LT;
             break;
         case ">=":
             this.compRep |= EQ;
+            this.compRep |= GT;
+            break;
         case ">":
             this.compRep |= GT;
             break;
@@ -70,7 +67,7 @@ class Condition {
      * denote.
      */
     boolean test() {
-        int comp = this.col1.value().compareTo(this.col2.value());
+        int comp = this._col1.value().compareTo(this._col2.value());
         if (comp < 0 && (this.compRep & LT) != 0
                 || comp > 0 && (this.compRep & GT) != 0
                 || comp == 0 && (this.compRep & EQ) != 0) {
@@ -89,7 +86,11 @@ class Condition {
         return true;
     }
 
-    private Column col1;
-    private Column col2;
+    /** The first column. */
+    private Column _col1;
+
+    /** The second column. */
+    private Column _col2;
+    /** The comparison representation. */
     private int compRep;
 }

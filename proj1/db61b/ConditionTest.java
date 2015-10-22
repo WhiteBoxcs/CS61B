@@ -12,52 +12,52 @@ import org.junit.Test;
 
 public class ConditionTest {
 
-    private static Table TAB;
-    private static List<Row> ROWS;
+    private static Table _tab;
+    private static List<Row> _rows;
     private static final String[] COLS =
             new String[] { "SID", "NAME", "LEVEL", "CLASS" };
     private static final String NAME = "TEST";
 
-    private static Column COL1;
-    private static Column COL2;
+    private static Column _col1;
+    private static Column col2;
     private TableIterator tabIt;
 
     @BeforeClass
     public static void setUpOnce() {
-        ROWS = new ArrayList<Row>();
-        ROWS.add(new Row(new String[] { "1", "Timmy", "10", "Mage" }));
-        ROWS.add(new Row(new String[] { "23", "Basd", "1", "Magec" }));
-        ROWS.add(new Row(new String[] { "45", "Geortge", "10", "Maper" }));
-        ROWS.add(new Row(new String[] { "231", "Halo", "10", "Warrior" }));
+        _rows = new ArrayList<Row>();
+        _rows.add(new Row(new String[] { "1", "Timmy", "10", "Mage" }));
+        _rows.add(new Row(new String[] { "23", "Basd", "1", "Magec" }));
+        _rows.add(new Row(new String[] { "45", "Geortge", "10", "Maper" }));
+        _rows.add(new Row(new String[] { "231", "Halo", "10", "Warrior" }));
 
-        TAB = new Table(NAME, COLS);
+        _tab = new Table(NAME, COLS);
 
-        for (Row row : ROWS) {
-            TAB.add(row);
+        for (Row row : _rows) {
+            _tab.add(row);
         }
 
-        COL1 = new Column(TAB, COLS[0]);
-        COL2 = new Column(TAB, COLS[1]);
+        _col1 = new Column(_tab, COLS[0]);
+        col2 = new Column(_tab, COLS[1]);
 
     }
 
     @Before
     public void setUp() {
-        this.tabIt = TAB.tableIterator();
+        this.tabIt = _tab.tableIterator();
         List<TableIterator> tList = new ArrayList<TableIterator>();
         tList.add(this.tabIt);
-        COL1.resolve(tList);
-        COL2.resolve(tList);
+        _col1.resolve(tList);
+        col2.resolve(tList);
     }
 
     @Test
     public void testTest() {
-        Condition gt = new Condition(COL1, ">", COL2);
-        Condition lt = new Condition(COL1, "<", COL2);
-        Condition geq = new Condition(COL1, ">=", COL2);
-        Condition leq = new Condition(COL1, "<=", COL2);
-        Condition neq = new Condition(COL1, "!=", COL2);
-        Condition eq = new Condition(COL1, "=", COL2);
+        Condition gt = new Condition(_col1, ">", col2);
+        Condition lt = new Condition(_col1, "<", col2);
+        Condition geq = new Condition(_col1, ">=", col2);
+        Condition leq = new Condition(_col1, "<=", col2);
+        Condition neq = new Condition(_col1, "!=", col2);
+        Condition eq = new Condition(_col1, "=", col2);
 
         do {
             assertFalse(gt.test());

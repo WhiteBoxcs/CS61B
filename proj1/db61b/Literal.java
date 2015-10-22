@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * A Literal is a degenerate, anonymous, resolved Column whose get() method
  * always returns a fixed value.
- * @author
+ * @author William Guss.
  */
 class Literal extends Column {
 

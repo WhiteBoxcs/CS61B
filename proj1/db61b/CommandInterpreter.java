@@ -1,11 +1,3 @@
-// This is a SUGGESTED skeleton for a class that parses and executes database
-// statements.  Be sure to read the STRATEGY section, and ask us if you have any
-// questions about it.  You can throw this away if you want, but it is a good
-// idea to try to understand it first.  Our solution adds or changes about 50
-// lines in this skeleton.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package db61b;
 
 import static db61b.Utils.error;
@@ -19,7 +11,7 @@ import java.util.Scanner;
 /**
  * An object that reads and interprets a sequence of commands from an input
  * source.
- * @author
+ * @author William Guss.
  */
 class CommandInterpreter {
 
@@ -301,6 +293,10 @@ class CommandInterpreter {
         return col;
     }
 
+    /**
+     * Returns the column spec.
+     * @return the column spec.
+     */
     Column columnSpec() {
         Column selected = this.columnSelector();
         if (this._input.nextIf("as")) {
@@ -324,6 +320,7 @@ class CommandInterpreter {
     /**
      * Parse a valid table name from the token stream, and return the Table
      * that it designates, which must be loaded.
+     * @param name The name.
      */
     Table tableName(String name) {
         Table table = this._database.get(name);
