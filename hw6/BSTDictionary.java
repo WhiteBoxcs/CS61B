@@ -1,4 +1,3 @@
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 /**
  * 
@@ -9,7 +8,10 @@ import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
  *
  */
 public class BSTDictionary implements SimpleDictionary {
-
+	public BSTDictionary(){
+		this.store = new BSTGenericSet<KVP>();
+	}
+	
 	/* (non-Javadoc)
 	 * @see SimpleDictionary#put(java.lang.String, java.lang.String)
 	 */
@@ -26,6 +28,8 @@ public class BSTDictionary implements SimpleDictionary {
 	 */
 	@Override
 	public boolean contains(String word) {
+		if(word == null)
+			return false;
 		return store.contains(new KVP(word,null));
 	}
 

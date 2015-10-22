@@ -62,7 +62,7 @@ public class BSTStringSet implements StringSet {
 				return true;
 			else if(compr < 0 && _left != null)
 					return _left.contains(s);
-			else if(compr > 0 && _left != null)
+			else if(compr > 0 && _right != null)
 				return _right.contains(s);
 		}
 		
