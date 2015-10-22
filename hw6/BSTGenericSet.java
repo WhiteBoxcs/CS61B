@@ -80,7 +80,7 @@ public class BSTGenericSet<Y extends Comparable>
                 return _value;
             else if(compr < 0 && _left != null)
                     return _left.get(s);
-            else if(compr > 0 && _left != null)
+            else if(compr > 0 && _right != null)
                 return _right.get(s);
         }
         
