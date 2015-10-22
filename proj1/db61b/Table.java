@@ -22,6 +22,13 @@ class Table implements Iterable<Row> {
     Table(String name, String[] columnTitles) {
         _name = name;
         _rows = new ArrayList<Row>();
+        
+        for(int i = 0; i < columnTitles.length; i++){
+        	for(int j = i+1; j< columnTitles.length; j++)
+        		if(columnTitles[i].equals(columnTitles[j]))
+    				throw error("non-distinct column title (%s), table not created.", columnTitles[i]);
+        }
+        
         _titles = columnTitles;
         
     }
@@ -78,9 +85,15 @@ class Table implements Iterable<Row> {
     /** Add ROW to THIS if no equal row already exists.  Return true if anything
      *  was added, false otherwise. */
     boolean add(Row row) {
-    	if(row.size() != this.numColumns() || _rows.contains(row)){
+    	if(_rows.contains(row)){
     		return false;
     	}
+    	
+    	if(row.size() != this.numColumns())
+    		throw error("row length (%s) and"
+    				+ " number of columns "
+    				+ "(%s) unequal.",
+    				row.size(), this.numColumns());
     	
     	_rows.add(row);
     	

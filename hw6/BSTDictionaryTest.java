@@ -21,12 +21,6 @@ public class BSTDictionaryTest {
 	}
 
 	@Test
-	public void testPut() {
-		BSTDictionary testDict;
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testContains() {
 		for(String word : WORDS)
 			assertTrue(fullDict.contains(word));
@@ -40,9 +34,5 @@ public class BSTDictionaryTest {
 		
 	}
 
-	@Test
-	public void testGet() {
-		fail("Not yet implemented");
-	}
 
 }

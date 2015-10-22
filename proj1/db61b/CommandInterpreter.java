@@ -200,7 +200,9 @@ class CommandInterpreter {
             values.add(literal());
         }
         _input.next(";");
-        table.add(new Row(values.toArray(new String[values.size()])));
+        if(!table.add(new Row(values.toArray(new String[values.size()])))){
+        	throw error("Nothing was added, the row already exists in the table.");
+        }
 
     }
 
