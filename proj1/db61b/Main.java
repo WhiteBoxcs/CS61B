@@ -32,7 +32,7 @@ public class Main {
                     break;
                 }
             } catch (DBException e) {
-                System.out.printf("Error: %s%n", e.getMessage());
+                System.out.printf("error: %s%n", e.getMessage());
                 interpreter.skipCommand();
             }
         }
