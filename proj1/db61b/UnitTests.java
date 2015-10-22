@@ -9,11 +9,7 @@ public class UnitTests {
      *            The arguments to the unit test
      */
     public static void main(String... args) {
-        System.exit(textui.runClasses(
-        		RowTest.class,
-        		TableIteratorTest.class,
-        		TableTest.class,
-        		ConditionTest.class,
-        		ColumnTest.class));
+        System.exit(textui.runClasses(RowTest.class, TableIteratorTest.class,
+                TableTest.class, ConditionTest.class, ColumnTest.class));
     }
 }

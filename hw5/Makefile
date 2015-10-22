@@ -16,19 +16,19 @@ default: compile
 compile: $(CLASSES)
 
 style:
-	$(STYLEPROG) $(SRCS) 
+    $(STYLEPROG) $(SRCS) 
 
 $(CLASSES): sentinel
 
 sentinel: $(SRCS)
-	javac $(JFLAGS) $(SRCS)
-	touch $@
+    javac $(JFLAGS) $(SRCS)
+    touch $@
 
 # Run Tests.
 check: compile
-	java -ea HW5Test
+    java -ea HW5Test
 
 # Find and remove all *~ and *.class files.
 clean:
-	$(RM) sentinel *.class *~ 
+    $(RM) sentinel *.class *~ 
 

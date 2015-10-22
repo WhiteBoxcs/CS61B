@@ -2,21 +2,22 @@ package db61b;
 
 import java.util.List;
 
-/** A Literal is a degenerate, anonymous, resolved Column whose get()
- *  method always returns a fixed value.
- *  @author
+/**
+ * A Literal is a degenerate, anonymous, resolved Column whose get() method
+ * always returns a fixed value.
+ * @author
  */
 class Literal extends Column {
 
     /** A Literal whose value is VALUE. */
     Literal(String value) {
         super(null, "<Literal>");
-        _value = value;
+        this._value = value;
     }
 
     @Override
     String value() {
-        return _value;
+        return this._value;
     }
 
     @Override
