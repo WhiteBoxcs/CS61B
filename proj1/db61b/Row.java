@@ -68,8 +68,14 @@ class Row {
 
     @Override
     public String toString() {
-        return Arrays.toString(this._data).replace(",", "").replace("[", "")
-                .replace("]", "");
+        String dbF = "";
+        for(int i = 0; i < _data.length; i++){
+            dbF += _data[i];
+            if(i != _data.length-1)
+                dbF += " ";
+        }
+        
+        return dbF;
     }
 
     /**
@@ -77,8 +83,15 @@ class Row {
      * @return The DBFormat string of the Row.
      */
     public String toDBFormat() {
-        return Arrays.toString(this._data).replace(" ", "").replace("[", "")
-                .replace("]", "");
+        String dbF = "";
+        for(int i = 0; i < _data.length; i++){
+            dbF += _data[i];
+            if(i != _data.length-1)
+                dbF += ",";
+        }
+        
+        return dbF;
+        
     }
 
     /** Contents of this row. */
