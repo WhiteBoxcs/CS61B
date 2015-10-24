@@ -154,10 +154,7 @@ class CommandInterpreter {
             values.add(this.literal());
         }
         this._input.next(";");
-        if (!table.add(new Row(values.toArray(new String[values.size()])))) {
-            throw error(
-                    "Nothing was added, the row already exists in the table.");
-        }
+        table.add(new Row(values.toArray(new String[values.size()])));
 
     }
 
@@ -181,6 +178,7 @@ class CommandInterpreter {
         this._input.next(";");
 
         table.writeTable(name);
+        System.out.printf("Stored %s.db%n", table.name());
     }
 
     /** Parse and execute a print statement from the token stream. */
