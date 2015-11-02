@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
@@ -79,9 +80,46 @@ public class BSTStringSet implements SortedStringSet {
 
     @Override
     public Iterator<String> iterator(String L, String U) {
-        return null; // FIXME
+        return new BoundedBSTIterator(L,U);
+    }
+    
+    private class BoundedBSTIterator implements Iterator<String> {
+        
+        private Stack<Node> pos;
+        private Node cur;
+        private String U;
+        private String L;
+
+        public BoundedBSTIterator(String L, String U){
+            this.L = L;
+            this.U = U;
+            this.pos = new Stack<Node>();
+            cur = root;
+        }
+        
+        
+        @Override
+        public boolean hasNext() {
+            return !pos.isEmpty() || (cur != null && cur.s.compareTo(U) <= 0);
+        }
+
+        @Override
+        public String next() {
+            while(cur != null && cur.s.compareTo(L) >= 0){
+                pos.push(cur);
+                cur = cur.left;
+            }
+            
+            Node retr = pos.pop();
+            cur = retr.right;
+            
+            return retr.s;
+        }
+
     }
 
+    
+    
 
     /** Prints the Set in increasing order. */
     public void printSet() {
