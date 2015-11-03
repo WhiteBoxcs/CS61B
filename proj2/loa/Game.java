@@ -53,13 +53,11 @@ class Game {
 
                 line = line.trim();
                 if (!processCommand(line)) {
-                    if (!_playing) {
-                        error("game not started");
-                        continue;
-                    }
                     Move move = Move.create(line, _board);
                     if (move == null) {
                         error("invalid move: %s%n", line);
+                    } else if (!_playing) {
+                        error("game not started");
                     } else if (!_board.isLegal(move)) {
                         error("illegal move: %s%n", line);
                     } else {
@@ -154,13 +152,13 @@ class Game {
 
         while (true) {
             int playerInd = _board.turn().ordinal();
-            if (!_board.isLegalMove()) {
-                announceWinner();
-                _playing = false;
-                continue;
-            }
             Move next;
             if (_playing) {
+                if (_board.gameOver()) {
+                    announceWinner();
+                    _playing = false;
+                    continue;
+                }
                 next = _players[playerInd].makeMove();
             } else {
                 getMove();
