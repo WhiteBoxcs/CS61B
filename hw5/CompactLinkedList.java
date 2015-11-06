@@ -70,14 +70,14 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T next() {
-        	if(_next == -1)
-        		throw new IllegalStateException();
-        	
-        	T elem = _data[_next];
-        	int oldNext = _next;
-        	_next = _link[_next]^_prev;
-        	_prev = oldNext;
-        	
+            if(_next == -1)
+                throw new IllegalStateException();
+            
+            T elem = _data[_next];
+            int oldNext = _next;
+            _next = _link[_next]^_prev;
+            _prev = oldNext;
+            
             return elem;
         }
 
@@ -96,9 +96,9 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
             if(_prev == -1)
                 throw new IllegalStateException();
             
-        	T elem = _data[_prev];
-        	int oldPrev = _prev;
-        	_prev = _link[_prev]^_next;
+            T elem = _data[_prev];
+            int oldPrev = _prev;
+            _prev = _link[_prev]^_next;
             _next = oldPrev;
             int b;
             return elem;
@@ -123,7 +123,7 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
             if(_size == _data.length)
-            	throw new IllegalStateException();
+                throw new IllegalStateException();
             
             _data[_size] = obj;
             

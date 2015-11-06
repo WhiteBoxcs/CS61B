@@ -20,7 +20,7 @@ PYTHON = python3
 # Name of package containing main procedure 
 PACKAGE = canfield
 
-STYLEPROG = style61b
+STYLEPROG =style61b
 
 # Targets that don't correspond to files, but are to be treated as commands.
 .PHONY: default check unit integration clean style

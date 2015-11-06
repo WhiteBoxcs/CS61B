@@ -37,5 +37,3 @@ clean:
 	$(RM) *~ 
 	$(MAKE) -C $(PACKAGE) clean
 	$(MAKE) -C testing clean
-
-

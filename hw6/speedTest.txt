@@ -1,0 +1,33 @@
+Results for InsertRandomSpeedTest:
+This program inserts random length 10 strings into a set of Strings.
+
+Enter # strings to insert into linked-list set: 40000
+Linked List StringSet: 6.86 sec
+
+# of strings to insert into your BSTStringSet: 40000
+Your BSTStringSet: 0.03 sec
+
+Enter # strings to insert into Java's TreeSet: 40000
+Built-in Java TreeSet<String>: 0.04 sec
+
+
+Results for InsertInOrderSpeedTest:
+This program inserts lexicographically increasing strings into a set of Strings.
+
+Enter # strings to insert into linked-list set: 40000
+Linked List StringSet: 7.37 sec
+
+# of strings to insert into your BSTStringSet: 40000
+Your BSTStringSet: 4.74 sec
+
+Enter # strings to insert into Java's TreeSet: 40000
+Built-in Java TreeSet<String>: 0.09 sec
+
+
+
+Explain anything interesting that you might have observed above:
+Well clearly the average case for insert is Theta(log n), but the worst case
+(Being inorder) is Theta(n). This makes sense. 
+
+Interestingly enough JavaTreeSet does not have the same issues that BST StringSet
+in the inorder set. I have no idea why this is. Help.

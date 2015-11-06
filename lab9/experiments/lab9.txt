@@ -1,0 +1,14 @@
+Answers to questions from lab.
+
+2. [Explain times for java HashTesting test1].
+
+
+
+3. [Explain times for java HashTesting test2 and test3].
+
+
+
+4. [Why does HashSet fail to work in java HashTesting test4?]
+
+
+5. (Optional) Explain how ListTesting program demonstrates that LinkedLists are doubly linked.

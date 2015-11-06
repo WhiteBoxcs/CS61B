@@ -25,16 +25,16 @@ public class Nybbles {
         if (k < 0 || k >= _n) {
             throw new IndexOutOfBoundsException();
         } else {
-        	int index = k/8;
-        	int subIndex = k%8;
-        	
-        	int elem = _data[index] >>> subIndex*4;
-        	elem &= 0b1111;
-        	
-        	if(elem >= 8)
-        		return  elem-16;
-        	else
-        		return elem;
+            int index = k/8;
+            int subIndex = k%8;
+            
+            int elem = _data[index] >>> subIndex*4;
+            elem &= 0b1111;
+            
+            if(elem >= 8)
+                return  elem-16;
+            else
+                return elem;
         }
     }
 
@@ -46,31 +46,31 @@ public class Nybbles {
         } else if (val < (-MAX_VALUE - 1) || val > MAX_VALUE) {
             throw new IllegalArgumentException();
         } else {
-        	int index = k/8;
-        	int subIndex = k%8;
-        	
-        	_data[index] = unsetByte(_data[index],subIndex);
-        	
-        	int elem = val;
-        	if(elem < 0)
-        		elem += 16;
-        	
-        	_data[index] = setByte(_data[index], subIndex, elem);
-        	
-        	int b = 5;
+            int index = k/8;
+            int subIndex = k%8;
+            
+            _data[index] = unsetByte(_data[index],subIndex);
+            
+            int elem = val;
+            if(elem < 0)
+                elem += 16;
+            
+            _data[index] = setByte(_data[index], subIndex, elem);
+            
+            int b = 5;
         }
     }
     
     private int unsetByte(int store, int pos){
-    	int unsetter = ~(0b1111 << pos*4);
-    	return store &= unsetter;
-    	
+        int unsetter = ~(0b1111 << pos*4);
+        return store &= unsetter;
+        
     }
     
     private int setByte(int store, int pos, int val){
-    	int elem = val & 0b1111;
-    	elem <<= pos*4;
-    	return store |= elem;
+        int elem = val & 0b1111;
+        elem <<= pos*4;
+        return store |= elem;
     }
 
     // DON'T CHANGE OR ADD TO THESE.

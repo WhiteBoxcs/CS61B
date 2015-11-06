@@ -20,14 +20,14 @@ db61b                   A subdirectory containing skeletons for the
   Table.java            Abstraction for one table.
   Row.java              Abstraction for one row of a table.
   Column.java           Abstraction for extracting column values from rows of a
-  			table.
-  Literal.java		A kind of Column that has a constant value.
+              table.
+  Literal.java        A kind of Column that has a constant value.
   Condition.java        Reprsents a comparison between column values.
-  TableIterator.java	A modified iterator for obtaining the rows of a table.
+  TableIterator.java    A modified iterator for obtaining the rows of a table.
   CommandInterpreter.java
-			Translates and executes commands.
-  Tokenizer.py		Used by CommandInterpreter to read input and break it
-  			into meaningful pieces.
+            Translates and executes commands.
+  Tokenizer.py        Used by CommandInterpreter to read input and break it
+              into meaningful pieces.
   Makefile              A makefile that controls compilation and style checking.
 
 
