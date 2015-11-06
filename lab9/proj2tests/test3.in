@@ -1,8 +1,9 @@
 # Fill this in.
-java -ea loa.main
+java -jar loa.jar
 None
 ===#1===
 auto black
 auto white
 start
-quit
+%bw
+%e
