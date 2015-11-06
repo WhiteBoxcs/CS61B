@@ -16,7 +16,7 @@ class FoldedString implements Comparable<FoldedString> {
 
     @Override
     public int hashCode() {
-        return rep.hashCode();
+        return rep.toLowerCase().hashCode();
     }
 
     @Override
