@@ -26,4 +26,6 @@ Strings from /home/ff/cs61b/lib/words, skip=3:
 4. [Why does HashSet fail to work in java HashTesting test4?]
 
     It has to do with the compareTo function (naimeley treeset sorts its value using the ignore case form of FOldedString, whereas hashset uses the direct .equals command which does not ignore case.)
+    Therefore if I change the hashcode method and the ignore method to 
+work with the lower case version of the string. Everything should work.
 5. (Optional) Explain how ListTesting program demonstrates that LinkedLists are doubly linked.
