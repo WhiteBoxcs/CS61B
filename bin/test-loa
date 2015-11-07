@@ -173,8 +173,8 @@ class Prog(object):
     def __init__(self, id, command, inputs, time_limit):
 # ??    command = Popen('echo ' + command, shell=True,    
 # ??                    stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate()[0]
-        self.proc = Popen(re.split(r'\s+', command.strip()),
-                          universal_newlines=True,
+        self.proc = Popen(command.strip(),
+                          universal_newlines=True, shell=True,
                           stdin=PIPE, stdout=PIPE, stderr=PIPE)
         Log("Start pid %s; %s", self.proc.pid, command)
         self.id = id
