@@ -1,0 +1,169 @@
+Home setup of CS61B tools on Linux and MacOS.
+
+1. PREREQUISITES
+================
+
+You must have the following software installed:
+
+   A. Sun/Oracle Java version 8 as the default Java version.
+
+   B. Python 3.
+
+   C. (On Macs) the Xcode tools.  On Linux, the necessary tools are standard.
+
+   D. Git
+
+If these are in place and on your path, then the following commands should
+all succeed:
+
+    $ java -version
+    # Should print something that begins 'java version "1.7....'
+
+    $ python3 --version
+
+    $ rsync --version
+
+    $ git --version
+
+
+2. SSH KEYS
+
+To use the repository remotely, you'll need the private SSH key that
+the repository account (cs61b-ta) is expecting from you.  The ssh
+software keeps its information in a file called ~/.ssh.  This is a
+hidden file (starts with a dot), which means that it is not ordinarily
+listed by the 'ls' command.  However, you can try 'ls ~/.ssh' to see
+if it's there.  I suggest the following procedure, executed ON YOUR
+HOME MACHINE (do NOT do this on your instructional accoout):
+
+   A. If you do not have a directory $HOME/.ssh, create one using, for 
+      example,
+          $ ssh cs61b@torus.cs.berkeley.edu
+      (This will fail, but first will create a .ssh directory for you).
+
+   B. Copy your private key from the instructional machines with:
+          $ rsync -a LOGIN@torus.cs.berkeley.edu:.ssh/id_rsa ~/.ssh/id_rsa_cs61b
+      replacing LOGIN with your login.
+
+   C. Create the file .ssh/config (if you don't already have one) and add the
+      line
+
+      IdentityFile ~/.ssh/id_rsa_cs61b
+
+   D. Test your setup by issuing the following on your home machine:
+
+       $ ssh -n cs61b-ta@torus.cs.berkeley.edu
+
+      After some messages, you should see something like
+
+         hello <LOGIN>, this is cs61b-ta@torus running gitolite3 v3.6.3-11-g2417156 on git 1.7.12.1
+         <bunch of stuff>
+
+   E. [Optional] If you'd like to be able to use .ssh to log into your 
+      instructional account from your home computer without the bother of
+      a passphrase, you can so by executing the following command ON THE
+      INSTRUCTIONAL SERVER (NOT on your home machine):
+
+      $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+      (Yes, that is ">>", meaning "append", not ">", which would 
+      mean "overwrite").  At this point, you should be able to log into 
+      your instructional account from home with
+
+         $  ssh LOGIN@ashby.cs.berkeley.edu
+
+      (or some other server or workstation).
+
+2. DOWNLOADS
+============
+
+Copy the contents of the home-setup directory from the instructional machines.
+
+    git clone -b cs61b-software cs61b-ta@ashby.cs.berkeley.edu:shared cs61b-software
+
+where LOGIN is your login on the instructional machines.
+
+This will copy a directory called cs61b-software into your home
+directory. It will contain subdirectories adm, bin, and lib, 
+(and this README file).
+
+4. EMACS
+
+Add the following lines to your $HOME/.emacs file (creating that file if you
+don't already have it) to use gjdb in Emacs:
+
+(load-file "~/cs61b-software/adm/cs61b.el")
+
+This will introduce the command M-x gjdb.  It will take effect the
+next time you start Emacs.
+
+
+5. PATH and CLASSPATH
+
+5A. Unix and Mac
+----------------
+
+PATH and CLASSPATH are "environment variables" that are used to find
+executable files and Java classes, respectively.  Their format is
+
+   DIR1:DIR2:...:DIRn
+
+where the DIRs are names of directories (or, for CLASSPATH, JAR (Java
+Archive) files).  These variable are typically set in one or more of
+the files .bashrc, .bash_profile, or .profile.  Unfortunately, there
+has been divergence in practice.  The Debian Wiki (for one version of
+Linux) contains a recommended procedure that has worked for many
+years, but that the Ubuntu wiki "no longer recommends" for no
+discernible reason (probably just one more result of open-source
+software being in the hands of confounded amateurs).
+
+I believe that the following strategy works in general to set both of
+these.  In the file $HOME/.profile (or ~/.profile) include the
+following line.  Also include it in your .bash_profile if you have one
+(and it doesn't already read .profile).  The definitions should take
+effect when you next log into your home machine:
+
+source $HOME/cs61b-software/adm/login
+
+5B. Windows
+-----------
+
+On Windows, you'll need to use the Environment Variables button on the Advanced
+tab under Advanced System Settings, which you'll find in various places 
+depending on what version of Windows you're running.  Once there, you'll want
+to add a setting for CLASSPATH with value
+
+    %USERPROFILE%\cs61b-software\lib\*;.
+
+(that's a semicolon, not a colon).  If you already have a CLASSPATH value
+(with other stuff than this on it) append 
+
+    ;%USERPROFILE%\cs61b-software\lib\*
+
+to it (being sure to include the semicolon as shown to separate it
+from the stuff already there).  
+
+Of course, if you have put cs61b-software somewhere other than in your home
+directory (%USERPROFILE%), then make the appropriate modification to these
+paths.
+
+Finally, edit your PATH variable using the same technique you used for CLASSPATH
+(Windpws calls it Path) to add our bin directory.  That is, append 
+
+    ;%USERPROFILE%\cs61b-software\bin
+
+to the end of your Path so that you will be able to run style61b and gjdb 
+directly (again, modify appropriately if you've put the cs61b-software
+directory in a "non-standard" location).
+
+WARNING: paths and classpaths on pure Windows use a different convention from
+   Unix.  The separator is ";" rather than ":", file names start with a
+   device designator (like C:), and directories in a path entry use "\"
+   rather than "/".  Git Bash on Windows uses the Unix convention
+   for the PATH variable (":", "/", and "/c/" in place of "c:").  It can do
+   this because the PATH is used to tell the shell where to find executable
+   files, and the git bash shell understands Unix conventions.  Unfortunately,
+   when you invoke java or javac via the bash shell, you still get the same
+   java or javac program you'd get under pure windows, and those programs
+   use the Windows conventions.  Hence the CLASSPATH must be in Windows
+   format (";", "\", etc.), EVEN IF you set it in your .bash_profile.   

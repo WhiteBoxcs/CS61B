@@ -1,0 +1,29 @@
+#!/bin/bash
+
+here="$(cd $(dirname $0); pwd)"
+lib="$here/../lib/checkstyle"
+
+has_config=
+has_suppress=
+for arg in "$@"; do
+    case "$arg" in
+    -c)   has_config="X";;
+    -s)   has_suppress="X";;
+    *)    ;;
+    esac
+done
+
+if [ -z "$has_suppress" -a -f style61b-suppress.xml ]; then
+   suppress="-s style61b-suppress.xml"
+else
+   suppress=
+fi
+
+if [ -z "$has_config" -a -f style61b-config.xml ]; then
+   config="-c style61b-config.xml"
+else
+   config=
+fi
+
+java ucb.checkstyle.Main $suppress $config $*
+
