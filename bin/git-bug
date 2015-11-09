@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+# -*-Python-*-
+
+import sys, re
+from os.path import isfile
+from subprocess import DEVNULL, PIPE, STDOUT, \
+     check_call, check_output, CalledProcessError
+
+def Usage():
+    print("""\
+Usage: git-bug [ ASSIGNMENT [ ERROR-FILE ] ]
+    Submit a bug report concerning ASSIGNMENT (must be an existing
+    assignment) on the current branch.  ERROR-FILE should be 
+    a file containing a description of the problem including at least
+      1. The machine (especially the OS) on which you encountered the problem.
+      2. What you observe that makes you think something is wrong.
+      3. (Important) How to reproduce the problem---an exact set of commands
+         to give to cause the problems (NOT just a general statement such
+         as "run it on any file."  Be sure that the necessary test files have
+         been committed on this branch.
+    The program prompts for its arguments if not supplied.
+
+    Make sure you have committed all necessary files on the current branch 
+    before using this command.""", 
+          file = sys.stderr)
+    sys.exit(1)
+
+def call(command, *args, msg=None):
+    try:
+        command = command.format(*args)
+        print(command, file=sys.stderr)
+        check_call(command, stdin=DEVNULL, shell=True)
+    except CalledProcessError:
+        if msg:
+            print(msg, file=sys.stderr)
+        sys.exit(1)
+
+def call_out(command, *args):
+    command = command.format(*args)
+    print(command, file=sys.stderr)
+    return check_output(command, shell=True, stderr=STDOUT,
+                        universal_newlines=True)
+
+def yorn(prompt):
+    while True:
+        r = input(prompt)
+        if r in ['y', 'Y', 'yes', 'Yes', 'YES']:
+            return True
+        if r in ['n', 'N', 'no', 'No', 'NO']:
+            return False
+
+if len(sys.argv) > 3 or (len(sys.argv) > 1 and re.match('-', sys.argv[1])):
+    Usage()
+if len(sys.argv) < 2:
+    assign = input("Assignment: ")
+else:
+    assign = sys.argv[1]
+if len(sys.argv) < 3:
+    description = input("File containing bug report: ")
+else:
+    description = sys.argv[2]
+
+if not re.match(r'[-\w]+$', assign):
+    print("Error: {} has bad form.".format(assign))
+if not isfile(description):
+    print("Error: cannot find {}.".format(description))
+    sys.exit(1)
+
+tag = assign + "-bug"
+
+status = call_out('git status')
+
+changes = [ x for x in re.findall(r'(?:(?m)^# *\t|^ {4}).*', status)
+            if not re.search(r'\s' + description, x) ]
+
+if changes:
+    print("It appears you have the following changes and untracked files,")
+    print("which will not be submitted:")
+    print('\n'.join(changes))
+    if not yorn("Proceed with submission anyway? [y/n] "):
+        print("Submission canceled.")
+        sys.exit(1)
+
+current_tags = call_out('git tag')
+seq = 0
+while True:
+    fulltag = r"{}{}".format(tag, seq)
+    if not re.search(r'\b' + fulltag + r'\b', current_tags):
+        break
+    seq += 1
+
+
+call('git tag -F {} {}', description, fulltag,
+     msg="Error: Could not create tag {}".format(fulltag))
+call('git push --tags',
+     msg="Error: Could not push bug tag")
+print("Bug", fulltag, "submitted")
+
+
+

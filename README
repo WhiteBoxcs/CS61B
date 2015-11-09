@@ -143,13 +143,18 @@ to add a setting for CLASSPATH with value
 to it (being sure to include the semicolon as shown to separate it
 from the stuff already there).  
 
+Of course, if you have put cs61b-software somewhere other than in your home
+directory (%USERPROFILE%), then make the appropriate modification to these
+paths.
+
 Finally, edit your PATH variable using the same technique you used for CLASSPATH
 (Windpws calls it Path) to add our bin directory.  That is, append 
 
     ;%USERPROFILE%\cs61b-software\bin
 
 to the end of your Path so that you will be able to run style61b and gjdb 
-directly
+directly (again, modify appropriately if you've put the cs61b-software
+directory in a "non-standard" location).
 
 WARNING: paths and classpaths on pure Windows use a different convention from
    Unix.  The separator is ";" rather than ":", file names start with a

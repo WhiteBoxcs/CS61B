@@ -1,1 +1,30 @@
-# Fill this in.
+# Check that set moves actually works. 
+java -ea loa.Main
+None
+===#1===
+dump
+set b2 w
+dump
+set b3 w
+dump
+set b4 b
+dump
+set b5 b dump
+dump
+set b1 w
+dump
+set a1 w
+dump
+set  c2 w
+dump
+set d2 w
+dump
+set e2 w
+dump
+set f2 w
+dump
+set g2 w
+dump
+manual white
+start
+quit
