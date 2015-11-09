@@ -23,7 +23,7 @@ public class MySortingAlgorithmsTest {
                  new MySortingAlgorithms.InsertionSort(),
                  new MySortingAlgorithms.SelectionSort(),
                  new MySortingAlgorithms.MergeSort(),
-                 new MySortingAlgorithms.DistributionSort(),
+                 new MySortingAlgorithms.PositiveDistributionSort(),
                  new MySortingAlgorithms.HeapSort(),
                  new MySortingAlgorithms.QuickSort(),
                  new MySortingAlgorithms.LSDSort(),

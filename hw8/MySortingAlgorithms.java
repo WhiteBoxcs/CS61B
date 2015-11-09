@@ -117,7 +117,7 @@ public class MySortingAlgorithms {
     public static class MergeSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {            
-            mergeSort(array, 0, array.length, new int[array.length]);
+            mergeSort(array, 0, k, new int[k]);
         }
 
         // may want to add additional methods
@@ -169,10 +169,45 @@ public class MySortingAlgorithms {
      * You should create a count array that is the
      * same size as the value of the max digit in the array.
      */
-    public static class DistributionSort implements SortingAlgorithm {
+    public static class PositiveDistributionSort implements SortingAlgorithm {
         @Override
+        /**
+         * Assumes that array has all positive elements.
+         */
         public void sort(int[] array, int k) {
-            // TODO: to be implemented
+            //Do nothing for 0 sized lists
+            if(k <= 1)
+                return;
+            
+            int max = findMax(array, k);
+            int[] counts = new int[max+1];
+            
+            for(int i = 0; i < k; i++)
+                ++counts[array[i]]; //TLDR; ++var >>>>>>>> var++;
+
+            //Perform filling procedure.
+            int index = 0;
+            for(int elem = 0; elem < max+1; elem++){
+                int end = counts[elem]+index;
+                if(end != index)
+                    Arrays.fill(array, index, end, elem);
+                index = end;
+            }
+            
+            
+        }
+        
+        /**
+         * Finds the maximal element.
+         * @param array The array to search
+         * @param k Over which the array must be searched.
+         * @return
+         */
+        private int findMax(int[] array, int k){
+            return Arrays.stream(array)
+                    .limit(k)
+                    .max()
+                    .getAsInt();
         }
 
         // may want to add additional methods
