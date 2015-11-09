@@ -38,7 +38,22 @@ public class MySortingAlgorithms {
     public static class InsertionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            // TO-DO
+            //This algorithm works as follows.
+            //For all entries
+            for(int i = 0; i < k; i++){
+                for(int j = i; j > 0; j--){
+                    if(array[j] < array[j-1]){
+                        
+                        //XOR SWAP IF DIFFERENT
+                        if(array[j-1] != array[j])
+                        {
+                            array[j-1] = array[j-1] ^ array[j];
+                            array[j]   = array[j-1] ^ array[j];
+                            array[j-1] = array[j-1] ^ array[j];
+                        }
+                    }
+                }
+            }
         }
 
         @Override
@@ -56,7 +71,36 @@ public class MySortingAlgorithms {
     public static class SelectionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            // TO-DO
+            /* Slower than insertion sort, 
+             * since it searches the array for the next smallest integer.
+             *  Whereas insertion sort actually 
+             *  just swaps if and only if there is an inversion to an adjacent element.
+             *  Both are intuitive. However, I think insertion sort should be aptly
+             *  named "swap" sort. Selection sort derives its name from selecting
+             *  the next best element with which to replace a given element;
+             *  Both act to decrease inversions on each iteration.
+             *  That is to invent a sorting algorithm is to do so in a manner
+             *  such that there is a guarenteed negative net inversion count on
+             *  every iterate. */
+            
+            //Loop over the array
+            for(int i = 0; i < k; i++){
+                //Then select an element and find the next smallest element
+                int min = i;
+                for(int j = i+1; j < k; j++) {
+                    min = array[min] > array[j] ? //If the 'min' is not the minest.
+                          min = j //set min to the smaller elem.
+                        : min; //otherwise, min remains the same.
+                }
+                
+                //Now put the smallest element where it should be!
+                if(array[min] != array[i]){
+                    array[i] = array[i] ^ array[min];
+                    array[min] = array[i] ^ array[min];
+                    array[i] = array[i] ^ array[min];
+                }
+            }
+            
         }
 
         @Override
@@ -73,10 +117,46 @@ public class MySortingAlgorithms {
     public static class MergeSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {            
-            // TO-DO
+            mergeSort(array, 0, array.length, new int[array.length]);
         }
 
         // may want to add additional methods
+
+        private void mergeSort(int[] array, int left, int right, int[] js) {
+            int mid = (right + left)/2;
+            if(right - left > 1){
+                //Split left
+                mergeSort(array,left,mid,js);
+                //split right
+                mergeSort(array,mid,right,js);
+                //Combine into JS
+                merge(array, left, mid, right, js);
+                System.arraycopy(js, left, array, left, right-left);
+            }
+            
+            
+        }
+
+        private void merge(int[] array, int left, int mid, int right,
+                int[] js) {
+            
+            //Iterate over two different indexing variables, and stop when they both reach the end.
+            for(int l = left, r = mid; l < mid || r < right;){
+                //If the right indexer is at its end or if it is not and the left element is less
+                if((r == right) || (l < mid && array[l] < array[r]))
+                {
+                    //Use the left
+                    js[l+r-mid] = array[l];
+                    l++;
+                }
+                //If the left indexer is at its end or if it is not and the right element is less than or equal
+                else if((l == mid) ||  (r < right && array[l] >= array[r])){
+                    //use the right
+                    js[l+r-mid] = array[r];
+                    r++;
+                }
+            }
+        }
 
         @Override
         public String toString() {
