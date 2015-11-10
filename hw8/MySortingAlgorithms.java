@@ -368,7 +368,37 @@ public class MySortingAlgorithms {
           */
         public void sort(int[] a, int k) {
             k = Math.min(k,a.length);
-            // TODO
+            
+            int[] workspace = new int[k];
+            //Iterate over the possible bits.
+            for(int selector =1; selector != 0 ; selector <<= 1){
+                int zeroCount = 0;
+                int oneCount = 0;
+                for(int i =0; i < k; i++){
+                    if((a[i] & selector) > 0)
+                        oneCount++;
+                    else
+                        zeroCount++;
+                }
+                //If the list is already sorted, stop iterating over the selector.
+                if(oneCount+zeroCount != k)
+                    break;
+                
+                oneCount = zeroCount;
+                zeroCount = 0;
+                for(int i = 0; i < a.length; i++){
+                    if((a[i] & selector) > 0)
+                        workspace[oneCount++]=a[i];
+                    else
+                        workspace[zeroCount++] = a[i];
+                }
+                
+                System.arraycopy(workspace, 0, a, 0, k);
+                
+                
+            }
+            
+            
         }
 
         @Override
