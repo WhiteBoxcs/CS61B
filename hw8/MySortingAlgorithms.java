@@ -39,11 +39,16 @@ public class MySortingAlgorithms {
     public static class InsertionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            k = Math.min(k,array.length);
+            this.sort(array,0,k);
+        }
+        
+        public void sort(int[] array, int start, int end){
+            end = Math.min(end,array.length);
+            start = Math.max(start, 0);
             //This algorithm works as follows.
             //For all entries
-            for(int i = 0; i < k; i++){
-                for(int j = i; j > 0; j--){
+            for(int i = start; i < end; i++){
+                for(int j = i; j > start; j--){
                     if(array[j] < array[j-1]){
                         //XOR SWAP IF DIFFERENT
                         swap(array, j-1, j);
@@ -240,11 +245,26 @@ public class MySortingAlgorithms {
     /** Your Quicksort implementation.
      */
     public static class QuickSort implements SortingAlgorithm {
+        private static InsertionSort insertionSort = new InsertionSort();
+
         @Override
         public void sort(int[] array, int k) {
             k = Math.min(k,array.length);
+            quickSort(array,0,k);
         }
         
+        private void quickSort(int[] array, int start, int end) {
+            if(end - start > 5){
+                int mid = partition(array,start,end);
+                quickSort(array, start,mid);
+                quickSort(array, mid+1,end);
+            }
+            else if(end - start > 1)
+            {
+                insertionSort.sort(array, start, end);
+            }
+        }
+
         /**
          * Performs the partition algorithm
          * returning the final position of the pivot.
@@ -263,23 +283,20 @@ public class MySortingAlgorithms {
                 return start;
             
             int pivot = selectPivot(array,start,end);
+
+            //Now perform this process untill things are done.
+            while( i < j){
+                if(array[i] > array[j])
+                    pivot = quickSwap(array,i,j,pivot);
+                
+                if(i < pivot)
+                    i++;
+                if(j > pivot)
+                    j--;
+                
+            }
             
-            //Find the first inversion around the pivot.
-            while(array[i] < array[pivot] && i <= j)
-                i++;
-            while(array[j] > array[pivot] && i <= j)
-                j--;
-            
-            if(i < j)
-                return pivot;
-            
-            //Swap those such elements and move the pivot iff necisarry
-            if(i == pivot)
-                pivot = j;
-            else if(j == pivot)
-                pivot = i;
-            
-            swap(array, i,j);
+            return pivot;
         }
         
         /**
@@ -296,10 +313,27 @@ public class MySortingAlgorithms {
             return end-1;
         }
 
+        /**
+         * Quick swaps two elements and returns the new paivot position if changed.
+         */
+        private int quickSwap(int array[], int i, int j, int pivot){
+            swap(array,i,j);
+            if(i == pivot)
+                pivot = j;
+            
+            else if(j == pivot)
+                pivot = i;
+            return pivot;
+            
+        }
+    
+        
         @Override
         public String toString() {
             return "Quicksort";
         }        
+    
+
     }
 
     /*
