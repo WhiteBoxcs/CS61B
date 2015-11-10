@@ -1,0 +1,37 @@
+=== Heap Sort ===
+
+Heap Sort took 6.50 seconds to sort 2*10000000 numbers from 0 to 2147483647.
+Built-In Sort (uses quicksort for ints) took 1.84 seconds to sort 20000000 numbers from 0 to 2147483647.
+Heap Sort took 14.63 seconds to sort 2*2*10000000 numbers from 0 to 2147483647.
+Built-In Sort (uses quicksort for ints) took 3.61 seconds to sort 40000000 numbers from 0 to 2147483647.
+Heap Sort took 33.22 seconds to sort 2*2*2*10000000 numbers from 0 to 2147483647.
+Built-In Sort (uses quicksort for ints) took 7.46 seconds to sort 80000000 numbers from 0 to 2147483647.
+Heap Sort took 86.21 seconds to sort 2*2*2*2*10000000 numbers from 0 to 2147483647.
+Built-In Sort (uses quicksort for ints) took 18.09 seconds to sort 160000000 numbers from 0 to 2147483647.
+
+
+Ratio comparison
+2-1 2.25 vs 1.96 ~ 2
+3-2 2.25 vs 2.06 ~ 2
+4-3 2.59 vs 2.55 (hmm?)
+
+Ratio between
+4 4.765
+3 4.450
+2 4.052
+1 3.532
+
+It appears that these two algorithms scale roughly equivalently. Therefore, heap sort scales in O(n log n) time.
+
+
+=== Merge Sort ===
+Again complexity appears to match 61b.
+
+My Merge Sort took 36.07 seconds to sort 160000000 numbers from 0 to 2147483647.
+61B Merge Sort took 30.85 seconds to sort 160000000 numbers from 0 to 2147483647.
+Built-In Sort (uses quicksort for ints) took 15.67 seconds to sort 160000000 numbers from 0 to 2147483647.
+
+=== Insertion Sort ===
+Insertion Sort took 0.09 seconds to sort 10000000 partially sorted numbers from 0 to 2147483647.
+
+^NICE^ O(n)
