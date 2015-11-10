@@ -45,10 +45,11 @@ public class MySortingAlgorithms {
             for(int i = 0; i < k; i++){
                 for(int j = i; j > 0; j--){
                     if(array[j] < array[j-1]){
-                        
                         //XOR SWAP IF DIFFERENT
                         swap(array, j-1, j);
                     }
+                    else
+                        break;
                 }
             }
         }

@@ -15,7 +15,7 @@ public class RunBenchmarks {
     }
 
     public static void largeArrayTest() {
-        int numInts = 10000000;
+        int numInts = 160000000;
         int maxVal = Integer.MAX_VALUE;
         int[] original = BenchmarkUtility.randomInts(numInts, Integer.MAX_VALUE);
         int[] input = BenchmarkUtility.copy(original);
@@ -23,8 +23,8 @@ public class RunBenchmarks {
         String inputDescription = String.format("%d numbers from 0 to %d",
                                                 numInts, maxVal);
 
-        printTime(new MySortingAlgorithms.MergeSort(), input, inputDescription);
-        printTime(new MySortingAlgorithms.JavaSort(), input, inputDescription);
+        //printTime(new SortingAlgorithms.MergeSort(), input, inputDescription);
+       // printTime(new MySortingAlgorithms.JavaSort(), input, inputDescription);
     }
 
     public static void almostSortedTest() {
