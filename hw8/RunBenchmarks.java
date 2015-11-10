@@ -23,8 +23,8 @@ public class RunBenchmarks {
         String inputDescription = String.format("%d numbers from 0 to %d",
                                                 numInts, maxVal);
 
-        //printTime(new SortingAlgorithms.MergeSort(), input, inputDescription);
-       // printTime(new MySortingAlgorithms.JavaSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.MergeSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.JavaSort(), input, inputDescription);
     }
 
     public static void almostSortedTest() {
