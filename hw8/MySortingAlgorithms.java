@@ -25,6 +25,7 @@ public class MySortingAlgorithms {
     public static class JavaSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
+            k = Math.min(k,array.length);
             Arrays.sort(array, 0, k);
         }
 
@@ -38,6 +39,7 @@ public class MySortingAlgorithms {
     public static class InsertionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
+            k = Math.min(k,array.length);
             //This algorithm works as follows.
             //For all entries
             for(int i = 0; i < k; i++){
@@ -45,12 +47,7 @@ public class MySortingAlgorithms {
                     if(array[j] < array[j-1]){
                         
                         //XOR SWAP IF DIFFERENT
-                        if(array[j-1] != array[j])
-                        {
-                            array[j-1] = array[j-1] ^ array[j];
-                            array[j]   = array[j-1] ^ array[j];
-                            array[j-1] = array[j-1] ^ array[j];
-                        }
+                        swap(array, j-1, j);
                     }
                 }
             }
@@ -71,6 +68,7 @@ public class MySortingAlgorithms {
     public static class SelectionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
+            k = Math.min(k,array.length);
             /* Slower than insertion sort, 
              * since it searches the array for the next smallest integer.
              *  Whereas insertion sort actually 
@@ -94,11 +92,7 @@ public class MySortingAlgorithms {
                 }
                 
                 //Now put the smallest element where it should be!
-                if(array[min] != array[i]){
-                    array[i] = array[i] ^ array[min];
-                    array[min] = array[i] ^ array[min];
-                    array[i] = array[i] ^ array[min];
-                }
+                swap(array, min, i);
             }
             
         }
@@ -116,7 +110,8 @@ public class MySortingAlgorithms {
       */
     public static class MergeSort implements SortingAlgorithm {
         @Override
-        public void sort(int[] array, int k) {            
+        public void sort(int[] array, int k) {     
+            k = Math.min(k,array.length);
             mergeSort(array, 0, k, new int[k]);
         }
 
@@ -131,6 +126,8 @@ public class MySortingAlgorithms {
                 mergeSort(array,mid,right,js);
                 //Combine into JS
                 merge(array, left, mid, right, js);
+                
+                //Does this contradict the speed of the algorithm?
                 System.arraycopy(js, left, array, left, right-left);
             }
             
@@ -175,6 +172,7 @@ public class MySortingAlgorithms {
          * Assumes that array has all positive elements.
          */
         public void sort(int[] array, int k) {
+            k = Math.min(k,array.length);
             //Do nothing for 0 sized lists
             if(k <= 1)
                 return;
@@ -223,7 +221,13 @@ public class MySortingAlgorithms {
     public static class HeapSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            // TODO   
+            k = Math.min(k,array.length);
+            
+            
+            IntHeap arrayHeap = IntHeap.heapify(array, k);
+            for(int i = k-1; i >= 0; i--){
+                array[i] = arrayHeap.removeMax();
+            }
         }
 
         @Override
@@ -237,6 +241,7 @@ public class MySortingAlgorithms {
     public static class QuickSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
+            k = Math.min(k,array.length);
             // TODO   
         }
 
@@ -260,6 +265,7 @@ public class MySortingAlgorithms {
           * http://algs4.cs.princeton.edu/51radix/LSD.java.html
           */
         public void sort(int[] a, int k) {
+            k = Math.min(k,a.length);
             // TODO
         }
 
@@ -281,6 +287,7 @@ public class MySortingAlgorithms {
           * http://algs4.cs.princeton.edu/51radix/MSD.java.html
           */
         public void sort(int[] a, int k) {
+            k = Math.min(k,a.length);
             // TODO
         }
 
@@ -290,11 +297,15 @@ public class MySortingAlgorithms {
         }
     }
 
-    // swap a[i] and a[j]
+    /**
+     * XOR SWAP
+     */
     private static void swap(int[] a, int i, int j) {
-        int swap = a[i];
-        a[i] = a[j];
-        a[j] = swap;
+        if(a[i] != a[j]){
+            a[i] = a[i] ^ a[j];
+            a[j] = a[i] ^ a[j];
+            a[i] = a[i] ^ a[j];
+        }
     }
 
 }

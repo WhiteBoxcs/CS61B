@@ -52,9 +52,7 @@ public class IntHeap {
         //If the ordering property of the heap is wrong at the node indexed POS.
         if(parent(pos) != -1 && store[pos] > store[parent(pos)]){
             //XOR SWAP the elements (this notation reveals more about the swap then others might)
-            store[pos]         = store[pos] ^ store[parent(pos)];
-            store[parent(pos)] = store[pos] ^ store[parent(pos)];
-            store[pos]         = store[pos] ^ store[parent(pos)];
+            swap(store, pos, parent(pos)); 
             
             //Propagate upwards from the new position of the element.
             propagateUp(parent(pos));
@@ -91,7 +89,8 @@ public class IntHeap {
         
         //If the left node is the tree and there is an imbalance
         // Note: if the left node is not in the tree, the right is certainly not (by completeness).
-        if(left < length && store[left] < store[pos]){
+        if((left < length && store[left] > store[pos]) 
+                || (right < length && store[right] > store[pos])){
             int swapTarget = left;
             
             //Choose a suitable swap target amongst the children.
@@ -99,9 +98,7 @@ public class IntHeap {
                 swapTarget = right;
             
             //Perform the swap.
-            store[pos]         = store[pos] ^ store[swapTarget];
-            store[swapTarget]  = store[pos] ^ store[swapTarget];
-            store[pos]         = store[pos] ^ store[swapTarget];
+            swap(store, pos, swapTarget);
             
             //Propagate down from the swap target (the new location of elem originally at POS).
             propagateDown(swapTarget);
@@ -155,9 +152,11 @@ public class IntHeap {
     public static IntHeap heapify(int[] array, int k){
         IntHeap destructiveHeap = new IntHeap(array,k);
         
-        //Enforce maximallity condition on the store using maxHeap algorithm:
-        for(int i =k/2; i>= 0; i--)
-            destructiveHeap.propagateDown(i);
+        if(k != 0)
+            //Enforce maximallity condition on the store using maxHeap algorithm:
+            for(int i =k/2; i>= 0; i--)
+                destructiveHeap.propagateDown(i);
+        
 
         return destructiveHeap;
     }
@@ -192,4 +191,15 @@ public class IntHeap {
         return 2*(index) + 2;
     }
     
+    
+    /**
+     * Performs a swap on a given array.
+     */
+    private static void swap(int[] a, int i, int j) {
+        if(a[i] != a[j]){
+            a[i] = a[i] ^ a[j];
+            a[j] = a[i] ^ a[j];
+            a[i] = a[i] ^ a[j];
+        }
+    }
 }
