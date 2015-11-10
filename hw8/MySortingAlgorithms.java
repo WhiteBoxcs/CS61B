@@ -243,7 +243,57 @@ public class MySortingAlgorithms {
         @Override
         public void sort(int[] array, int k) {
             k = Math.min(k,array.length);
-            // TODO   
+        }
+        
+        /**
+         * Performs the partition algorithm
+         * returning the final position of the pivot.
+         * @param array the array to partition
+         * @param start the start INCLUSIVE
+         * @param end the end EXCLUSIVE
+         * @return the PIVOT position.
+         */
+        private int partition(int[] array, int start, int end){
+            int i = start;
+            int j = end-1;
+            
+            //We don't want to deal with a one element array 
+            //(It's already partitioned).
+            if(i == j)
+                return start;
+            
+            int pivot = selectPivot(array,start,end);
+            
+            //Find the first inversion around the pivot.
+            while(array[i] < array[pivot] && i <= j)
+                i++;
+            while(array[j] > array[pivot] && i <= j)
+                j--;
+            
+            if(i < j)
+                return pivot;
+            
+            //Swap those such elements and move the pivot iff necisarry
+            if(i == pivot)
+                pivot = j;
+            else if(j == pivot)
+                pivot = i;
+            
+            swap(array, i,j);
+        }
+        
+        /**
+         * Selects a pivot between two indices
+         * @param array the array in which the pivot resides
+         * @param start the first index at which parsing begins (inclusive)
+         * @param end the end (exclusive)
+         * @return the pivot index
+         */
+        private int selectPivot(int[] array, int start, int end){
+            if(end == start)
+                return -1;
+            //For now let's just select the last index.
+            return end-1;
         }
 
         @Override
