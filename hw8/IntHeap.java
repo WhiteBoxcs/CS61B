@@ -13,8 +13,7 @@ public class IntHeap {
      * Creates a default heap.
      */
     public IntHeap(){
-        this.length = 0;
-        this.store = new int[4];
+        this(new int[4], 0);
     }
     
     /**
@@ -22,12 +21,9 @@ public class IntHeap {
      * @param store the new STORE
      * @param length the subset length of the target array.
      */
-    protected IntHeap(int[] store, int length){
+    private IntHeap(int[] store, int length){
         this.store = store;
         this.length = length;
-        
-        //Enforce maximallity condition on the store using maxHeap algorithm:
-        
     }
     
     /**
@@ -135,6 +131,8 @@ public class IntHeap {
     }
 
     
+    /**
+     */
     private void increaseStore() {
         int[] temp = store;
         store = new int[store.length*2];
@@ -142,7 +140,10 @@ public class IntHeap {
         
     }
 
-
+    /**
+     * Gets the size of a heap.
+     * @return
+     */
     public int size() {
         return length;
     }
@@ -154,6 +155,10 @@ public class IntHeap {
     public static IntHeap heapify(int[] array, int k){
         IntHeap destructiveHeap = new IntHeap(array,k);
         
+        //Enforce maximallity condition on the store using maxHeap algorithm:
+        for(int i =k/2; i>= 0; i--)
+            destructiveHeap.propagateDown(i);
+
         return destructiveHeap;
     }
 
