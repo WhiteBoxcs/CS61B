@@ -24,7 +24,7 @@ public class RunBenchmarks {
                                                 numInts, maxVal);
 
         printTime(new MySortingAlgorithms.QuickSort(), input, inputDescription);
-        printTime(new MySortingAlgorithms.MergeSort(), input, inputDescription);
+        printTime(new SortingAlgorithms.QuickSort(), input, inputDescription);
     }
 
     public static void almostSortedTest() {
