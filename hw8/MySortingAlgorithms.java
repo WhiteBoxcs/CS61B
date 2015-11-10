@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  * Class containing all the sorting algorithms from 61B to date.
@@ -246,6 +248,8 @@ public class MySortingAlgorithms {
      */
     public static class QuickSort implements SortingAlgorithm {
         private static InsertionSort insertionSort = new InsertionSort();
+        private static Random r = new Random();
+        private static final int SAMPLE_COUNT = 3;
 
         @Override
         public void sort(int[] array, int k) {
@@ -277,23 +281,17 @@ public class MySortingAlgorithms {
             int i = start;
             int j = end-1;
             
-            //We don't want to deal with a one element array 
-            //(It's already partitioned).
-            if(i == j)
-                return start;
-            
             int pivot = selectPivot(array,start,end);
 
             //Now perform this process untill things are done.
             while( i < j){
-                if(array[i] > array[j])
+                if(array[i] >= array[j] && (array[i] >= array[pivot] && array[j] <= array[pivot]))
                     pivot = quickSwap(array,i,j,pivot);
                 
-                if(i < pivot)
+                if(i < pivot && array[i] <= array[pivot])
                     i++;
-                if(j > pivot)
-                    j--;
-                
+                if(j > pivot && array[j] >= array[pivot])
+                    j--; 
             }
             
             return pivot;
@@ -307,10 +305,29 @@ public class MySortingAlgorithms {
          * @return the pivot index
          */
         private int selectPivot(int[] array, int start, int end){
-            if(end == start)
+            int dist = end - start;
+            
+            if(dist < 1)
                 return -1;
-            //For now let's just select the last index.
-            return end-1;
+            else if(dist < 4)
+                return end-1;
+            else{
+                //For not so simple case, take SAMPLE_COUNT random indices and find the middle most one.
+                int[] samples = new int[] {start, (start+end-1)/2, end-1};
+                
+                double average = (array[start]
+                        + array[(start+end-1)/2]
+                                + array[end-1])/3;
+                
+
+                int median = samples[0];
+                for(int i = 1; i < 3; i++){
+                    if(Math.abs(array[samples[i]] - average) < Math.abs(array[median] - average))
+                        median = samples[i];
+                }
+                return end-1;
+                        
+            }
         }
 
         /**
