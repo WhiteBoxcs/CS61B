@@ -2,13 +2,30 @@ Answers to questions from lab.
 
 2. [Explain times for java HashTesting test1].
 
+cory [623] ~/repo/lab9/experiments $ java HashTesting test1 ~cs61b/lib/words 1
+Strings from /home/ff/cs61b/lib/words, skip=1:
+        Added 235886 items and checked 235886 items in 0.5 seconds (0.0012 msec/string)
+cory [624] ~/repo/lab9/experiments $ java HashTesting test1 ~cs61b/lib/words 2
+Strings from /home/ff/cs61b/lib/words, skip=2:
+        Added 235886 items and checked 235886 items in 0.6 seconds (0.0012 msec/string)
+
+cory [626] ~/repo/lab9/experiments $ java HashTesting test1 ~cs61b/lib/words 3
+Strings from /home/ff/cs61b/lib/words, skip=3:
+        Added 235886 items and checked 235886 items in 0.8 seconds (0.0017 msec/string)
+
+    Since there are more collisions by a less acurate (tighter distribution) hashing functipon as skips oincrease, hash time increases like wise.
+
 
 
 3. [Explain times for java HashTesting test2 and test3].
 
 
+    The key reasons why test3 takes longer is that the hashcode feature treats the upper and lowercase versions of the strings as the same. Therefore this will result in higher collisions. xxyy, permutes combinations odf varrying strings whereas xXyY mearly permutes a capitalized version of each string surleey leading to more collisions. 
+
 
 4. [Why does HashSet fail to work in java HashTesting test4?]
 
-
+    It has to do with the compareTo function (naimeley treeset sorts its value using the ignore case form of FOldedString, whereas hashset uses the direct .equals command which does not ignore case.)
+    Therefore if I change the hashcode method and the ignore method to 
+work with the lower case version of the string. Everything should work.
 5. (Optional) Explain how ListTesting program demonstrates that LinkedLists are doubly linked.

@@ -1,1 +1,9 @@
 # Fill this in.
+java -jar loa.jar
+None
+===#1===
+auto black
+auto white
+start
+%bw
+%e

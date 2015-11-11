@@ -16,13 +16,13 @@ class FoldedString implements Comparable<FoldedString> {
 
     @Override
     public int hashCode() {
-        return rep.hashCode();
+        return rep.toLowerCase().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         try {
-            return rep.equals(((FoldedString) obj).rep);
+            return rep.equalsIgnoreCase(((FoldedString) obj).rep);
         } catch (ClassCastException e) {
             return false;
         }
