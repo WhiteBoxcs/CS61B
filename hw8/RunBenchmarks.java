@@ -23,8 +23,8 @@ public class RunBenchmarks {
         String inputDescription = String.format("%d numbers from 0 to %d",
                                                 numInts, maxVal);
 
-        printTime(new MySortingAlgorithms.QuickSort(), input, inputDescription);
-        printTime(new SortingAlgorithms.QuickSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.LSDSort(), input, inputDescription);
+        printTime(new SortingAlgorithms.LSDSort(), input, inputDescription);
     }
 
     public static void almostSortedTest() {

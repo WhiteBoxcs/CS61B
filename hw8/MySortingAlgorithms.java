@@ -413,26 +413,68 @@ public class MySortingAlgorithms {
      */
     public static class MSDSort implements SortingAlgorithm {
         @Override
-        /** For an example implementation, see Kevin Wayne and 
-          * Bob Sedgewick's Algorithms textbook.
-          *
-          * http://algs4.cs.princeton.edu/51radix/MSD.java.html
+        /** Provides an implementation of LSD.sort. 
+          * From Kevin Wayne and Bob Sedgewick's Algorithms textbook.
+          * http://algs4.cs.princeton.edu/51radix/LSD.java.html
           */
         public void sort(int[] a, int k) {
-            k = Math.min(k,a.length);
-            // TODO
+            int N = Math.min(a.length, k);
+            int[] aux = new int[N];
+            sort(a, 0, N-1, 0, aux);
+        }
+
+        public void sort(int[] a, int lo, int hi, int d, int[] aux) {
+            /* Each int is 32 bits and are thus 4 byes wide.
+               Each byte holds a value between 0 and 255.
+               MASK is used to mask off 8 bits at a time */
+            int BITS_PER_INT = 32;    
+            int BITS_PER_BYTE = 8;  
+            int R = 1 << BITS_PER_BYTE;   
+            int MASK = R - 1;              
+
+            // compute frequency counts (need R = 256)
+            int[] count = new int[R+1];
+            int mask = R - 1;   // 0xFF;
+            int shift = BITS_PER_INT - BITS_PER_BYTE*d - BITS_PER_BYTE;
+            for (int i = lo; i <= hi; i++) {
+                int c = (a[i] >> shift) & mask;
+                count[c + 1]++;
+            }
+
+            // transform counts to indicies
+            for (int r = 0; r < R; r++)
+                count[r+1] += count[r];
+
+            for (int i = lo; i <= hi; i++) {
+                int c = (a[i] >> shift) & mask;
+                aux[count[c]++] = a[i];
+            }
+
+            // copy back
+            for (int i = lo; i <= hi; i++) 
+                a[i] = aux[i - lo];
+
+            // no more bits
+            if (d == 4) return;
+
+            // recursively sort for each character
+            if (count[0] > 0)
+                sort(a, lo, lo + count[0] - 1, d+1, aux);
+            for (int r = 0; r < R; r++)
+                if (count[r+1] > count[r])
+                    sort(a, lo + count[r], lo + count[r+1] - 1, d+1, aux);
         }
 
         @Override
         public String toString() {
-            return "MSD Sort";
+            return "LSD Sort";
         }
     }
 
     /**
      * XOR SWAP
      */
-    private static void swap(int[] a, int i, int j) {
+    public static void swap(int[] a, int i, int j) {
         if(a[i] != a[j]){
             a[i] = a[i] ^ a[j];
             a[j] = a[i] ^ a[j];
