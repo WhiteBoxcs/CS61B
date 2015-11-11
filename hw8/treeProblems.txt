@@ -3,10 +3,14 @@ H. Balanced Search Trees
 1. Give a formula for the exact height of a binary search tree (as you
    implemented in homework 6) as a function of N if we insert N values in
    increasing order.
+   
+     Well this results in a simple linked list. So, the height must be N-1.
 
 
 
 2. Give a formula for the exact height of a 2-4 tree in terms of N if 
    we insert N values in increasing order.
+   
+     Since 2-4 tress are complete, we have floor(log(N)).
 
 
