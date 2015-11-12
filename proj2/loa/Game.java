@@ -101,8 +101,20 @@ class Game {
             case "seed":
                 seedCommand(command.group(2));
                 return true;
-
-            // FILL THIS IN
+            case "clear":
+                clearCommand();
+                return true;
+            case "start":
+                startCommand();
+                return true;
+            case "set":
+                setCommand(command.group(2), command.group(3));
+                return true;
+                
+            case "dump":
+                dumpCommand();
+                return true;
+                
 
             case "help":
                 help();
@@ -112,6 +124,26 @@ class Game {
             }
         }
         return false;
+    }
+
+    private void clearCommand() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void startCommand() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void setCommand(String group, String group2) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void dumpCommand() {
+        // TODO Auto-generated method stub
+        
     }
 
     /** Set player PLAYER ("white" or "black") to be a manual player. */
@@ -164,6 +196,7 @@ class Game {
                 getMove();
                 next = null;
             }
+            
             if (_playing) {
                 announceWinner();
                 _playing = false;
@@ -193,7 +226,7 @@ class Game {
 
     /** Print a help message. */
     void help() {
-        // FIXME
+        Main.printResource("loa/help");
     }
 
     /** The official game board. */

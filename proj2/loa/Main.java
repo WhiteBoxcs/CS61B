@@ -50,7 +50,7 @@ public class Main {
 
     /** Print brief description of the command-line format. */
     static void usage() {
-        // FIXME
+        printResource("loa/usage");
         System.exit(1);
     }
 
