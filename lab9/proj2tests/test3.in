@@ -1,5 +1,5 @@
 # Fill this in.
-java -jar loa.jar
+java -ea loa.Main
 None
 ===#1===
 auto black
