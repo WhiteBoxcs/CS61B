@@ -114,8 +114,9 @@ class Game {
             case "dump":
                 dumpCommand();
                 return true;
-                
-
+            case "?":
+                help();
+                return true;
             case "help":
                 help();
                 return true;
@@ -132,8 +133,7 @@ class Game {
     }
 
     private void startCommand() {
-        // TODO Auto-generated method stub
-        
+        _playing =true;  
     }
 
     private void setCommand(String group, String group2) {
@@ -215,7 +215,20 @@ class Game {
 
     /** Print an announcement of the winner. */
     private void announceWinner() {
-        // FIXME
+        try{
+            
+            Piece winner = _board.getWinner();
+            if(winner == null || winner == Piece.EMP)
+                throw new IllegalArgumentException();
+            
+            if(winner == Piece.WP)
+                System.out.println("White wins.");
+            else
+                System.out.println("Black wins");
+            
+        } catch (IllegalArgumentException exp){
+            error("No winner exists.");
+        }
     }
 
     /** Return an integer r, 0 <= r < N, randomly chosen from a
@@ -226,7 +239,7 @@ class Game {
 
     /** Print a help message. */
     void help() {
-        Main.printResource("loa/help");
+        Main.printResource("loa/help", false);
     }
 
     /** The official game board. */

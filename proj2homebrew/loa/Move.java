@@ -83,6 +83,8 @@ class Move {
 
     /** Return the column at which this move starts, as an index in 1--8. */
     int getCol0() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
         return _col0;
     }
 

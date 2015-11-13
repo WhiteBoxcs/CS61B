@@ -299,4 +299,9 @@ class Board implements Iterable<Move> {
         }
     }
 
+    public Piece getWinner() {
+        return null;
+        
+    }
+
 }
