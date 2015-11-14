@@ -24,10 +24,11 @@ public class LoaTextUI extends GameUI {
         _input = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    /* (non-Javadoc)
-     * @see loa.GameUI#play()
-     * Generally, this method will parse normal commands until 
-     * a game is started.
+    /**
+     * Represents the main loop for the view.
+     * The loop essentially plays the game and gets input if
+     * the game requires input.
+     * Clearly if the game is not being played then expect input.
      */
     @Override
     public void open() {
@@ -48,41 +49,58 @@ public class LoaTextUI extends GameUI {
             }
         }
     }
-    
-    
 
     /**
-     * Gets input.
+     * Gets input. As opposed to the skeleton version,
+     * we check to see if a command is a command before we see if it is a move.
+     * It furthermore could be such that invalid moves are processed and 
+     * if an input is nowhere close to a move command lexigraphically, a
+     * invalid command error message is produced, but we wish to be as close
+     * to staff-loa as possible.
      * @return The move gathered (iff it is a move). Otherwise if another command processes
      * return null.
      */
     private Move input() {
-        Move possible = null;
-
+        String line = null;
+        
         try {
             prompt();
-            String line = _input.readLine();
+            line = _input.readLine();
             if (line == null) {
                 close();
             }
-            
-            possible = Move.create(line, game().getBoard());
-            
-            if(possible.isInvalid() && processCommand(line)){
-                return null;
-            }
-            
         } catch (IOException e) {
             error("unexpected I/O error on input");
             close();
         }
- 
-        return possible;
         
+        if(processCommand(line))
+            return null;
+        else
+            return Move.create(line, game().getBoard());
     }
 
+    /** Print a prompt for a move. */
+    private void prompt() {
+        
+        String indicator = "-";
+        if(game().playing())
+            indicator = game()
+            .currentPlayer().team().abbrev();
+        
+        System.out.print(indicator + "> ");
+        System.out.flush();
+    }
 
-
+    /**
+     * Prints an error message to the standard error.
+     */
+    @Override
+    public void error(String format, Object... args) {
+            System.err.print("Error: ");
+            System.err.printf(format, args);
+    }
+  
     /** Describes a command with up to two arguments. */
     private static final Pattern COMMAND_PATN =
         Pattern.compile("(#|\\S+)\\s*(\\S*)\\s*(\\S*).*");
@@ -131,14 +149,23 @@ public class LoaTextUI extends GameUI {
         return false;
     }
 
+    /**
+     * Prints the help file.
+     */
     private void help() {
-        // TODO Auto-generated method stub
-        
+        Main.printResource("loa/help", false);
     }
 
+    /**
+     * Prints the board using the formatting described in the specification.
+     */
     private void dumpCommand() {
-        // TODO Auto-generated method stub
-        
+        String[] boardString = game().getBoard().toString().split("\n");
+        System.out.println("===");
+        for(String line : boardString){
+            System.out.println("    " + line);
+        }
+        System.out.println("===");
     }
 
     private void setCommand(String group, String group2) {
@@ -171,16 +198,4 @@ public class LoaTextUI extends GameUI {
         
     }
 
-    @Override
-    public void error(String format, Object... args) {
-            System.err.print("Error: ");
-            System.err.printf(format, args);
-    }
-    
-
-    /** Print a prompt for a move. */
-    private void prompt() {
-        System.out.print("> ");
-        System.out.flush();
-    }
 }

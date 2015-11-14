@@ -98,7 +98,7 @@ public class Game {
     }
 
 
-    private Player currentPlayer() {
+    public Player currentPlayer() {
         // TODO Auto-generated method stub
         return null;
     }

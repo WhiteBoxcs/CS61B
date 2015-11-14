@@ -14,4 +14,9 @@ public class Player {
         return false;
     }
 
+    public Piece team() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
