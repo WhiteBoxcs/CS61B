@@ -175,8 +175,8 @@ public class LoaTextUI extends GameUI {
 
     /**
      * Sets a given square.
-     * @param pos
-     * @param setValue
+     * @param pos The position to set.
+     * @param setValue The set value.
      */
     private void setCommand(String pos, String setValue) {
         try{

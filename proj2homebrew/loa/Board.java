@@ -11,12 +11,12 @@ public class Board {
 
     public int col(String p1) {
         // TODO Auto-generated method stub
-        return 0;
+        return 1;
     }
 
     public int row(String p1) {
         // TODO Auto-generated method stub
-        return 0;
+        return 1;
     }
 
     public Enum<Direction> get(int column0, int row0) {
