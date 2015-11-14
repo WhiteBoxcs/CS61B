@@ -11,6 +11,10 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import loa.exceptions.GameException;
+import loa.exceptions.InvalidMoveException;
+import loa.exceptions.UnknownPlayerException;
+
 /**
  * @author william
  *
@@ -42,10 +46,8 @@ public class LoaTextUI extends GameUI {
                 else
                     game().play();
                 
-            } catch (InvalidMoveException e) {
-                if(!game().playing())
-                    error(e.getMessage());
-
+            } catch (GameException e) {
+                error(e.getMessage());
             }
         }
     }
@@ -60,7 +62,7 @@ public class LoaTextUI extends GameUI {
      * @return The move gathered (iff it is a move). Otherwise if another command processes
      * return null.
      */
-    private Move input() {
+    private Move input() throws GameException{
         String line = null;
         
         try {
@@ -97,8 +99,9 @@ public class LoaTextUI extends GameUI {
      */
     @Override
     public void error(String format, Object... args) {
-            System.err.print("Error: ");
-            System.err.printf(format, args);
+            System.out.print("Error: ");
+            System.out.printf(format, args);
+            System.out.print("\n");
     }
   
     /** Describes a command with up to two arguments. */
@@ -107,7 +110,7 @@ public class LoaTextUI extends GameUI {
 
     /** If LINE is a recognized command other than a move, process it
      *  and return true.  Otherwise, return false. */
-    private boolean processCommand(String line) {
+    private boolean processCommand(String line) throws GameException{
         if (line.length() == 0) {
             return true;
         }
@@ -160,7 +163,7 @@ public class LoaTextUI extends GameUI {
      * Prints the board using the formatting described in the specification.
      */
     private void dumpCommand() {
-        String[] boardString = game().getBoard().toString().split("\n");
+        String[] boardString = game().toString().split("\n");
         System.out.println("===");
         for(String line : boardString){
             System.out.println("    " + line);
@@ -169,32 +172,49 @@ public class LoaTextUI extends GameUI {
     }
 
     private void setCommand(String group, String group2) {
-        // TODO Auto-generated method stub
         
     }
 
+    /**
+     * Starts the game.
+     */
     private void startCommand() {
-        // TODO Auto-generated method stub
-        
+        game().start();
     }
 
+    /**
+     * Clears the game.
+     */
     private void clearCommand() {
-        // TODO Auto-generated method stub
-        
+        game().clear();
     }
 
-    private void seedCommand(String group) {
-        // TODO Auto-generated method stub
-        
+    /**
+     * Sets the general seed for all games.
+     * @param seed
+     */
+    private void seedCommand(String seed) {
+        try {
+            Game.RANDOM.setSeed(Long.parseLong(seed));
+        } catch (NumberFormatException excp) {
+            error("Invalid number: %s", seed);
+        }
     }
 
-    private void autoCommand(String lowerCase) {
-        // TODO Auto-generated method stub
-        
+    /**
+     * Sets PLAYER to be a machine.
+     * @param player The player to set.
+     */
+    private void autoCommand(String player) throws UnknownPlayerException {
+        game().setPlayer(player, true);
     }
 
-    private void manualCommand(String lowerCase) {
-        // TODO Auto-generated method stub
+    /**
+     * Sets PLAYER to be a human player taking input.
+     * @param player the player to change.
+     */
+    private void manualCommand(String player) throws UnknownPlayerException {
+        game().setPlayer(player, false);
         
     }
 

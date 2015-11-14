@@ -4,6 +4,12 @@
 package loa;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import loa.exceptions.GameException;
+import loa.exceptions.InvalidMoveException;
+import loa.exceptions.UnknownPlayerException;
+import loa.exceptions.GameNotStartedException;
 
 /**
  * @author william
@@ -15,7 +21,7 @@ public class Game {
     private ArrayList<Player> players;
     
     public static final String VERSION = "1.0";
-
+    public static final Random RANDOM = new Random();
 
     /**
      * Initializes with a new board.
@@ -33,15 +39,15 @@ public class Game {
      * either the move is invalid or the game is not started.
      * @returns Whether or not a move is expected.
      */
-    public boolean play(Move move) throws InvalidMoveException
+    public boolean play(Move move) throws GameException
     {        
         if(move == null && inputExpected())
             return true;
         else if(move != null){
-            if(!_playing )
-                throw new InvalidMoveException("game not started.", move);
             if(move.isInvalid())
                 throw new InvalidMoveException(move);
+            if(!_playing )
+                throw new GameNotStartedException();
             if(!inputExpected())
                 throw new InvalidMoveException("not expecting move.", move);
         }
@@ -59,7 +65,7 @@ public class Game {
      * either the move is invalid or the game is not started.
      * @returns Whether or not a move is expected.
      */
-    public boolean play() throws InvalidMoveException
+    public boolean play() throws GameException
     {
         return this.play(null);
     }
@@ -107,5 +113,15 @@ public class Game {
     public Board getBoard() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * Sets a given player to a specified plah styel.
+     * @param player The player to set.
+     * @param auto The play style.
+     */
+    public void setPlayer(String player, boolean auto) throws UnknownPlayerException
+    {
+        
     }
 }

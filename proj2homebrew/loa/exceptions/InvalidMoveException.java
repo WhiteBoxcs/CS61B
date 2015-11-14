@@ -1,13 +1,15 @@
 /**
  * 
  */
-package loa;
+package loa.exceptions;
+
+import loa.Move;
 
 /**
  * @author william
  * An invalid move exception    
  */
-public class InvalidMoveException extends Exception {
+public class InvalidMoveException extends GameException {
     private Move _move;
 
     /**
@@ -15,7 +17,7 @@ public class InvalidMoveException extends Exception {
      * @param move The move which caused the error.
      */
     public InvalidMoveException(String exception, Move move){
-        super("Error: " + exception);
+        super(exception);
         this._move = move;
     }
     
@@ -24,7 +26,7 @@ public class InvalidMoveException extends Exception {
      * @param move The move which caused the error.
      */
     public InvalidMoveException(Move move){
-        super("Error: invalid move: " + move.toString());
+        super("invalid move: " + move.toString());
         this._move = move;
     }
 
