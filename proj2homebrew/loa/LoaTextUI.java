@@ -3,6 +3,11 @@
  */
 package loa;
 
+import static loa.Main.error;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,9 +17,11 @@ import java.util.regex.Pattern;
  */
 public class LoaTextUI extends GameUI {
 
+    private BufferedReader _input;
+
     protected LoaTextUI(Game game) {
         super(game);
-        // TODO Auto-generated constructor stub
+        _input = new BufferedReader(new InputStreamReader(System.in));
     }
 
     /* (non-Javadoc)
@@ -24,9 +31,57 @@ public class LoaTextUI extends GameUI {
      */
     @Override
     public void open() {
+        System.out.println("Lines of Action.  Version " + Game.VERSION + ".");
+        System.out.println("Type ? for help.");
+        
+        while(true){
+            try {
+                if(game().inputExpected())
+                    game().play(input());
+                else
+                    game().play();
+                
+            } catch (InvalidMoveException e) {
+                if(!game().playing())
+                    error(e.getMessage());
+
+            }
+        }
     }
     
     
+
+    /**
+     * Gets input.
+     * @return The move gathered (iff it is a move). Otherwise if another command processes
+     * return null.
+     */
+    private Move input() {
+        Move possible = null;
+
+        try {
+            prompt();
+            String line = _input.readLine();
+            if (line == null) {
+                close();
+            }
+            
+            possible = Move.create(line, game().getBoard());
+            
+            if(possible.isInvalid() && processCommand(line)){
+                return null;
+            }
+            
+        } catch (IOException e) {
+            error("unexpected I/O error on input");
+            close();
+        }
+ 
+        return possible;
+        
+    }
+
+
 
     /** Describes a command with up to two arguments. */
     private static final Pattern COMMAND_PATN =
@@ -120,5 +175,12 @@ public class LoaTextUI extends GameUI {
     public void error(String format, Object... args) {
             System.err.print("Error: ");
             System.err.printf(format, args);
+    }
+    
+
+    /** Print a prompt for a move. */
+    private void prompt() {
+        System.out.print("> ");
+        System.out.flush();
     }
 }

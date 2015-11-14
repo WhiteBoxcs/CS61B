@@ -33,14 +33,11 @@ public class Main {
         if (!options.ok()) {
             usage();
         }
-        System.out.printf("Lines of Action.  Version %s.%nType ? for help.%n",
-                          VERSION);
-
+        
         Game game = new Game();
         GameUI view;
         
         if (options.contains("--display")) {
-            error(1, "--display not supported.");
             view = new LoaGUI(game);
         }
         else

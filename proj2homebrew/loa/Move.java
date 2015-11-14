@@ -17,25 +17,26 @@ class Move {
      * work. */
 
     /** Return a move on BOARD denoted by a prefix of S (after trimming),
-     *  or null if S denotes no valid move. */
+     *  or invalid move if S denotes no valid move. Returns null iff
+     *  the string matches in no way. */
     static Move create(String s, Board board) {
         s = s.trim();
         if (s.matches("[a-h][1-9]-[a-h][1-9]\\b.*")) {
             String p1 = s.substring(0, 2);
             String p2 = s.substring(3);
-            return create(board.col(p1), board.row(p1),
+            return create(s, board.col(p1), board.row(p1),
                           board.col(p2), board.row(p2), board);
         } else {
-            return null;
+            return new Move(s);
         }
     }
 
     /** Return a move of the piece at COLUMN0, ROW0 to COLUMN1, ROW1, on
      *  BOARD or null if this move is always invalid. */
-    static Move create(int column0, int row0, int column1, int row1,
+    static Move create(String s, int column0, int row0, int column1, int row1,
                        Board board) {
         if (!inBounds(column0, row0) || !inBounds(column1, row1)) {
-            return null;
+            return new Move(s);
         }
         int moved = board.get(column0, row0).ordinal();
         int replaced = board.get(column1, row1).ordinal();
@@ -51,6 +52,12 @@ class Move {
     }
 
     private boolean _invalid;
+    
+    public boolean isInvalid() {
+        return _invalid;
+    }
+
+    private String _creationString;
 
     /** A new Move of the piece at COL0, ROW0 to COL1, ROW1. MOVED is the
      *  piece being moved from COL0, ROW0, and REPLACED is the piece (or EMP)
@@ -79,6 +86,7 @@ class Move {
         _moved = null;
         _replaced = null;
         _invalid = true;
+        _creationString = creationString;
     }
 
     /** Return the column at which this move starts, as an index in 1--8. */
@@ -90,32 +98,50 @@ class Move {
 
     /** Return the row at which this move starts, as an index in 1--8. */
     int getRow0() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
+        
         return _row0;
     }
 
     /** Return the column at which this move ends, as an index in 1--8. */
     int getCol1() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
+        
         return _col1;
     }
 
     /** Return the row at which this move ends, as an index in 1--8. */
     int getRow1() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
+        
         return _row1;
     }
 
     /** Return the piece on BOARD that is moved by THIS. */
     Piece movedPiece() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
+        
         return _moved;
     }
 
     /** Return the piece on BOARD that is replaced by THIS (or EMP
      *  if none). */
     Piece replacedPiece() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
+        
         return _replaced;
     }
 
     /** Return the length of this move (number of squares moved). */
     int length() {
+        if(_invalid)
+            throw new InvalidMoveException(this);
+        
         return Math.max(Math.abs(_row1 - _row0), Math.abs(_col1 - _col0));
     }
 
@@ -127,7 +153,10 @@ class Move {
 
     @Override
     public String toString() {
-        return String.format("%c%d-%c%d", (char) (_col0 - 1 + 'a'), _row0,
+        if(_invalid)
+            return _creationString;
+        else
+            return String.format("%c%d-%c%d", (char) (_col0 - 1 + 'a'), _row0,
                              (char) (_col1 - 1 + 'a'), _row1);
     }
 

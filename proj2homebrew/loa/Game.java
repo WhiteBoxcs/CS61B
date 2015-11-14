@@ -3,6 +3,8 @@
  */
 package loa;
 
+import java.util.ArrayList;
+
 /**
  * @author william
  * Represents an actual game of league of legends.
@@ -10,6 +12,9 @@ package loa;
 public class Game {
     private Board _board;
     private boolean _playing;
+    private ArrayList<Player> players;
+    
+    public static final String VERSION = "1.0";
 
 
     /**
@@ -25,25 +30,82 @@ public class Game {
      * Plays a move in the game. 
      * @param move
      * @throws InvalidMoveException Throws an exception iff
-     * either the move is invalid or c 
+     * either the move is invalid or the game is not started.
+     * @returns Whether or not a move is expected.
      */
-    public void play(Move move) throws InvalidMoveException
-    {
-        if(!_playing)
-            throw new InvalidMoveException("game not started.", move);
+    public boolean play(Move move) throws InvalidMoveException
+    {        
+        if(move == null && inputExpected())
+            return true;
+        else if(move != null){
+            if(!_playing )
+                throw new InvalidMoveException("game not started.", move);
+            if(move.isInvalid())
+                throw new InvalidMoveException(move);
+            if(!inputExpected())
+                throw new InvalidMoveException("not expecting move.", move);
+        }
+   
         
+        
+        
+        return inputExpected();
     }
     
     /**
-     * Starts a game.
+     * Plays without giving input.
+     * @param move
+     * @throws InvalidMoveException Throws an exception iff
+     * either the move is invalid or the game is not started.
+     * @returns Whether or not a move is expected.
      */
-    public void start(){
+    public boolean play() throws InvalidMoveException
+    {
+        return this.play(null);
+    }
+
+
+    /**
+     * Starts a game.
+     * @returns Whether or not a move is expected
+     */
+    public boolean start(){
         _playing = true;
+        return inputExpected();
     }
     
-    
+    /**
+     * Clears the game board and stops playign the game.
+     */
     public void clear(){
         _playing = false;
         _board.initialize();
+    }
+    
+    /**
+     * @return whether or not a game is being played.
+     */
+    public boolean playing(){
+        return _playing;
+    }
+    
+    /**
+     * @return whether or not a move is expected.
+     */
+    public boolean inputExpected(){
+        
+        return !playing() || currentPlayer().moveExpected();
+    }
+
+
+    private Player currentPlayer() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    public Board getBoard() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
