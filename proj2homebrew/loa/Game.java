@@ -112,7 +112,7 @@ public class Game {
 
     public Board getBoard() {
         // TODO Auto-generated method stub
-        return null;
+        return this._board;
     }
 
     /**
@@ -122,6 +122,17 @@ public class Game {
      */
     public void setPlayer(String player, boolean auto) throws UnknownPlayerException
     {
+        
+    }
+
+
+    /**
+     * Sets a piece within the game.
+     * @param row The row to set.
+     * @param col The collumn to set.
+     * @param piece The piece type to set.
+     */
+    public void setPiece(int row, int col, Piece piece) {
         
     }
 }

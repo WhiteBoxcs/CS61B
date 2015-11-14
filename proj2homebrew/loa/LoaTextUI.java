@@ -137,7 +137,9 @@ public class LoaTextUI extends GameUI {
             case "set":
                 setCommand(command.group(2), command.group(3));
                 return true;
-                
+            case "quit":
+                close();
+                return true;
             case "dump":
                 dumpCommand();
                 return true;
@@ -171,7 +173,27 @@ public class LoaTextUI extends GameUI {
         System.out.println("===");
     }
 
-    private void setCommand(String group, String group2) {
+    /**
+     * Sets a given square.
+     * @param pos
+     * @param setValue
+     */
+    private void setCommand(String pos, String setValue) {
+        try{
+            if(pos == null || !pos.matches("[a-h][1-9]"))
+                throw new IllegalArgumentException();
+            
+            int col = game().getBoard().col(pos.substring(0, 1));
+            int row = game().getBoard().row(pos.substring(0, 1));
+            
+            Piece piece = Piece.setValueOf(setValue);
+            
+            game().setPiece(row, col, piece);
+            
+            
+        }catch(IllegalArgumentException exp){
+            error("invalid arguments to set: " + pos +", " + setValue);
+        }
         
     }
 
