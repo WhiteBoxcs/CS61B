@@ -39,7 +39,7 @@ public class Main {
             usage();
         }
         
-        Game game = new Game();
+        Game game = new Game("LOA_BASIC");
         GameUI view;
         
         if (options.contains("--display")) {

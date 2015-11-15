@@ -17,17 +17,24 @@ import loa.Piece;
 import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
+import loa.util.LogListener;
+import loa.util.Logger;
 
 /**
  * @author William Hebgen Guss
  *
  */
-public class LoaTextUI extends GameUI {
+public class LoaTextUI extends GameUI implements LogListener {
 
     private BufferedReader _input;
 
+    /**
+     * Builds a LoaTextUI and attaches it to the game at a MOVES_AI level.
+     * @param game
+     */
     public LoaTextUI(Game game) {
         super(game);
+        game.attach(this, Game.LogLevel.MOVES_AI.getLevel());
         _input = new BufferedReader(new InputStreamReader(System.in));
     }
 
@@ -197,7 +204,6 @@ public class LoaTextUI extends GameUI {
         }catch(IllegalArgumentException exp){
             error("invalid arguments to set: " + pos +", " + setValue);
         }
-        
     }
 
     /**
@@ -241,6 +247,14 @@ public class LoaTextUI extends GameUI {
     private void manualCommand(String player) throws UnknownPlayerException {
         game().setPlayer(player, false);
         
+    }
+
+    /**
+     * Prints a message from the log.
+     */
+    @Override
+    public void receive(Logger logger, String message) {
+        System.out.println(message);
     }
 
 }

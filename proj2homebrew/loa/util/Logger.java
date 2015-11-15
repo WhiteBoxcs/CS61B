@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Represents a logger class for the game.
+ * @author william
+ *
+ */
 public class Logger {
+    @SuppressWarnings("unused")
     private String _name;
     private String _log;
     private TreeMap<Integer, ArrayList<LogListener>> _listeners;
 
     public Logger(String name){
-        this._name = name;
+        this.setName(name);
         this._listeners = new TreeMap<Integer, ArrayList<LogListener>>();
+        this._log = "";
     }
     
     /**
@@ -25,6 +32,7 @@ public class Logger {
             level = entry.getKey();
             entry.getValue().forEach(x -> x.receive(this, message));
         }
+        this._log += message + "\n";
     }
     
     /**
@@ -69,6 +77,22 @@ public class Logger {
      */
     public String getLog(){
         return this._log;
+    }
+
+    /**
+     * Gets the name of the logger.
+     * @return The name of the logger.
+     */
+    public String getName() {
+        return _name;
+    }
+
+    /**
+     * Sets the name of the logger.
+     * @param _name The new name.
+     */
+    public void setName(String _name) {
+        this._name = _name;
     }
     
     

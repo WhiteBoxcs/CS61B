@@ -1,5 +1,7 @@
 package loa.players;
 
+import loa.Game.LogLevel;
+import loa.Game;
 import loa.Move;
 import loa.Piece;
 
@@ -20,6 +22,11 @@ public class MachinePlayer extends Player {
     public Move turn(Move input) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public LogLevel verbose() {
+        return Game.LogLevel.MOVES_AI;
     }
 
 }

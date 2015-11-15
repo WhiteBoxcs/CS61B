@@ -1,5 +1,7 @@
 package loa.players;
 
+import loa.Game;
+import loa.Game.LogLevel;
 import loa.Move;
 import loa.Piece;
 
@@ -33,6 +35,11 @@ public class HumanPlayer extends Player{
     @Override
     public Move turn(Move input) {
         return input;
+    }
+
+    @Override
+    public LogLevel verbose() {
+        return Game.LogLevel.MOVES;
     }
 
 }

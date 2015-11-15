@@ -3,6 +3,7 @@
  */
 package loa.players;
 
+import loa.Game;
 import loa.Move;
 import loa.Piece;
 
@@ -29,7 +30,7 @@ public abstract class Player {
      * If the turns actions should be verboseley notified.
      * @return If the move is verbose.
      */
-    public abstract boolean verbose();
+    public abstract Game.LogLevel verbose();
     
     /**
      * Makes a move given an optional input parameter.

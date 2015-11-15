@@ -12,6 +12,7 @@ import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
 import loa.players.HumanPlayer;
 import loa.players.Player;
+import loa.util.Logger;
 import loa.exceptions.GameNotStartedException;
 import loa.exceptions.GameVictoryException;
 
@@ -19,7 +20,7 @@ import loa.exceptions.GameVictoryException;
  * @author William Hebgen Guss
  * Represents an actual game of league of legends.
  */
-public class Game {
+public class Game extends Logger {
     private Board _board;
     private boolean _playing;
     private ArrayList<Player> _players;
@@ -31,7 +32,9 @@ public class Game {
     /**
      * Initializes with a new board.
      */
-    public Game(){
+    public Game(String name){
+        super(name);
+        
         this._board =new Board();
         this._playing = false;
         this._players = new ArrayList<Player>();
@@ -39,7 +42,6 @@ public class Game {
         this._players.add(new HumanPlayer(Piece.BP,0));
         this._players.add(new HumanPlayer(Piece.WP, 0));
     }
-    
     
     /**
      * Plays a move in the game. 
@@ -165,6 +167,29 @@ public class Game {
             currentPlayer().setScore(contScore);
             _playing = false;
             throw new GameVictoryException(currentPlayer());
+        }
+    }
+
+    /**
+     * Contains the log levels for the game
+     * @author William
+     */
+    public enum LogLevel{
+        DEBUG(0),
+        GAME_STATE(1),
+        MOVES(2), 
+        MOVES_AI(3);
+
+        private final int _level;
+
+        private LogLevel(int level)
+        {
+            this._level = level;
+        }
+
+        public int getLevel()
+        {
+            return _level;
         }
     }
 }

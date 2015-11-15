@@ -51,7 +51,7 @@ public enum Piece {
     }
 
     /** Return the Piece denoted by NAME in set commands. */
-    static Piece setValueOf(String name) {
+    public static Piece setValueOf(String name) {
         switch (name) {
         case "b":
             return BP;
