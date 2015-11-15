@@ -2,7 +2,7 @@ package loa;
 
 /**
  * A class representing the abstract game user interface.
- * @author william
+ * @author William Hebgen Guss
  */
 public abstract class GameUI {
     private Game _game;

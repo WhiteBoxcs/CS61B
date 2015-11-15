@@ -3,7 +3,7 @@
  */
 
 /**
- * @author william
+ * @author William Hebgen Guss
  *
  */
 public class BSTGenericSet<Y extends Comparable> 

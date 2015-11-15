@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * A single table in a database.
- * @author William Guss.
+ * @author William Hebgen Guss Guss.
  */
 class Table implements Iterable<Row> {
     /**

@@ -16,7 +16,7 @@ import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
 
 /**
- * @author william
+ * @author William Hebgen Guss
  *
  */
 public class LoaTextUI extends GameUI {
@@ -183,8 +183,8 @@ public class LoaTextUI extends GameUI {
             if(pos == null || !pos.matches("[a-h][1-9]"))
                 throw new IllegalArgumentException();
             
-            int col = game().getBoard().col(pos.substring(0, 1));
-            int row = game().getBoard().row(pos.substring(0, 1));
+            int col = game().getBoard().toColPos(pos.substring(0, 1));
+            int row = game().getBoard().toRowPos(pos.substring(0, 1));
             
             Piece piece = Piece.setValueOf(setValue);
             

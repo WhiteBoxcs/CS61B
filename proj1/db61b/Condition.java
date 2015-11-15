@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Represents a single 'where' condition in a 'select' command.
- * @author William Guss
+ * @author William Hebgen Guss Guss
  */
 class Condition {
 

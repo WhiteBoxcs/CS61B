@@ -24,8 +24,8 @@ public class Move {
         if (s.matches("[a-h][1-9]-[a-h][1-9]\\b.*")) {
             String p1 = s.substring(0, 2);
             String p2 = s.substring(3);
-            return create(s, board.col(p1), board.row(p1),
-                          board.col(p2), board.row(p2), board);
+            return create(s, board.toColPos(p1), board.toRowPos(p1),
+                          board.toColPos(p2), board.toRowPos(p2), board);
         } else {
             return new Move(s);
         }

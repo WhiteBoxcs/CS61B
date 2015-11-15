@@ -1,6 +1,6 @@
 
 /**
- * @author william
+ * @author William Hebgen Guss
  *
  */
 public class BSTDictionary implements SimpleDictionary {

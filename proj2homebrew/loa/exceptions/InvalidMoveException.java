@@ -6,7 +6,7 @@ package loa.exceptions;
 import loa.Move;
 
 /**
- * @author william
+ * @author William Hebgen Guss
  * An invalid move exception    
  */
 public class InvalidMoveException extends GameException {

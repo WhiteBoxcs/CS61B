@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * An object that reads and interprets a sequence of commands from an input
  * source.
- * @author William Guss.
+ * @author William Hebgen Guss Guss.
  */
 class CommandInterpreter {
 

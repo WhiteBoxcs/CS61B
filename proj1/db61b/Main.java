@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * The main program for db61b.
- * @author William Guss.
+ * @author William Hebgen Guss Guss.
  */
 public class Main {
 

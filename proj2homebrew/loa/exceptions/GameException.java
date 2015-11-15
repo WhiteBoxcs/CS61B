@@ -4,7 +4,7 @@
 package loa.exceptions;
 
 /**
- * @author william
+ * @author William Hebgen Guss
  *
  */
 public class GameException extends Exception {

@@ -1,7 +1,7 @@
 
 /**
  * Represents the general IntHeap class
- * @author william
+ * @author William Hebgen Guss
  *
  */
 public class IntHeap {

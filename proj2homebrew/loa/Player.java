@@ -4,7 +4,7 @@
 package loa;
 
 /**
- * @author william
+ * @author William Hebgen Guss
  *
  */
 public class Player {

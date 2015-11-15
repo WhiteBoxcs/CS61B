@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * A single row of a database.
- * @author William Guss.
+ * @author William Hebgen Guss Guss.
  */
 class Row {
     /**
