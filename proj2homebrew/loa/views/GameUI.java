@@ -1,4 +1,6 @@
-package loa;
+package loa.views;
+
+import loa.Game;
 
 /**
  * A class representing the abstract game user interface.

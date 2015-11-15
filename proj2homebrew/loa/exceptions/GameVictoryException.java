@@ -3,7 +3,7 @@
  */
 package loa.exceptions;
 
-import loa.Player;
+import loa.players.Player;
 
 /**
  * @author william

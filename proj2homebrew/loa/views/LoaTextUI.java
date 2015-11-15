@@ -1,9 +1,8 @@
 /**
  * 
  */
-package loa;
+package loa.views;
 
-import static loa.Main.error;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +10,10 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import loa.Game;
+import loa.Main;
+import loa.Move;
+import loa.Piece;
 import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
@@ -23,7 +26,7 @@ public class LoaTextUI extends GameUI {
 
     private BufferedReader _input;
 
-    protected LoaTextUI(Game game) {
+    public LoaTextUI(Game game) {
         super(game);
         _input = new BufferedReader(new InputStreamReader(System.in));
     }

@@ -10,6 +10,8 @@ import java.util.Random;
 import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
+import loa.players.HumanPlayer;
+import loa.players.Player;
 import loa.exceptions.GameNotStartedException;
 import loa.exceptions.GameVictoryException;
 
@@ -33,6 +35,9 @@ public class Game {
         this._board =new Board();
         this._playing = false;
         this._players = new ArrayList<Player>();
+        
+        this._players.add(new HumanPlayer(Piece.BP,0));
+        this._players.add(new HumanPlayer(Piece.WP, 0));
     }
     
     
@@ -43,18 +48,19 @@ public class Game {
      * either the move is invalid or the game is not started.
      * @returns Whether or not a move is expected.
      */
-    public boolean play(Move input) throws GameException
+    public void play(Move input) throws GameException
     {        
         if(!playing()){
             if(input == null )
-                return true;
+                return;
             else
                 throw new GameNotStartedException();
-        } else if(currentPlayer()!= null) {
+        } 
+        else if(currentPlayer()!= null) {
             checkVictory();
             
             if(input == null && inputExpected())
-                return true;
+                return;
             else if(input != null ){
                 if(input.isInvalid())
                     throw new InvalidMoveException(input);
@@ -67,11 +73,8 @@ public class Game {
             checkVictory();
             
             playerIndex = (playerIndex + 1)%_players.size();
-            
-            return inputExpected();
+
         }
-        
-        return true;
     }
     
     /**
@@ -81,9 +84,9 @@ public class Game {
      * either the move is invalid or the game is not started.
      * @returns Whether or not a move is expected.
      */
-    public boolean play() throws GameException
+    public void play() throws GameException
     {
-        return this.play(null);
+        this.play(null);
     }
 
 
@@ -117,9 +120,8 @@ public class Game {
     public boolean inputExpected(){
         
         return !playing() || (currentPlayer() != null
-                    && currentPlayer().moveExpected());
+                    && currentPlayer().inputExpected());
     }
-
 
     public Player currentPlayer() {
         if(!_players.isEmpty())
@@ -127,9 +129,7 @@ public class Game {
         return null;
     }
 
-
     public Board getBoard() {
-        // TODO Auto-generated method stub
         return this._board;
     }
 
@@ -140,7 +140,7 @@ public class Game {
      */
     public void setPlayer(String player, boolean auto) throws UnknownPlayerException
     {
-        
+        //TODO:
     }
 
 
@@ -160,9 +160,9 @@ public class Game {
      */
     private void checkVictory() throws GameVictoryException{
         double contScore = 0;
-        if(currentPlayer().score() == 1 || 
+        if(currentPlayer().getScore() == 1 || 
                 (contScore = _board.contiguityScore(currentPlayer().team())) == 1){
-            currentPlayer().updateScore(contScore);
+            currentPlayer().setScore(contScore);
             _playing = false;
             throw new GameVictoryException(currentPlayer());
         }

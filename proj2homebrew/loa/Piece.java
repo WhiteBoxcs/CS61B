@@ -26,7 +26,7 @@ public enum Piece {
 
     /** Returns the one-character denotation of this piece on the standard
      *  text display of a board. */
-    String abbrev() {
+    public String abbrev() {
         switch (this) {
         case BP:
             return "b";

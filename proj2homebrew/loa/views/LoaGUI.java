@@ -1,4 +1,6 @@
-package loa;
+package loa.views;
+
+import loa.Game;
 
 public class LoaGUI extends GameUI {
 

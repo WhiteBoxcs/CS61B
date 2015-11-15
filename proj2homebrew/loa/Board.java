@@ -80,10 +80,11 @@ public class Board {
      * Performs a given move.
      * @param todo The move to do.
      * @throws InvalidMoveException If the move is illegal by the rules of the game.
+     * @return Move for chaining.
      */
-    public void performMove(Move todo) throws InvalidMoveException{
+    public Move performMove(Move todo) throws InvalidMoveException{
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
 }
