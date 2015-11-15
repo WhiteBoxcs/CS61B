@@ -6,7 +6,7 @@ package loa;
  *  (Black or White) of a game.
  *  @author
  */
-enum Piece {
+public enum Piece {
     /** The names of the pieces.  EMP indicates an empty square. The
      *  arguments give names to the piece colors. */
     BP, WP, EMP;

@@ -19,4 +19,19 @@ public class Player {
         return null;
     }
 
+    public void updateScore(double contScore) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public double score() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public Move turn(Move input) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

@@ -11,6 +11,7 @@ import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
 import loa.exceptions.GameNotStartedException;
+import loa.exceptions.GameVictoryException;
 
 /**
  * @author William Hebgen Guss
@@ -31,33 +32,46 @@ public class Game {
     public Game(){
         this._board =new Board();
         this._playing = false;
+        this._players = new ArrayList<Player>();
     }
     
     
     /**
      * Plays a move in the game. 
-     * @param move
-     * @throws InvalidMoveException Throws an exception iff
+     * @param input
+     * @throws GameException Throws an exception iff
      * either the move is invalid or the game is not started.
      * @returns Whether or not a move is expected.
      */
-    public boolean play(Move move) throws GameException
+    public boolean play(Move input) throws GameException
     {        
-        if(move == null && inputExpected())
-            return true;
-        else if(move != null){
-            if(move.isInvalid())
-                throw new InvalidMoveException(move);
-            if(!_playing )
+        if(!playing()){
+            if(input == null )
+                return true;
+            else
                 throw new GameNotStartedException();
-            if(!inputExpected())
-                throw new InvalidMoveException("not expecting move.", move);
+        } else if(currentPlayer()!= null) {
+            checkVictory();
+            
+            if(input == null && inputExpected())
+                return true;
+            else if(input != null ){
+                if(input.isInvalid())
+                    throw new InvalidMoveException(input);
+                else if(!inputExpected())
+                    throw new InvalidMoveException("not expecting move.", input);
+            }
+            
+            _board.performMove(currentPlayer().turn(input));
+            
+            checkVictory();
+            
+            playerIndex = (playerIndex + 1)%_players.size();
+            
+            return inputExpected();
         }
-   
         
-        
-        
-        return inputExpected();
+        return true;
     }
     
     /**
@@ -102,12 +116,14 @@ public class Game {
      */
     public boolean inputExpected(){
         
-        return !playing() || currentPlayer().moveExpected();
+        return !playing() || (currentPlayer() != null
+                    && currentPlayer().moveExpected());
     }
 
 
     public Player currentPlayer() {
-        // TODO Auto-generated method stub
+        if(!_players.isEmpty())
+            return _players.get(playerIndex);
         return null;
     }
 
@@ -136,5 +152,19 @@ public class Game {
      */
     public void setPiece(int row, int col, Piece piece) {
         //TODO:
+    }
+    
+    /**
+     * Checks the game for victory.
+     * @throws GameVictoryException Throws a game victory exception if victory has been reached.
+     */
+    private void checkVictory() throws GameVictoryException{
+        double contScore = 0;
+        if(currentPlayer().score() == 1 || 
+                (contScore = _board.contiguityScore(currentPlayer().team())) == 1){
+            currentPlayer().updateScore(contScore);
+            _playing = false;
+            throw new GameVictoryException(currentPlayer());
+        }
     }
 }
