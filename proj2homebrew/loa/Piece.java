@@ -13,7 +13,7 @@ public enum Piece {
 
     /** Returns the full name of this piece (black, white, or
      *  empty). */
-    String fullName() {
+    public String fullName() {
         switch (this) {
         case BP:
             return "black";

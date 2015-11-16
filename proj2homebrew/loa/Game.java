@@ -160,15 +160,14 @@ public class Game extends Logger {
         //TODO:
     }
 
-
     /**
      * Sets a piece within the game.
      * @param row The row to set.
      * @param col The collumn to set.
      * @param piece The piece type to set.
      */
-    public void setPiece(int row, int col, Piece piece) {
-        //TODO:
+    public void setPiece( Piece piece, int row, int col) {
+        this._board.set(piece, row, col);
     }
     
     /**

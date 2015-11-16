@@ -114,5 +114,21 @@ public class Board {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    /**
+     * Gets the string representation of the game. 
+     */
+    public String toString(){
+        String repr = "";
+        for(int row = SIZE-1; row >= 0; row--){
+            for(int col = 0; col < SIZE; col++)
+            {
+                repr += data[row][col].abbrev()
+                        + (col != SIZE -1 ? " " : "");
+            }
+            repr += "\n";
+        }
+        return repr;
+    }
 
 }

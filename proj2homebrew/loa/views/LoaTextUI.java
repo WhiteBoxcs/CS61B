@@ -176,11 +176,12 @@ public class LoaTextUI extends GameUI implements LogListener {
      * Prints the board using the formatting described in the specification.
      */
     private void dumpCommand() {
-        String[] boardString = game().toString().split("\n");
+        String[] boardString = game().getBoard().toString().split("\n");
         System.out.println("===");
         for(String line : boardString){
             System.out.println("    " + line);
         }
+        System.out.println("Next move: " + game().currentPlayer().team().fullName());
         System.out.println("===");
     }
 
@@ -191,15 +192,17 @@ public class LoaTextUI extends GameUI implements LogListener {
      */
     private void setCommand(String pos, String setValue) {
         try{
-            if(pos == null || !pos.matches("[a-h][1-9]"))
+            if(pos == null || !pos.matches("[a-h][1-9]") || setValue == "")
                 throw new IllegalArgumentException();
             
-            int col = game().getBoard().toColPos(pos.substring(0, 1));
-            int row = game().getBoard().toRowPos(pos.substring(0, 1));
+            
+
+            int col = game().getBoard().toColPos(pos);
+            int row = game().getBoard().toRowPos(pos);
             
             Piece piece = Piece.setValueOf(setValue);
             
-            game().setPiece(row, col, piece);
+            game().setPiece(piece, row, col);
             
             
         }catch(IllegalArgumentException exp){
