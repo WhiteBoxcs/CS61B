@@ -37,12 +37,23 @@ public abstract class Player {
      * Makes a move given an optional input parameter.
      * @param input
      * @return
-     * @throws InvalidMoveException Does yes.
+     */
+    public abstract Move act(Move input);
+    
+    /**
+     * Enacts the turn of a player. DO not override.
+     * @param input
+     * @return
+     * @throws InvalidMoveException If the player is moving a type of piece
+     * not of the same team.
      */
     public Move turn(Move input) throws InvalidMoveException{
-        if(input.movedPiece() != team())
-            throw new InvalidMoveException(input);
-        return input;
+        Move action = act(input);
+        
+        if(action.movedPiece() != team())
+            throw new InvalidMoveException(action);
+        
+        return action;
     }
 
     /**

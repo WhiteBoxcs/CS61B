@@ -5,6 +5,7 @@ import static loa.Piece.EMP;
 import static loa.Piece.WP;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 
 import loa.exceptions.InvalidMoveException;
@@ -48,7 +49,14 @@ public class Board {
      * Clears the board to its initital state.
      */
     public void clear() {
-        data = INITIAL_PIECES.clone();
+        data = new Piece[SIZE][SIZE];
+        
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++){
+                data[i][j] = INITIAL_PIECES[i][j];
+            }
+        }
+        
         pieceCount = new int[Piece.values().length];
         pieceCount[Piece.WP.ordinal()] = INITIAL_WPC;
         pieceCount[Piece.BP.ordinal()] = INITIAL_BPC;
@@ -72,6 +80,11 @@ public class Board {
         return Integer.parseInt(p1.substring(1,2));
     }
 
+    /** Return true IFF (C, R) denotes a square on the board, that is if
+     *  1 <= C <= M, 1 <= R <= M. */
+    public  boolean inBounds(int c, int r) {
+        return 1 <= c && c <= Board.SIZE && 1 <= r && r <= Board.SIZE;
+    }
     
     /**
      * Gets the piece at a row and column.
@@ -141,7 +154,7 @@ public class Board {
     private boolean blocked(int row, int col, Direction dir, int len) {
         Piece start = this.get(row,col);
         for(int i = 0; i < len; i++, row += dir.dr, col += dir.dc){            
-            if(!Move.inBounds(row, col))
+            if(!inBounds(col, row))
                 return true;
             else
                 if(this.get(row, col) != start
@@ -149,7 +162,7 @@ public class Board {
                     return true;
         }
         
-        if(!Move.inBounds(row, col))
+        if(!inBounds(col, row))
             return true;
        return this.get(row, col) == start;
     }
@@ -164,13 +177,13 @@ public class Board {
      */
     private int lineOfAction(int row, int col, Direction dir){
         int count = -1;
-        for(int r0 = row, c0 = col; Move.inBounds(r0, c0);
+        for(int r0 = row, c0 = col; inBounds(r0, c0);
                 r0 += dir.dr, c0 += dir.dc){
             if(this.get(r0, c0) != Piece.EMP)
                 count++;
         }
         
-        for(int r0 = row, c0 = col; Move.inBounds(r0, c0);
+        for(int r0 = row, c0 = col; inBounds(r0, c0);
                 r0 -= dir.dr, c0 -= dir.dc){
             if(this.get(r0, c0) != Piece.EMP)
                 count++; 
@@ -178,9 +191,6 @@ public class Board {
         
         return count;
     }
-    
-    
-
 
     /**
      * Performs a given move.

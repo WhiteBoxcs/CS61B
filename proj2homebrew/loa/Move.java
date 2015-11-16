@@ -35,7 +35,7 @@ public class Move {
      *  BOARD or null if this move is always invalid. */
     public static Move create(String s, int column0, int row0, int column1, int row1,
                        Board board) {
-        if (!inBounds(column0, row0) || !inBounds(column1, row1)) {
+        if (!board.inBounds(column0, row0) || !board.inBounds(column1, row1)) {
             return new Move(s);
         }
         int moved = board.get(row0, column0).ordinal();
@@ -132,12 +132,6 @@ public class Move {
 //            throw new InvalidMoveException(this);
         
         return Math.max(Math.abs(_row1 - _row0), Math.abs(_col1 - _col0));
-    }
-
-    /** Return true IFF (C, R) denotes a square on the board, that is if
-     *  1 <= C <= M, 1 <= R <= M. */
-    public static boolean inBounds(int c, int r) {
-        return 1 <= c && c <= Board.SIZE && 1 <= r && r <= Board.SIZE;
     }
 
     @Override

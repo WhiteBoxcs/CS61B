@@ -18,6 +18,8 @@ import loa.Piece;
 import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
+import loa.players.HumanPlayer;
+import loa.players.MachinePlayer;
 import loa.util.LogListener;
 import loa.util.Logger;
 
@@ -26,7 +28,7 @@ import loa.util.Logger;
  *
  */
 public class LoaTextUI extends GameUI implements LogListener {
-    private static final LogLevel LOG_LEVEL = LogLevel.MOVES;
+    private static final LogLevel LOG_LEVEL = LogLevel.MOVES_AI;
     private BufferedReader _input;
 
     /**
@@ -52,10 +54,12 @@ public class LoaTextUI extends GameUI implements LogListener {
         
         while(true){
             try {
-                if(game().inputExpected())
+                if(game().inputExpected()){
                     game().play(input());
-                else
+                }
+                else{
                     game().play();
+                }
                 
             } catch (GameException e) {
                 error(e.getMessage());
@@ -89,8 +93,9 @@ public class LoaTextUI extends GameUI implements LogListener {
         
         if(processCommand(line))
             return null;
-        else
+        else{
             return Move.create(line, game().getBoard());
+        }
     }
 
     /** Print a prompt for a move. */
@@ -241,7 +246,9 @@ public class LoaTextUI extends GameUI implements LogListener {
      * @param player The player to set.
      */
     private void autoCommand(String player) throws UnknownPlayerException {
-        game().setPlayer(player, true);
+        Piece team = Piece.playerValueOf(player);
+        //TODO: Use appropriate score above and below.
+        game().setPlayer(team, new MachinePlayer(team,0, game()));
     }
 
     /**
@@ -249,8 +256,8 @@ public class LoaTextUI extends GameUI implements LogListener {
      * @param player the player to change.
      */
     private void manualCommand(String player) throws UnknownPlayerException {
-        game().setPlayer(player, false);
-        
+        Piece team = Piece.playerValueOf(player);
+        game().setPlayer(team, new HumanPlayer(team,0));
     }
 
     /**

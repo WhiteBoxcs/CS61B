@@ -58,17 +58,15 @@ public class Game extends Logger {
             else
                 throw new GameNotStartedException();
         } 
+        
         else if(currentPlayer()!= null) {
             checkVictory();
             
             if(input == null && inputExpected())
                 return;
-            else if(input != null ){
-                if(input.isInvalid())
+            else if(input != null && input.isInvalid())
                     throw new InvalidMoveException(input);
-                else if(!inputExpected())
-                    throw new InvalidMoveException("not expecting move.", input);
-            }
+
             
             this.logMove(_board.performMove(currentPlayer().turn(input)));
             
@@ -155,9 +153,18 @@ public class Game extends Logger {
      * @param player The player to set.
      * @param auto The play style.
      */
-    public void setPlayer(String player, boolean auto) throws UnknownPlayerException
+    public void setPlayer(Piece player, Player newPlayer) throws UnknownPlayerException
     {
-        //TODO:
+        
+        for(int i = 0; i < _players.size(); i++){
+            if(_players.get(i).team() == player){
+                _players.set(i, newPlayer);
+                setPlaying(false);
+                return;
+            }
+        }
+        
+        throw new UnknownPlayerException(player);
     }
 
     /**

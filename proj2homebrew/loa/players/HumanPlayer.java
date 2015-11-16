@@ -35,4 +35,10 @@ public class HumanPlayer extends Player{
         return Game.LogLevel.MOVES;
     }
 
+    @Override
+    public Move act(Move input) {
+        // TODO Auto-generated method stub
+        return input;
+    }
+
 }

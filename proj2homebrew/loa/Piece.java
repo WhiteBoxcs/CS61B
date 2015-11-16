@@ -39,7 +39,7 @@ public enum Piece {
 
     /** Return player (white or black piece) for which  .fullName()
      *  returns NAME. */
-    static Piece playerValueOf(String name) {
+    public static Piece playerValueOf(String name) {
         switch (name.toLowerCase()) {
         case "black":
             return BP;
