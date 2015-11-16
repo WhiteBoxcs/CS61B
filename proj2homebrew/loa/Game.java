@@ -74,7 +74,7 @@ public class Game extends Logger {
             
             checkVictory();
             
-            playerIndex = (playerIndex + 1)%_players.size();
+            playerIndex = (playerIndex + 1) %_players.size();
 
         }
     }
@@ -167,7 +167,7 @@ public class Game extends Logger {
      * @param piece The piece type to set.
      */
     public void setPiece( Piece piece, int row, int col) {
-        this._board.set(piece, row, col);
+        this._board.set(row, col, piece);
     }
     
     /**

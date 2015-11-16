@@ -4,6 +4,7 @@ import static loa.Piece.BP;
 import static loa.Piece.EMP;
 import static loa.Piece.WP;
 
+import java.util.ArrayList;
 import java.util.BitSet;
 
 import loa.exceptions.InvalidMoveException;
@@ -88,7 +89,7 @@ public class Board {
      * @param row the row.
      * @param col the column.
      */
-    public void set(Piece newPiece, int row, int col){
+    public void set(int row, int col, Piece newPiece){
         this.pieceCount[this.data[row-1][col-1].ordinal()]--;
         this.data[row-1][col-1] = newPiece;
         this.pieceCount[newPiece.ordinal()]++;
@@ -102,6 +103,83 @@ public class Board {
         // TODO Auto-generated method stub
         return 0;
     }
+    
+    /**
+     * Gets a list of possible moves at a position
+     * @param row
+     * @param col
+     * @return A list of possible m,opves.
+     */
+    public ArrayList<Move> possibleMoves(int row, int col){
+        ArrayList<Move> moves = new ArrayList<>(8);
+        
+        if(this.get(row,col) == Piece.EMP)
+            return moves;
+        else
+        {
+            for(Direction dir : Direction.values()){
+                
+                int len = lineOfAction(row, col, dir);
+                if(!blocked(row,col,dir,len))
+                    moves.add(Move.create(col, row, len, dir, this));
+                
+            }
+        }
+        return moves;
+        
+    }
+    
+    /**
+     * Checks to see if amove is blocked vby the existence of either a like-.
+     * piece or an opposing piece.
+     * @param row The initial row of the move
+     * @param col The initial column of the move.
+     * @param dir The initial direction of the move.
+     * @param len The initial length of the move.
+     * @return If the move is blocked.
+     */
+    private boolean blocked(int row, int col, Direction dir, int len) {
+        Piece start = this.get(row,col);
+        for(int i = 0; i < len; i++, row += dir.dr, col += dir.dc){            
+            if(!Move.inBounds(row, col))
+                return true;
+            else
+                if(this.get(row, col) != start
+                    && this.get(row, col) != Piece.EMP)
+                    return true;
+        }
+        
+        if(!Move.inBounds(row, col))
+            return true;
+       return this.get(row, col) == start;
+    }
+    
+
+    /**
+     * Gets the number of non-empty elements along a line of action.
+     * @param row The initial row.
+     * @param col The initial column.
+     * @param dir The initial direction.
+     * @return The number of nonzero elems.
+     */
+    private int lineOfAction(int row, int col, Direction dir){
+        int count = -1;
+        for(int r0 = row, c0 = col; Move.inBounds(r0, c0);
+                r0 += dir.dr, c0 += dir.dc){
+            if(this.get(r0, c0) != Piece.EMP)
+                count++;
+        }
+        
+        for(int r0 = row, c0 = col; Move.inBounds(r0, c0);
+                r0 -= dir.dr, c0 -= dir.dc){
+            if(this.get(r0, c0) != Piece.EMP)
+                count++; 
+        }
+        
+        return count;
+    }
+    
+    
 
 
     /**
@@ -111,8 +189,16 @@ public class Board {
      * @return Move for chaining.
      */
     public Move performMove(Move todo) throws InvalidMoveException{
-        // TODO Auto-generated method stub
-        return null;
+        int row0 = todo.getRow0();
+        int col0 = todo.getCol0();
+        
+        if(!possibleMoves(row0,col0).contains(todo))
+            throw new InvalidMoveException(todo);
+        Piece toMove= this.get(row0, col0);
+        this.set( row0, col0, Piece.EMP);
+        this.set(todo.getRow1(), todo.getCol1(), toMove);
+        
+        return todo;
     }
     
     /**

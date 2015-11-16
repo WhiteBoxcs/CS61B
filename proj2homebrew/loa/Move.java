@@ -38,8 +38,8 @@ public class Move {
         if (!inBounds(column0, row0) || !inBounds(column1, row1)) {
             return new Move(s);
         }
-        int moved = board.get(column0, row0).ordinal();
-        int replaced = board.get(column1, row1).ordinal();
+        int moved = board.get(row0, column0).ordinal();
+        int replaced = board.get(row1, column1).ordinal();
         return _moves[column0][row0][column1][row1][moved][replaced];
     }
 
@@ -90,49 +90,38 @@ public class Move {
     }
 
     /** Return the column at which this move starts, as an index in 1--8. */
-    int getCol0() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
+    public int getCol0() {
         return _col0;
     }
 
     /** Return the row at which this move starts, as an index in 1--8. */
-    int getRow0() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
-        
+    public int getRow0() {
+   
         return _row0;
     }
 
     /** Return the column at which this move ends, as an index in 1--8. */
-    int getCol1() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
+    public int getCol1() {
+        
         
         return _col1;
     }
 
     /** Return the row at which this move ends, as an index in 1--8. */
-    int getRow1() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
+    public int getRow1() {
         
         return _row1;
     }
 
     /** Return the piece on BOARD that is moved by THIS. */
-    Piece movedPiece() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
+    public Piece movedPiece() {
         
         return _moved;
     }
 
     /** Return the piece on BOARD that is replaced by THIS (or EMP
      *  if none). */
-    Piece replacedPiece() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
+    public Piece replacedPiece() {
         
         return _replaced;
     }
@@ -147,7 +136,7 @@ public class Move {
 
     /** Return true IFF (C, R) denotes a square on the board, that is if
      *  1 <= C <= M, 1 <= R <= M. */
-    private static boolean inBounds(int c, int r) {
+    public static boolean inBounds(int c, int r) {
         return 1 <= c && c <= Board.SIZE && 1 <= r && r <= Board.SIZE;
     }
 

@@ -4,6 +4,7 @@ import loa.Game.LogLevel;
 import loa.Game;
 import loa.Move;
 import loa.Piece;
+import loa.exceptions.InvalidMoveException;
 
 public class MachinePlayer extends Player {
 
@@ -16,12 +17,6 @@ public class MachinePlayer extends Player {
     public boolean inputExpected() {
         // TODO Auto-generated method stub
         return false;
-    }
-
-    @Override
-    public Move turn(Move input) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

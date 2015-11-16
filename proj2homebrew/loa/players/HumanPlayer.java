@@ -4,6 +4,7 @@ import loa.Game;
 import loa.Game.LogLevel;
 import loa.Move;
 import loa.Piece;
+import loa.exceptions.InvalidMoveException;
 
 /**
  * Represents a human plawyer class.
@@ -27,14 +28,6 @@ public class HumanPlayer extends Player{
     public boolean inputExpected() {
         // TODO Auto-generated method stub
         return true;
-    }
-
-    /**
-     * Act on the input.
-     */
-    @Override
-    public Move turn(Move input) {
-        return input;
     }
 
     @Override

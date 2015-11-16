@@ -6,6 +6,7 @@ package loa.players;
 import loa.Game;
 import loa.Move;
 import loa.Piece;
+import loa.exceptions.InvalidMoveException;
 
 /**
  * @author William Hebgen Guss
@@ -36,15 +37,20 @@ public abstract class Player {
      * Makes a move given an optional input parameter.
      * @param input
      * @return
+     * @throws InvalidMoveException Does yes.
      */
-    public abstract Move turn(Move input);
+    public Move turn(Move input) throws InvalidMoveException{
+        if(input.movedPiece() != team())
+            throw new InvalidMoveException(input);
+        return input;
+    }
 
     /**
      * @return The team on which the player resides.
      */
     public Piece team() {
         // TODO Auto-generated method stub
-        return Piece.BP;
+        return this._team;
     }
 
     /**
