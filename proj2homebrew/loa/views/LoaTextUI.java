@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import loa.Game;
+import loa.Game.LogLevel;
 import loa.Main;
 import loa.Move;
 import loa.Piece;
@@ -25,7 +26,7 @@ import loa.util.Logger;
  *
  */
 public class LoaTextUI extends GameUI implements LogListener {
-
+    private static final LogLevel LOG_LEVEL = LogLevel.MOVES;
     private BufferedReader _input;
 
     /**
@@ -34,7 +35,7 @@ public class LoaTextUI extends GameUI implements LogListener {
      */
     public LoaTextUI(Game game) {
         super(game);
-        game.attach(this, Game.LogLevel.MOVES_AI.getLevel());
+        game.attach(this, LOG_LEVEL.getLevel());
         _input = new BufferedReader(new InputStreamReader(System.in));
     }
 

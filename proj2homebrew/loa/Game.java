@@ -35,7 +35,7 @@ public class Game extends Logger {
     public Game(String name){
         super(name);
         
-        this._board =new Board();
+        this._board = new Board(this);
         this._playing = false;
         this._players = new ArrayList<Player>();
         
@@ -70,7 +70,7 @@ public class Game extends Logger {
                     throw new InvalidMoveException("not expecting move.", input);
             }
             
-            _board.performMove(currentPlayer().turn(input));
+            this.logMove(_board.performMove(currentPlayer().turn(input)));
             
             checkVictory();
             
@@ -78,7 +78,8 @@ public class Game extends Logger {
 
         }
     }
-    
+   
+
     /**
      * Plays without giving input.
      * @param move
@@ -97,7 +98,7 @@ public class Game extends Logger {
      * @returns Whether or not a move is expected
      */
     public boolean start(){
-        _playing = true;
+        setPlaying(true);
         return inputExpected();
     }
     
@@ -105,10 +106,24 @@ public class Game extends Logger {
      * Clears the game board and stops playign the game.
      */
     public void clear(){
-        _playing = false;
+        setPlaying(false);
         _board.clear();
+        this.log("Board cleared.", LogLevel.GAME_STATE);
     }
     
+    /**
+     * @param playing the _playing to set.
+     */
+    protected void setPlaying(boolean playing) {
+        if(_playing != playing){
+            this._playing = playing;
+            if(_playing)
+                this.log("Game started.", LogLevel.GAME_STATE);
+            else
+                this.log("Game stopped.", LogLevel.GAME_STATE);
+        }
+    }
+
     /**
      * @return whether or not a game is being played.
      */
@@ -165,11 +180,38 @@ public class Game extends Logger {
         if(currentPlayer().getScore() == 1 || 
                 (contScore = _board.contiguityScore(currentPlayer().team())) == 1){
             currentPlayer().setScore(contScore);
-            _playing = false;
+            
+            this.log(currentPlayer().team().fullName() + " won!", LogLevel.GAME_STATE);
+            this.setPlaying(false);
             throw new GameVictoryException(currentPlayer());
         }
+        
+        currentPlayer().setScore(contScore);
     }
 
+    
+    /**
+     * Logs a move.
+     * @param finalMove The move to log.
+     */
+    private void logMove(Move finalMove) {
+        this.log(currentPlayer()
+                    .team()
+                    .abbrev()
+                    .toUpperCase()
+                    + "::"
+                    + finalMove.toString(), 
+                    currentPlayer().verbose());
+    }
+
+    /**
+     * Logs a message with a log level.
+     * @param message Them essage to log.
+     * @param level the log level.
+     */
+    private void log(String message, LogLevel level){
+        this.log(message, level.getLevel());
+    }
     /**
      * Contains the log levels for the game
      * @author William
@@ -182,11 +224,19 @@ public class Game extends Logger {
 
         private final int _level;
 
+        /**
+         * Creates an enum type.
+         * @param level The level of the type.
+         */
         private LogLevel(int level)
         {
             this._level = level;
         }
 
+        /**
+         * Gets the level of the LOgLEVEL/
+         * @return the level.
+         */
         public int getLevel()
         {
             return _level;

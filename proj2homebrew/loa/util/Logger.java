@@ -10,7 +10,6 @@ import java.util.TreeMap;
  *
  */
 public class Logger {
-    @SuppressWarnings("unused")
     private String _name;
     private String _log;
     private TreeMap<Integer, ArrayList<LogListener>> _listeners;
@@ -28,7 +27,9 @@ public class Logger {
      */
     public void log( String message, int level){
         Map.Entry<Integer, ArrayList<LogListener>> entry;
-        while((entry =_listeners.lowerEntry(level)) != null){
+        level+= 1;
+        while(((entry =_listeners.lowerEntry(level)) != null))
+        {
             level = entry.getKey();
             entry.getValue().forEach(x -> x.receive(this, message));
         }
@@ -45,7 +46,7 @@ public class Logger {
         
         if(leveledList == null){
             leveledList = new ArrayList<LogListener>();
-            this._listeners.put(level, new ArrayList<LogListener>());
+            this._listeners.put(level, leveledList);
         }
         
         leveledList.add(listener);
@@ -60,15 +61,6 @@ public class Logger {
             entry.getValue().remove(listener);
         }
         
-    }
-    
-    
-    /**
-     * Returns the log.
-     * @return The log.
-     */
-    public String toString(){
-        return getLog();
     }
     
     /**
