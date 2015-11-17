@@ -62,7 +62,10 @@ public class LoaTextUI extends GameUI implements LogListener {
                 }
                 
             } catch (GameException e) {
-                error(e.getMessage());
+                if(e.isError())
+                    error(e.getMessage());
+                else
+                    System.out.println(e.getMessage());
             }
         }
     }

@@ -4,6 +4,7 @@
 package loa.exceptions;
 
 import loa.players.Player;
+import loa.util.StringTools;
 
 /**
  * @author william
@@ -15,8 +16,9 @@ public class GameVictoryException extends GameException {
      * @param message
      */
     public GameVictoryException(Player victor) {
-        super(victor.team().toString() + "was victorius.");
-        // TODO Auto-generated constructor stub
+        super(StringTools.capitalizeFirstLetter(
+                victor.team().fullName()) + " wins.");
+        setError(false);
     }
 
 }

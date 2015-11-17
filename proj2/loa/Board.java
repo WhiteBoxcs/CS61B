@@ -34,7 +34,7 @@ public class Board {
         { EMP, BP,  BP,  BP,  BP,  BP,  BP,  EMP }
     };
     
-    static final int INITIAL_BPC = 12;
+    static final int INITIAL_BPC = 18;
     static final int INITIAL_WPC = 12;
     
     /**
@@ -109,11 +109,46 @@ public class Board {
     }
 
 
+    /**
+     * Gets the contiguity score of a team.
+     * @param team The team to check
+     * @return The integer contiguity score.
+     */
     public double contiguityScore(Piece team) {
-        BitMatrix explored = new BitMatrix(SIZE,SIZE);
+        BitMatrix explored = new BitMatrix(SIZE+1,SIZE+1);
         
+        for(int row =1; row <= SIZE; row++){
+            for(int col = 1; col <= SIZE; col++){
+                if(this.get(row,col) == team){
+                    return contiguityCount(team,row,col,explored)
+                            /(double)pieceCount[team.ordinal()];
+                }
+            }
+        }
+
+        return 0;
+    }
+    
+    /**
+     * The contiguity count depth first search algorithm.
+     * @param team The ateam to check.
+     * @param row The initial row.
+     * @param col The initial column.
+     * @param explored The exploration bit set.
+     * @return The total contiguous pieces.
+     */
+    int contiguityCount(Piece team, int row, int col, BitMatrix explored){
+        if(inBounds(col,row) && this.get(row, col) == team && !explored.get(row, col)){
+            explored.set(row, col);
+            
+            int sum= 1;
+            for(Direction dir : Direction.values()){
+                sum += contiguityCount(team,row+ dir.dr, col+dir.dc, explored);
+            }
+                    
+            return sum;
+        }
         
-        // TODO Auto-generated method stub
         return 0;
     }
     

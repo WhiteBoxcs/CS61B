@@ -190,7 +190,7 @@ public class Game extends Logger {
                 (contScore = _board.contiguityScore(currentPlayer().team())) == 1){
             currentPlayer().setScore(contScore);
             
-            this.log(currentPlayer().team().fullName() + " won!", LogLevel.GAME_STATE);
+            this.log(currentPlayer().team().fullName() + " wins.", LogLevel.GAME_STATE);
             this.setPlaying(false);
             throw new GameVictoryException(currentPlayer());
         }

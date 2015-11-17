@@ -8,17 +8,23 @@ package loa.exceptions;
  *
  */
 public class GameException extends Exception {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+    private boolean error = false;
 
     /**
      * @param message
      */
     public GameException(String message) {
         super(message);
-        // TODO Auto-generated constructor stub
+        setError(true);
+        
+    }
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
     }
 
 }
