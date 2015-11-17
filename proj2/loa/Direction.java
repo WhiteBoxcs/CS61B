@@ -7,8 +7,7 @@ package loa;
  */
 enum Direction {
 
-    /** Sentinel value. */
-    NOWHERE(0, 0),
+   
     /** Compass directions. */
         N(0, 1), NE(1, 1), E(1, 0), SE(1, -1), S(0, -1),
     /** Compass directions. */

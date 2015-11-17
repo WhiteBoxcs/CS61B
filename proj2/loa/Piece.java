@@ -6,14 +6,14 @@ package loa;
  *  (Black or White) of a game.
  *  @author
  */
-enum Piece {
+public enum Piece {
     /** The names of the pieces.  EMP indicates an empty square. The
      *  arguments give names to the piece colors. */
     BP, WP, EMP;
 
     /** Returns the full name of this piece (black, white, or
      *  empty). */
-    String fullName() {
+    public String fullName() {
         switch (this) {
         case BP:
             return "black";
@@ -26,7 +26,7 @@ enum Piece {
 
     /** Returns the one-character denotation of this piece on the standard
      *  text display of a board. */
-    String abbrev() {
+    public String abbrev() {
         switch (this) {
         case BP:
             return "b";
@@ -39,7 +39,7 @@ enum Piece {
 
     /** Return player (white or black piece) for which  .fullName()
      *  returns NAME. */
-    static Piece playerValueOf(String name) {
+    public static Piece playerValueOf(String name) {
         switch (name.toLowerCase()) {
         case "black":
             return BP;
@@ -51,7 +51,7 @@ enum Piece {
     }
 
     /** Return the Piece denoted by NAME in set commands. */
-    static Piece setValueOf(String name) {
+    public static Piece setValueOf(String name) {
         switch (name) {
         case "b":
             return BP;

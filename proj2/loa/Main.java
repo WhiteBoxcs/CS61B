@@ -5,6 +5,11 @@ package loa;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import loa.views.GameUI;
+import loa.views.LoaGUI;
+import loa.views.LoaTextUI;
+
 import java.io.IOException;
 
 import ucb.util.CommandArgs;
@@ -33,19 +38,20 @@ public class Main {
         if (!options.ok()) {
             usage();
         }
-        System.out.printf("Lines of Action.  Version %s.%nType ? for help.%n",
-                          VERSION);
-
+        
+        Game game = new Game("LOA_BASIC");
+        GameUI view;
+        
         if (options.contains("--display")) {
-            error(1, "--display not supported.");
+            view = new LoaGUI(game);
+        }
+        else
+        {
+            view = new LoaTextUI(game);
         }
 
-        if (options.contains("--debug")) {
-            Reporter.setMessageLevel(options.getInt("--debug"));
-        }
 
-        Game game = new Game();
-        game.play();
+        view.open();
     }
 
     /** Print brief description of the command-line format. */
@@ -57,7 +63,7 @@ public class Main {
     /** Print the contents of the resource named NAME on the standard error.
      *  The resource can be any file in the class directory.  File
      *  loa/foo.txt, for example, is named simply "loa/foo.txt". */
-    static void printResource(String name, boolean err) {
+    public static void printResource(String name, boolean err) {
         try {
             InputStream resourceStream =
                 Main.class.getClassLoader().getResourceAsStream(name);

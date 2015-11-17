@@ -2,13 +2,13 @@
 // Feel free to modify ANYTHING in this file.
 package loa;
 
+import static loa.Board.*;
+import static loa.Direction.*;
 import static loa.Piece.*;
-
-import loa.exceptions.InvalidMoveException;
 
 /** A move in Lines of Action.
  *  @author P. N. Hilfinger */
-public class Move {
+class Move {
 
     /* Implementation note: We create moves by means of static "factory
      * methods" all named create, which in turn use the single (private)
@@ -17,29 +17,28 @@ public class Move {
      * work. */
 
     /** Return a move on BOARD denoted by a prefix of S (after trimming),
-     *  or invalid move if S denotes no valid move. Returns null iff
-     *  the string matches in no way. */
-    public static Move create(String s, Board board) {
+     *  or null if S denotes no valid move. */
+    static Move create(String s, Board board) {
         s = s.trim();
         if (s.matches("[a-h][1-9]-[a-h][1-9]\\b.*")) {
             String p1 = s.substring(0, 2);
             String p2 = s.substring(3);
-            return create(s, board.toColPos(p1), board.toRowPos(p1),
-                          board.toColPos(p2), board.toRowPos(p2), board);
+            return create(board.col(p1), board.row(p1),
+                          board.col(p2), board.row(p2), board);
         } else {
-            return new Move(s);
+            return null;
         }
     }
 
     /** Return a move of the piece at COLUMN0, ROW0 to COLUMN1, ROW1, on
      *  BOARD or null if this move is always invalid. */
-    public static Move create(String s, int column0, int row0, int column1, int row1,
+    static Move create(int column0, int row0, int column1, int row1,
                        Board board) {
-        if (!board.inBounds(column0, row0) || !board.inBounds(column1, row1)) {
-            return new Move(s);
+        if (!inBounds(column0, row0) || !inBounds(column1, row1)) {
+            return null;
         }
-        int moved = board.get(row0, column0).ordinal();
-        int replaced = board.get(row1, column1).ordinal();
+        int moved = board.get(column0, row0).ordinal();
+        int replaced = board.get(column1, row1).ordinal();
         return _moves[column0][row0][column1][row1][moved][replaced];
     }
 
@@ -47,25 +46,19 @@ public class Move {
      *  BOARD. */
     static Move create(int column0, int row0, int k, Direction dir,
                        Board board) {
-        return create("", column0, row0, column0 + dir.dc * k, row0 + dir.dr * k,
+        return create(column0, row0, column0 + dir.dc * k, row0 + dir.dr * k,
                       board);
     }
 
     private boolean _invalid;
-    
-    public boolean isInvalid() {
-        return _invalid;
-    }
-
-    private String _creationString;
 
     /** A new Move of the piece at COL0, ROW0 to COL1, ROW1. MOVED is the
      *  piece being moved from COL0, ROW0, and REPLACED is the piece (or EMP)
      *  that it replaces. */
     private Move(int col0, int row0, int col1, int row1,
                  Piece moved, Piece replaced) {
-        assert 1 <= col0 && col0 <= Board.SIZE && 1 <= row0 && row0 <= Board.SIZE
-            && 1 <= col1 && col1 <= Board.SIZE && 1 <= row1 && row1 <= Board.SIZE
+        assert 1 <= col0 && col0 <= M && 1 <= row0 && row0 <= M
+            && 1 <= col1 && col1 <= M && 1 <= row1 && row1 <= M
             && (col0 == col1 || row0 == row1 || col0 + row0 == col1 + row1
                 || col0 - row0 == col1 - row1)
             && moved != EMP && moved != null && replaced != null;
@@ -86,60 +79,53 @@ public class Move {
         _moved = null;
         _replaced = null;
         _invalid = true;
-        _creationString = creationString;
     }
 
     /** Return the column at which this move starts, as an index in 1--8. */
-    public int getCol0() {
+    int getCol0() {
         return _col0;
     }
 
     /** Return the row at which this move starts, as an index in 1--8. */
-    public int getRow0() {
-   
+    int getRow0() {
         return _row0;
     }
 
     /** Return the column at which this move ends, as an index in 1--8. */
-    public int getCol1() {
-        
-        
+    int getCol1() {
         return _col1;
     }
 
     /** Return the row at which this move ends, as an index in 1--8. */
-    public int getRow1() {
-        
+    int getRow1() {
         return _row1;
     }
 
     /** Return the piece on BOARD that is moved by THIS. */
-    public Piece movedPiece() {
-        
+    Piece movedPiece() {
         return _moved;
     }
 
     /** Return the piece on BOARD that is replaced by THIS (or EMP
      *  if none). */
-    public Piece replacedPiece() {
-        
+    Piece replacedPiece() {
         return _replaced;
     }
 
     /** Return the length of this move (number of squares moved). */
     int length() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
-        
         return Math.max(Math.abs(_row1 - _row0), Math.abs(_col1 - _col0));
+    }
+
+    /** Return true IFF (C, R) denotes a square on the board, that is if
+     *  1 <= C <= M, 1 <= R <= M. */
+    private static boolean inBounds(int c, int r) {
+        return 1 <= c && c <= M && 1 <= r && r <= M;
     }
 
     @Override
     public String toString() {
-        if(_invalid)
-            return _creationString;
-        else
-            return String.format("%c%d-%c%d", (char) (_col0 - 1 + 'a'), _row0,
+        return String.format("%c%d-%c%d", (char) (_col0 - 1 + 'a'), _row0,
                              (char) (_col1 - 1 + 'a'), _row1);
     }
 
@@ -153,7 +139,7 @@ public class Move {
     /** The set of all possible Moves, indexed by row and column of
      *  start, row and column of destination, piece moved and piece replaced. */
     private static Move[][][][][][] _moves =
-        new Move[Board.SIZE + 1][Board.SIZE + 1][Board.SIZE + 1][Board.SIZE + 1][2][3];
+        new Move[M + 1][M + 1][M + 1][M + 1][2][3];
 
     static {
         for (int m = 0; m <= 1; m += 1) {
@@ -162,13 +148,13 @@ public class Move {
                 if (pm == pr || pm == EMP) {
                     continue;
                 }
-                for (int r0 = 1; r0 <= Board.SIZE; r0 += 1) {
-                    for (int c0 = 1; c0 <= Board.SIZE; c0 += 1) {
-                        for (int k = 1; k <= Board.SIZE; k += 1) {
+                for (int r0 = 1; r0 <= M; r0 += 1) {
+                    for (int c0 = 1; c0 <= M; c0 += 1) {
+                        for (int k = 1; k <= M; k += 1) {
                             if (k != r0) {
                                 _moves[c0][r0][c0][k][m][r] =
                                     new Move(c0, r0, c0, k, pm, pr);
-                                if ((char) (c0 - r0 + k - 1) < Board.SIZE) {
+                                if ((char) (c0 - r0 + k - 1) < M) {
                                     _moves[c0][r0][c0 - r0 + k][k][m][r]
                                         = new Move(c0, r0, c0 - r0 + k, k,
                                                    pm, pr);
@@ -177,7 +163,7 @@ public class Move {
                             if (k != c0) {
                                 _moves[c0][r0][k][r0][m][r] =
                                     new Move(c0, r0, k, r0, pm, pr);
-                                if ((char) (c0 + r0 - k - 1) < Board.SIZE) {
+                                if ((char) (c0 + r0 - k - 1) < M) {
                                     _moves[c0][r0][k][c0 + r0 - k][m][r]
                                         = new Move(c0, r0, k, c0 + r0 - k,
                                                    pm, pr);

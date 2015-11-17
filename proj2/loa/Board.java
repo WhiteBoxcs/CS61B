@@ -1,244 +1,27 @@
-// Remove all comments that begin with //, and replace appropriately.
-// Feel free to modify ANYTHING in this file.
 package loa;
 
+import static loa.Piece.BP;
+import static loa.Piece.EMP;
+import static loa.Piece.WP;
+
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Formatter;
-import java.util.NoSuchElementException;
+import java.util.Arrays;
+import java.util.BitSet;
 
-import java.util.regex.Pattern;
+import loa.exceptions.InvalidMoveException;
+import loa.util.BitMatrix;
 
-import static loa.Piece.*;
-import static loa.Direction.*;
-
-/** Represents the state of a game of Lines of Action.
- *  @author
+/**
+ * Represents a board class which stores the main data for the game.
+ * @author William Hebgen Guss
  */
-class Board implements Iterable<Move> {
-
-    /** Size of a board. */
-    static final int M = 8;
-
-    /** Pattern describing a valid square designator (cr). */
-    static final Pattern ROW_COL = Pattern.compile("^[a-h][1-8]$");
-
-    /** A Board whose initial contents are taken from INITIALCONTENTS
-     *  and in which the player playing TURN is to move. The resulting
-     *  Board has
-     *        get(col, row) == INITIALCONTENTS[row-1][col-1]
-     *  Assumes that PLAYER is not null and INITIALCONTENTS is MxM.
-     *
-     *  CAUTION: The natural written notation for arrays initializers puts
-     *  the BOTTOM row of INITIALCONTENTS at the top.
-     */
-    Board(Piece[][] initialContents, Piece turn) {
-        initialize(initialContents, turn);
-    }
-
-    /** A new board in the standard initial position. */
-    Board() {
-        clear();
-    }
-
-    /** A Board whose initial contents and state are copied from
-     *  BOARD. */
-    Board(Board board) {
-        copyFrom(board);
-    }
-
-    /** Set my state to CONTENTS with SIDE to move. */
-    void initialize(Piece[][] contents, Piece side) {
-        _moves.clear();
-
-        // FIXME
-
-        for (int r = 1; r <= M; r += 1) {
-            for (int c = 1; c <= M; c += 1) {
-                set(c, r, contents[r - 1][c - 1]);
-            }
-        }
-        _turn = side;
-    }
-
-    /** Set me to the initial configuration. */
-    void clear() {
-        initialize(INITIAL_PIECES, BP);
-    }
-
-    /** Set my state to a copy of BOARD. */
-    void copyFrom(Board board) {
-        if (board == this) {
-            return;
-        }
-        _moves.clear();
-        _moves.addAll(board._moves);
-        _turn = board._turn;
-        // FIXME
-    }
-
-    /** Return the contents of column C, row R, where 1 <= C,R <= 8,
-     *  where column 1 corresponds to column 'a' in the standard
-     *  notation. */
-    Piece get(int c, int r) {
-        return null; // FIXME
-
-    }
-
-    /** Return the contents of the square SQ.  SQ must be the
-     *  standard printed designation of a square (having the form cr,
-     *  where c is a letter from a-h and r is a digit from 1-8). */
-    Piece get(String sq) {
-        return get(col(sq), row(sq));
-    }
-
-    /** Return the column number (a value in the range 1-8) for SQ.
-     *  SQ is as for {@link get(String)}. */
-    static int col(String sq) {
-        if (!ROW_COL.matcher(sq).matches()) {
-            throw new IllegalArgumentException("bad square designator");
-        }
-        return sq.charAt(0) - 'a' + 1;
-    }
-
-    /** Return the row number (a value in the range 1-8) for SQ.
-     *  SQ is as for {@link get(String)}. */
-    static int row(String sq) {
-        if (!ROW_COL.matcher(sq).matches()) {
-            throw new IllegalArgumentException("bad square designator");
-        }
-        return sq.charAt(1) - '0';
-    }
-
-    /** Set the square at column C, row R to V, and make NEXT the next side
-     *  to move, if it is not null. */
-    void set(int c, int r, Piece v, Piece next) {
-        // FIXME
-        if (next != null) {
-            _turn = next;
-        }
-    }
-
-    /** Set the square at column C, row R to V. */
-    void set(int c, int r, Piece v) {
-        set(c, r, v, null);
-    }
-
-    /** Assuming isLegal(MOVE), make MOVE. */
-    void makeMove(Move move) {
-        assert isLegal(move);
-        _moves.add(move);
-        Piece replaced = move.replacedPiece();
-        int c0 = move.getCol0(), c1 = move.getCol1();
-        int r0 = move.getRow0(), r1 = move.getRow1();
-        if (replaced != EMP) {
-            set(c1, r1, EMP);
-        }
-        set(c1, r1, move.movedPiece());
-        set(c0, r0, EMP);
-        _turn = _turn.opposite();
-    }
-
-    /** Retract (unmake) one move, returning to the state immediately before
-     *  that move.  Requires that movesMade () > 0. */
-    void retract() {
-        assert movesMade() > 0;
-        Move move = _moves.remove(_moves.size() - 1);
-        Piece replaced = move.replacedPiece();
-        int c0 = move.getCol0(), c1 = move.getCol1();
-        int r0 = move.getRow0(), r1 = move.getRow1();
-        Piece movedPiece = move.movedPiece();
-        set(c1, r1, replaced);
-        set(c0, r0, movedPiece);
-        _turn = _turn.opposite();
-    }
-
-    /** Return the Piece representing who is next to move. */
-    Piece turn() {
-        return _turn;
-    }
-
-    /** Return true iff MOVE is legal for the player currently on move. */
-    boolean isLegal(Move move) {
-        return move != null; // FIXME
-    }
-
-    /** Return a sequence of all legal moves from this position. */
-    Iterator<Move> legalMoves() {
-        return new MoveIterator();
-    }
-
-    @Override
-    public Iterator<Move> iterator() {
-        return legalMoves();
-    }
-
-    /** Return true if there is at least one legal move for the player
-     *  on move. */
-    public boolean isLegalMove() {
-        return iterator().hasNext();
-    }
-
-    /** Return true iff either player has all his pieces continguous. */
-    boolean gameOver() {
-        return piecesContiguous(BP) || piecesContiguous(WP);
-    }
-
-    /** Return true iff SIDE's pieces are continguous. */
-    boolean piecesContiguous(Piece side) {
-        return false; // FIXME
-    }
-
-    /** Return the total number of moves that have been made (and not
-     *  retracted).  Each valid call to makeMove with a normal move increases
-     *  this number by 1. */
-    int movesMade() {
-        return _moves.size();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Board b = (Board) obj;
-        return b == this;  // FIXME
-    }
-
-    @Override
-    public int hashCode() {
-        return 0; // FIXME
-    }
-
-    @Override
-    public String toString() {
-        Formatter out = new Formatter();
-        out.format("===%n");
-        for (int r = M; r >= 1; r -= 1) {
-            out.format("    ");
-            for (int c = 1; c <= M; c += 1) {
-                out.format("%s ", get(c, r).abbrev());
-            }
-            out.format("%n");
-        }
-        out.format("Next move: %s%n===", turn().fullName());
-        return out.toString();
-    }
-
-    /** Return the number of pieces in the line of action indicated by MOVE. */
-    private int pieceCountAlong(Move move) {
-        return 1;  // FIXME
-    }
-
-    /** Return the number of pieces in the line of action in direction DIR and
-     *  containing the square at column C and row R. */
-    private int pieceCountAlong(int c, int r, Direction dir) {
-        return 1;  // FIXME
-    }
-
-    /** Return true iff MOVE is blocked by an opposing piece or by a
-     *  friendly piece on the target square. */
-    private boolean blocked(Move move) {
-        return false;  // FIXME
-    }
-
+public class Board {
+    public static final int SIZE =8;
+    
+    private Piece[][] data;
+    private int[] pieceCount;
+    private Game _owner; 
+    
     /** The standard initial configuration for Lines of Action. */
     static final Piece[][] INITIAL_PIECES = {
         { EMP, BP,  BP,  BP,  BP,  BP,  BP,  EMP },
@@ -250,58 +33,198 @@ class Board implements Iterable<Move> {
         { WP,  EMP, EMP, EMP, EMP, EMP, EMP, WP  },
         { EMP, BP,  BP,  BP,  BP,  BP,  BP,  EMP }
     };
-
-    /** List of all unretracted moves on this board, in order. */
-    private final ArrayList<Move> _moves = new ArrayList<>();
-    /** Current side on move. */
-    private Piece _turn;
-
-    // FILL IN
-
-    /** An iterator returning the legal moves from the current board. */
-    private class MoveIterator implements Iterator<Move> {
-        /** Current piece under consideration. */
-        private int _c, _r;
-        /** Next direction of current piece to return. */
-        private Direction _dir;
-        /** Next move. */
-        private Move _move;
-
-        /** A new move iterator for turn(). */
-        MoveIterator() {
-            _c = 1; _r = 1; _dir = NOWHERE;
-            incr();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return _move != null;
-        }
-
-        @Override
-        public Move next() {
-            if (_move == null) {
-                throw new NoSuchElementException("no legal move");
+    
+    static final int INITIAL_BPC = 12;
+    static final int INITIAL_WPC = 12;
+    
+    /**
+     * Creates a new board object with default initialization.
+     */
+    public Board(Game owner){
+        this._owner = owner;
+        clear();
+    }
+    
+    /**
+     * Clears the board to its initital state.
+     */
+    public void clear() {
+        data = new Piece[SIZE][SIZE];
+        
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++){
+                data[i][j] = INITIAL_PIECES[i][j];
             }
-
-            Move move = _move;
-            incr();
-            return move;
         }
-
-        @Override
-        public void remove() {
-        }
-
-        /** Advance to the next legal move. */
-        private void incr() {
-            // FIXME
-        }
+        
+        pieceCount = new int[Piece.values().length];
+        pieceCount[Piece.WP.ordinal()] = INITIAL_WPC;
+        pieceCount[Piece.BP.ordinal()] = INITIAL_BPC;
     }
 
-    public Piece getWinner() {
-        return null;
+    /**
+     * Gets the column based off of a alphabet character.
+     * @param col The character.
+     * @return The column/
+     */
+    public int toColPos(String col) {
+        return col.charAt(0) - 96;
+    }
+
+    /**
+     * Gets the row posisito0n of a string containing a single digit integer. 
+     * @param p1 The string containing the digit. Assumed that it is not wrong.
+     * @return The row position.
+     */
+    public int toRowPos(String p1) {
+        return Integer.parseInt(p1.substring(1,2));
+    }
+
+    /** Return true IFF (C, R) denotes a square on the board, that is if
+     *  1 <= C <= M, 1 <= R <= M. */
+    public  boolean inBounds(int c, int r) {
+        return 1 <= c && c <= Board.SIZE && 1 <= r && r <= Board.SIZE;
+    }
+    
+    /**
+     * Gets the piece at a row and column.
+     * @param row The row.
+     * @param col The column.
+     * @return the piece.
+     */
+    public Piece get(int row, int col){
+        return data[row-1][col-1];
+    }
+    
+    /**
+     * Sets a piece at a target position. Assumes newPiece is not null.
+     * @param newPiece the new Piece.
+     * @param row the row.
+     * @param col the column.
+     */
+    public void set(int row, int col, Piece newPiece){
+        this.pieceCount[this.data[row-1][col-1].ordinal()]--;
+        this.data[row-1][col-1] = newPiece;
+        this.pieceCount[newPiece.ordinal()]++;
+    }
+
+
+    public double contiguityScore(Piece team) {
+        BitMatrix explored = new BitMatrix(SIZE,SIZE);
         
+        
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    
+    /**
+     * Gets a list of possible moves at a position
+     * @param row
+     * @param col
+     * @return A list of possible m,opves.
+     */
+    public ArrayList<Move> possibleMoves(int row, int col){
+        ArrayList<Move> moves = new ArrayList<>(8);
+        
+        if(this.get(row,col) == Piece.EMP)
+            return moves;
+        else
+        {
+            for(Direction dir : Direction.values()){
+                
+                int len = lineOfAction(row, col, dir);
+                if(!blocked(row,col,dir,len))
+                    moves.add(Move.create(col, row, len, dir, this));
+                
+            }
+        }
+        return moves;
+        
+    }
+    
+    /**
+     * Checks to see if amove is blocked vby the existence of either a like-.
+     * piece or an opposing piece.
+     * @param row The initial row of the move
+     * @param col The initial column of the move.
+     * @param dir The initial direction of the move.
+     * @param len The initial length of the move.
+     * @return If the move is blocked.
+     */
+    private boolean blocked(int row, int col, Direction dir, int len) {
+        Piece start = this.get(row,col);
+        for(int i = 0; i < len; i++, row += dir.dr, col += dir.dc){            
+            if(!inBounds(col, row))
+                return true;
+            else
+                if(this.get(row, col) != start
+                    && this.get(row, col) != Piece.EMP)
+                    return true;
+        }
+        
+        if(!inBounds(col, row))
+            return true;
+       return this.get(row, col) == start;
+    }
+    
+
+    /**
+     * Gets the number of non-empty elements along a line of action.
+     * @param row The initial row.
+     * @param col The initial column.
+     * @param dir The initial direction.
+     * @return The number of nonzero elems.
+     */
+    private int lineOfAction(int row, int col, Direction dir){
+        int count = -1;
+        for(int r0 = row, c0 = col; inBounds(r0, c0);
+                r0 += dir.dr, c0 += dir.dc){
+            if(this.get(r0, c0) != Piece.EMP)
+                count++;
+        }
+        
+        for(int r0 = row, c0 = col; inBounds(r0, c0);
+                r0 -= dir.dr, c0 -= dir.dc){
+            if(this.get(r0, c0) != Piece.EMP)
+                count++; 
+        }
+        
+        return count;
+    }
+
+    /**
+     * Performs a given move.
+     * @param todo The move to do.
+     * @throws InvalidMoveException If the move is illegal by the rules of the game.
+     * @return Move for chaining.
+     */
+    public Move performMove(Move todo) throws InvalidMoveException{
+        int row0 = todo.getRow0();
+        int col0 = todo.getCol0();
+        
+        if(!possibleMoves(row0,col0).contains(todo))
+            throw new InvalidMoveException(todo);
+        Piece toMove= this.get(row0, col0);
+        this.set( row0, col0, Piece.EMP);
+        this.set(todo.getRow1(), todo.getCol1(), toMove);
+        
+        return todo;
+    }
+    
+    /**
+     * Gets the string representation of the game. 
+     */
+    public String toString(){
+        String repr = "";
+        for(int row = SIZE-1; row >= 0; row--){
+            for(int col = 0; col < SIZE; col++)
+            {
+                repr += data[row][col].abbrev()
+                        + (col != SIZE -1 ? " " : "");
+            }
+            repr += "\n";
+        }
+        return repr;
     }
 
 }

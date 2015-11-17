@@ -1,262 +1,253 @@
-// Remove all comments that begin with //, and replace appropriately.
-// Feel free to modify ANYTHING in this file.
+/**
+ * 
+ */
 package loa;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
-import static loa.Piece.*;
-import static loa.Main.*;
+import loa.exceptions.GameException;
+import loa.exceptions.InvalidMoveException;
+import loa.exceptions.UnknownPlayerException;
+import loa.players.HumanPlayer;
+import loa.players.Player;
+import loa.util.Logger;
+import loa.exceptions.GameNotStartedException;
+import loa.exceptions.GameVictoryException;
 
-/** Represents one game of Lines of Action.
- *  @author  */
-class Game {
+/**
+ * @author William Hebgen Guss
+ * Represents an actual game of league of legends.
+ */
+public class Game extends Logger {
+    private Board _board;
+    private boolean _playing;
+    private ArrayList<Player> _players;
+    int playerIndex = 0;
+    
+    public static final String VERSION = "1.0";
+    public static final Random RANDOM = new Random();
 
-    /** A new series of Games. */
-    Game() {
-        _randomSource = new Random();
-
-        _players = new Player[2];
-        _input = new BufferedReader(new InputStreamReader(System.in));
-        _players[0] = new HumanPlayer(BP, this);
-        _players[1] = new MachinePlayer(WP, this);
-        _playing = false;
+    /**
+     * Initializes with a new board.
+     */
+    public Game(String name){
+        super(name);
+        
+        this._board = new Board(this);
+        this._playing = false;
+        this._players = new ArrayList<Player>();
+        
+        this._players.add(new HumanPlayer(Piece.BP,0));
+        this._players.add(new HumanPlayer(Piece.WP, 0));
     }
+    
+    /**
+     * Plays a move in the game. 
+     * @param input
+     * @throws GameException Throws an exception iff
+     * either the move is invalid or the game is not started.
+     * @returns Whether or not a move is expected.
+     */
+    public void play(Move input) throws GameException
+    {
+        if(currentPlayer()!= null) {
+            checkVictory();
+            
+            if(input == null && (inputExpected() || !playing()))
+                return;
+            else if(input != null && input.isInvalid())
+                    throw new InvalidMoveException(input);
+            else if(!playing())
+                    throw new GameNotStartedException();
 
-    /** Return the current board. */
-    Board getBoard() {
-        return _board;
-    }
+            
+            this.logMove(_board.performMove(currentPlayer().turn(input)));
+            
+            checkVictory();
+            
+            playerIndex = (playerIndex + 1) %_players.size();
 
-    /** Quit the game. */
-    private void quit() {
-        System.exit(0);
-    }
-
-    /** Return a move.  Processes any other intervening commands as
-     *  well.  Exits with null if the value of _playing changes. */
-    Move getMove() {
-        try {
-            boolean playing0 = _playing;
-            while (_playing == playing0) {
-                prompt();
-
-                String line = _input.readLine();
-                if (line == null) {
-                    quit();
-                }
-
-                line = line.trim();
-                if (!processCommand(line)) {
-                    Move move = Move.create(line, _board);
-                    if (move == null) {
-                        error("invalid move: %s%n", line);
-                    } else if (!_playing) {
-                        error("game not started");
-                    } else if (!_board.isLegal(move)) {
-                        error("illegal move: %s%n", line);
-                    } else {
-                        return move;
-                    }
-                }
-            }
-        } catch (IOException excp) {
-            error(1, "unexpected I/O error on input");
         }
+    }
+   
+
+    /**
+     * Plays without giving input.
+     * @param move
+     * @throws InvalidMoveException Throws an exception iff
+     * either the move is invalid or the game is not started.
+     * @returns Whether or not a move is expected.
+     */
+    public void play() throws GameException
+    {
+        this.play(null);
+    }
+
+
+    /**
+     * Starts a game.
+     * @returns Whether or not a move is expected
+     */
+    public boolean start(){
+        setPlaying(true);
+        return inputExpected();
+    }
+    
+    /**
+     * Clears the game board and stops playign the game.
+     */
+    public void clear(){
+        setPlaying(false);
+        _board.clear();
+        this.log("Board cleared.", LogLevel.GAME_STATE);
+    }
+    
+    /**
+     * @param playing the _playing to set.
+     */
+    protected void setPlaying(boolean playing) {
+        if(_playing != playing){
+            this._playing = playing;
+            if(_playing)
+                this.log("Game started.", LogLevel.GAME_STATE);
+            else
+                this.log("Game stopped.", LogLevel.GAME_STATE);
+        }
+    }
+
+    /**
+     * @return whether or not a game is being played.
+     */
+    public boolean playing(){
+        return _playing;
+    }
+    
+    /**
+     * @return whether or not a move is expected.
+     */
+    public boolean inputExpected(){
+        
+        return !playing() || (currentPlayer() != null
+                    && currentPlayer().inputExpected());
+    }
+
+    /**
+     * Gets the current player.
+     * @return the current player.
+     */
+    public Player currentPlayer() {
+        if(!_players.isEmpty())
+            return _players.get(playerIndex);
         return null;
     }
 
-    /** Print a prompt for a move. */
-    private void prompt() {
-        System.out.print("> ");
-        System.out.flush();
-    }
-
-    /** Describes a command with up to two arguments. */
-    private static final Pattern COMMAND_PATN =
-        Pattern.compile("(#|\\S+)\\s*(\\S*)\\s*(\\S*).*");
-
-    /** If LINE is a recognized command other than a move, process it
-     *  and return true.  Otherwise, return false. */
-    private boolean processCommand(String line) {
-        if (line.length() == 0) {
-            return true;
-        }
-        Matcher command = COMMAND_PATN.matcher(line);
-        if (command.matches()) {
-            switch (command.group(1).toLowerCase()) {
-            case "#":
-                return true;
-            case "manual":
-                manualCommand(command.group(2).toLowerCase());
-                return true;
-            case "auto":
-                autoCommand(command.group(2).toLowerCase());
-                return true;
-            case "seed":
-                seedCommand(command.group(2));
-                return true;
-            case "clear":
-                clearCommand();
-                return true;
-            case "start":
-                startCommand();
-                return true;
-            case "set":
-                setCommand(command.group(2), command.group(3));
-                return true;
-                
-            case "dump":
-                dumpCommand();
-                return true;
-            case "?":
-                help();
-                return true;
-            case "help":
-                help();
-                return true;
-            default:
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private void clearCommand() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private void startCommand() {
-        _playing =true;  
-    }
-
-    private void setCommand(String group, String group2) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private void dumpCommand() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    /** Set player PLAYER ("white" or "black") to be a manual player. */
-    private void manualCommand(String player) {
-        try {
-            Piece s = Piece.playerValueOf(player);
-            _playing = false;
-            _players[s.ordinal()] = new HumanPlayer(s, this);
-        } catch (IllegalArgumentException excp) {
-            error("unknown player: %s", player);
-        }
-    }
-
-    /** Set player PLAYER ("white" or "black") to be an automated player. */
-    private void autoCommand(String player) {
-        try {
-            Piece s = Piece.playerValueOf(player);
-            _playing = false;
-            _players[s.ordinal()] = new MachinePlayer(s, this);
-        } catch (IllegalArgumentException excp) {
-            error("unknown player: %s", player);
-        }
-    }
-
-    /** Seed random-number generator with SEED (as a long). */
-    private void seedCommand(String seed) {
-        try {
-            _randomSource.setSeed(Long.parseLong(seed));
-        } catch (NumberFormatException excp) {
-            error("Invalid number: %s", seed);
-        }
-    }
-
-    /** Play this game, printing any results. */
-    public void play() {
-        HashSet<Board> positionsPlayed = new HashSet<Board>();
-        _board = new Board();
-
-        while (true) {
-            int playerInd = _board.turn().ordinal();
-            Move next;
-            if (_playing) {
-                if (_board.gameOver()) {
-                    announceWinner();
-                    _playing = false;
-                    continue;
-                }
-                next = _players[playerInd].makeMove();
-            } else {
-                getMove();
-                next = null;
-            }
-            
-            if (_playing) {
-                announceWinner();
-                _playing = false;
-                continue;
-            }
-            if (next != null) {
-                assert _board.isLegal(next);
-                _board.makeMove(next);
-                if (_board.gameOver()) {
-                    announceWinner();
-                    _playing = false;
-                }
-            }
-        }
-    }
-
-    /** Print an announcement of the winner. */
-    private void announceWinner() {
-        try{
-            
-            Piece winner = _board.getWinner();
-            if(winner == null || winner == Piece.EMP)
-                throw new IllegalArgumentException();
-            
-            if(winner == Piece.WP)
-                System.out.println("White wins.");
-            else
-                System.out.println("Black wins");
-            
-        } catch (IllegalArgumentException exp){
-            error("No winner exists.");
-        }
-    }
-
-    /** Return an integer r, 0 <= r < N, randomly chosen from a
-     *  uniform distribution using the current random source. */
-    int randInt(int n) {
-        return _randomSource.nextInt(n);
-    }
-
-    /** Print a help message. */
-    void help() {
-        Main.printResource("loa/help", false);
-    }
-
-    /** The official game board. */
-    private Board _board;
-
-    /** The _players of this game. */
-    private Player[] _players = new Player[2];
-
-    /** A source of random numbers, primed to deliver the same sequence in
-     *  any Game with the same seed value. */
-    private Random _randomSource;
-
-    /** Input source. */
-    private BufferedReader _input;
-
-    /** True if actually playing (game started and not stopped or finished).
+    /**
+     * Gets the board on which the game is being played.
+     * @return The board.
      */
-    private boolean _playing;
+    public Board getBoard() {
+        return this._board;
+    }
 
+    /**
+     * Sets a given player to a specified plah styel.
+     * @param player The player to set.
+     * @param auto The play style.
+     */
+    public void setPlayer(Piece player, Player newPlayer) throws UnknownPlayerException
+    {
+        
+        for(int i = 0; i < _players.size(); i++){
+            if(_players.get(i).team() == player){
+                _players.set(i, newPlayer);
+                setPlaying(false);
+                return;
+            }
+        }
+        
+        throw new UnknownPlayerException(player);
+    }
+
+    /**
+     * Sets a piece within the game.
+     * @param row The row to set.
+     * @param col The collumn to set.
+     * @param piece The piece type to set.
+     */
+    public void setPiece( Piece piece, int row, int col) {
+        this._board.set(row, col, piece);
+    }
+    
+    /**
+     * Checks the game for victory.
+     * @throws GameVictoryException Throws a game victory exception if victory has been reached.
+     */
+    private void checkVictory() throws GameVictoryException{
+        double contScore = 0;
+        if(currentPlayer().getScore() == 1 || 
+                (contScore = _board.contiguityScore(currentPlayer().team())) == 1){
+            currentPlayer().setScore(contScore);
+            
+            this.log(currentPlayer().team().fullName() + " won!", LogLevel.GAME_STATE);
+            this.setPlaying(false);
+            throw new GameVictoryException(currentPlayer());
+        }
+        
+        currentPlayer().setScore(contScore);
+    }
+    
+    /**
+     * Logs a move.
+     * @param finalMove The move to log.
+     */
+    private void logMove(Move finalMove) {
+        this.log(currentPlayer()
+                    .team()
+                    .abbrev()
+                    .toUpperCase()
+                    + "::"
+                    + finalMove.toString(), 
+                    currentPlayer().verbose());
+    }
+
+    /**
+     * Logs a message with a log level.
+     * @param message Them essage to log.
+     * @param level the log level.
+     */
+    private void log(String message, LogLevel level){
+        this.log(message, level.getLevel());
+    }
+    /**
+     * Contains the log levels for the game
+     * @author William
+     */
+    public enum LogLevel{
+        DEBUG(0),
+        GAME_STATE(1),
+        MOVES(2), 
+        MOVES_AI(3);
+
+        private final int _level;
+
+        /**
+         * Creates an enum type.
+         * @param level The level of the type.
+         */
+        private LogLevel(int level)
+        {
+            this._level = level;
+        }
+
+        /**
+         * Gets the level of the LOgLEVEL/
+         * @return the level.
+         */
+        public int getLevel()
+        {
+            return _level;
+        }
+    }
 }
