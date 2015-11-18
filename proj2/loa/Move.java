@@ -128,8 +128,6 @@ public class Move {
 
     /** Return the length of this move (number of squares moved). */
     int length() {
-//        if(_invalid)
-//            throw new InvalidMoveException(this);
         
         return Math.max(Math.abs(_row1 - _row0), Math.abs(_col1 - _col0));
     }
@@ -150,6 +148,56 @@ public class Move {
     /** Piece replaced. */
     private final Piece _replaced;
 
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + _col0;
+        result = prime * result + _col1;
+        result = prime * result
+                + ((_creationString == null) ? 0 : _creationString.hashCode());
+        result = prime * result + (_invalid ? 1231 : 1237);
+        result = prime * result + ((_moved == null) ? 0 : _moved.hashCode());
+        result = prime * result
+                + ((_replaced == null) ? 0 : _replaced.hashCode());
+        result = prime * result + _row0;
+        result = prime * result + _row1;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Move other = (Move) obj;
+        if (_col0 != other._col0)
+            return false;
+        if (_col1 != other._col1)
+            return false;
+        if (_creationString == null) {
+            if (other._creationString != null)
+                return false;
+        } else if (!_creationString.equals(other._creationString))
+            return false;
+        if (_invalid != other._invalid)
+            return false;
+        if (_moved != other._moved)
+            return false;
+        if (_replaced != other._replaced)
+            return false;
+        if (_row0 != other._row0)
+            return false;
+        if (_row1 != other._row1)
+            return false;
+        return true;
+    }
+    
+    
     /** The set of all possible Moves, indexed by row and column of
      *  start, row and column of destination, piece moved and piece replaced. */
     private static Move[][][][][][] _moves =

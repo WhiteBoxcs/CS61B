@@ -65,7 +65,7 @@ public enum Piece {
     }
 
     /** Returns Piece with my opposing color (null for EMP). */
-    Piece opposite() {
+    public Piece opposite() {
         switch (this) {
         case BP:
             return WP;

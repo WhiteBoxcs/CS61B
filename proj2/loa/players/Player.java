@@ -37,6 +37,7 @@ public abstract class Player {
      * Makes a move given an optional input parameter.
      * @param input
      * @return
+     * @throws InvalidMoveException 
      */
     public abstract Move act(Move input);
     

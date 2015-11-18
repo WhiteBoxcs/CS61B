@@ -10,7 +10,10 @@ import java.util.Random;
 import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
+import loa.players.AcyclicMachinePlayer;
+import loa.players.DensityMachinePlayer;
 import loa.players.HumanPlayer;
+import loa.players.MachinePlayer;
 import loa.players.Player;
 import loa.util.Logger;
 import loa.exceptions.GameNotStartedException;
@@ -38,9 +41,10 @@ public class Game extends Logger {
         this._board = new Board(this);
         this._playing = false;
         this._players = new ArrayList<Player>();
-        
-        this._players.add(new HumanPlayer(Piece.BP,0));
-        this._players.add(new HumanPlayer(Piece.WP, 0));
+
+
+        this._players.add(new AcyclicMachinePlayer(Piece.BP, 0, this));
+        this._players.add(new DensityMachinePlayer(Piece.WP,0, this));
     }
     
     /**
@@ -52,9 +56,7 @@ public class Game extends Logger {
      */
     public void play(Move input) throws GameException
     {
-        if(currentPlayer()!= null) {
-            checkVictory();
-            
+        if(currentPlayer()!= null) {            
             if(input == null && (inputExpected() || !playing()))
                 return;
             else if(input != null && input.isInvalid())
@@ -62,6 +64,7 @@ public class Game extends Logger {
             else if(!playing())
                     throw new GameNotStartedException();
 
+            checkVictory();
             
             this.logMove(_board.performMove(currentPlayer().turn(input)));
             
@@ -101,6 +104,9 @@ public class Game extends Logger {
     public void clear(){
         setPlaying(false);
         _board.clear();
+        this.playerIndex = 0;
+        for(Player p : _players)
+            p.setScore(0);
         this.log("Board cleared.", LogLevel.GAME_STATE);
     }
     

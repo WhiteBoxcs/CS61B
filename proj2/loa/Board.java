@@ -34,7 +34,7 @@ public class Board {
         { EMP, BP,  BP,  BP,  BP,  BP,  BP,  EMP }
     };
     
-    static final int INITIAL_BPC = 18;
+    static final int INITIAL_BPC = 12;
     static final int INITIAL_WPC = 12;
     
     /**
@@ -48,18 +48,30 @@ public class Board {
     /**
      * Clears the board to its initital state.
      */
-    public void clear() {
+    public void clear() {        
+        int[] _newpieceCount = new int[Piece.values().length];
+        _newpieceCount[Piece.WP.ordinal()] = INITIAL_WPC;
+        _newpieceCount[Piece.BP.ordinal()] = INITIAL_BPC;
+        
+        clear(INITIAL_PIECES, _newpieceCount);
+    }
+    
+    
+    /**
+     * Clears the board to some new state.
+     * @param newData The new board backing.
+     * @param count The piece counts.
+     */
+    public void clear(Piece[][] newData, int[] count){
         data = new Piece[SIZE][SIZE];
         
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
-                data[i][j] = INITIAL_PIECES[i][j];
+                data[i][j] = newData[i][j];
             }
         }
         
-        pieceCount = new int[Piece.values().length];
-        pieceCount[Piece.WP.ordinal()] = INITIAL_WPC;
-        pieceCount[Piece.BP.ordinal()] = INITIAL_BPC;
+        pieceCount = count.clone();
     }
 
     /**
@@ -117,16 +129,20 @@ public class Board {
     public double contiguityScore(Piece team) {
         BitMatrix explored = new BitMatrix(SIZE+1,SIZE+1);
         
+        double netScore = 0;
+        double chunks = 0;
+        
         for(int row =1; row <= SIZE; row++){
             for(int col = 1; col <= SIZE; col++){
-                if(this.get(row,col) == team){
-                    return contiguityCount(team,row,col,explored)
+                if(this.get(row,col) == team && !explored.get(row, col)){
+                    netScore += contiguityCount(team,row,col,explored)
                             /(double)pieceCount[team.ordinal()];
+                    chunks++; 
                 }
             }
         }
 
-        return 0;
+        return netScore/chunks;
     }
     
     /**
@@ -142,6 +158,7 @@ public class Board {
             explored.set(row, col);
             
             int sum= 1;
+            
             for(Direction dir : Direction.values()){
                 sum += contiguityCount(team,row+ dir.dr, col+dir.dc, explored);
             }
@@ -261,5 +278,43 @@ public class Board {
         }
         return repr;
     }
+    
+   /**
+    * Creates a shallow clone of the board.
+    */
+    public Board clone() {
+        Board b = new Board(this._owner);
+        b.clear(data, pieceCount);
+        return b;
+        
+    }
+
+    /**
+     * Gets a density score for a team;
+     * The density score is the sum of all of the degrees of a node of a team.
+     * @param team The team to get the desnity for.
+     * @return The desnity score.
+     */
+    public double densityScore(Piece team) {
+        double netDegree = 0;
+        double vertices = 0;
+        for(int row =1; row <= SIZE; row++){
+            for(int col = 1; col <= SIZE; col++){
+                if(this.get(row,col) == team){
+                    vertices++;
+                    for(Direction dir : Direction.values()){
+                        if(inBounds(col+dir.dc, row+dir.dr)
+                                && this.get(row+dir.dr, col+dir.dc) == team){
+                            netDegree++;
+                        }
+                    }
+                }
+            }
+        }
+        if(vertices > 1)
+            return netDegree/(vertices*(vertices-1));
+        else
+            return 0;
+    } 
 
 }

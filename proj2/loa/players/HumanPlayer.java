@@ -26,7 +26,6 @@ public class HumanPlayer extends Player{
      */
     @Override
     public boolean inputExpected() {
-        // TODO Auto-generated method stub
         return true;
     }
 
@@ -37,7 +36,6 @@ public class HumanPlayer extends Player{
 
     @Override
     public Move act(Move input) {
-        // TODO Auto-generated method stub
         return input;
     }
 
