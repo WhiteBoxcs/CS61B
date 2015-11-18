@@ -1,0 +1,17 @@
+# Run your AI against the staff program.
+java -ea loa.Main
+staff-loa --strict
+===#1===
+autoprint
+manual white
+auto black
+start
+%mb
+%iw...
+%e
+===#2===
+
+start
+%ib...
+%e
+

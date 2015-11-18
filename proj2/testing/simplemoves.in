@@ -1,4 +1,4 @@
-# Check that some simple moves entered by hand work.  The AI is never started.
+# Check that some moves entered by hand work.  The AI is never started.
 java -ea loa.Main
 None
 ===#1===

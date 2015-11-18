@@ -1,0 +1,397 @@
+Program #1: 
+===
+    - b b b b b b - 
+    w - - - - - - w 
+    w - - - - - - w 
+    w - - - - - - w 
+    w - - - - - - w 
+    w b - - - - - w 
+    w - - - - - - w 
+    - - b b b b b - 
+Next move: white
+===
+===
+    - b b b b b b - 
+    w - - - - - - w 
+    w - - - - w - - 
+    w - - - - - - w 
+    w - - - - - - w 
+    w b - - - - - w 
+    w - - - - - - w 
+    - - b b b b b - 
+Next move: black
+===
+===
+    - b - b b b b - 
+    w - - - - - - w 
+    b - - - - w - - 
+    w - - - - - - w 
+    w - - - - - - w 
+    w b - - - - - w 
+    w - - - - - - w 
+    - - b b b b b - 
+Next move: white
+===
+===
+    - b - b b b b - 
+    w - - - - - - w 
+    b - - - - w - - 
+    w - - - - - - w 
+    w - - - - w - w 
+    w b - - - - - w 
+    w - - - - - - - 
+    - - b b b b b - 
+Next move: black
+===
+===
+    - b - b b b b - 
+    w - - - - - - w 
+    b - - - - w - - 
+    w - - - - - - w 
+    w - - - - w - w 
+    w b - - b - - w 
+    w - - - - - - - 
+    - - - b b b b - 
+Next move: white
+===
+===
+    - b - b b b b - 
+    w - - - - - - w 
+    b - - - - w - - 
+    w - - - - - - w 
+    w - - - - w - w 
+    w b - - b - - - 
+    w - - - - - - - 
+    - - - b b w b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - w 
+    b - - b - w - - 
+    w - - - - - - w 
+    w - - - - w - w 
+    w b - - b - - - 
+    w - - - - - - - 
+    - - - b b w b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - w 
+    b - - b - w - - 
+    w - - - - - - w 
+    w - - - w w - - 
+    w b - - b - - - 
+    w - - - - - - - 
+    - - - b b w b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - w 
+    b - - b - w - - 
+    w - - - - - - w 
+    w - - - w w - - 
+    w b - - b - - - 
+    w - - - - b - - 
+    - - - b - w b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - b - w - - 
+    w - - - - w - w 
+    w - - - w w - - 
+    w b - - b - - - 
+    w - - - - b - - 
+    - - - b - w b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - b - w - - 
+    w - - - - w - w 
+    w - - - w w - - 
+    w b - - b - - - 
+    w - - - - b - - 
+    b - - - - w b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - w - w - - 
+    w - - - - w - w 
+    w - - - w - - - 
+    w b - - b - - - 
+    w - - - - b - - 
+    b - - - - w b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - w - w - - 
+    w - - - - w - w 
+    w - - - w b - - 
+    w b - - - - - - 
+    w - - - - b - - 
+    b - - - - w b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - w - w - - 
+    w - - - - w - w 
+    w - - - w b - - 
+    w b - - - - - - 
+    - - - - - b - - 
+    b w - - - w b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - b - w - - 
+    w - - - - w - w 
+    w - - - w - - - 
+    w b - - - - - - 
+    - - - - - b - - 
+    b w - - - w b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - b - w - - 
+    w - - - - w - w 
+    w - - - w - - - 
+    w b - w - - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - - - w - - 
+    w - - - b w - w 
+    w - - - w - - - 
+    w b - w - - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - - - w - - 
+    w - - w b w - w 
+    w - - - - - - - 
+    w b - w - - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - - - w - - 
+    w - - w - w - w 
+    w - - - - b - - 
+    w b - w - - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - - - w - - 
+    w - - w - w - w 
+    - - w - - b - - 
+    w b - w - - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - b b b b - 
+    w - - - - - - - 
+    b - - - - w - - 
+    w - - w - w - w 
+    - - w - - - - - 
+    w b - w b - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: white
+===
+===
+    - - - b b b b - 
+    - - - - - - - - 
+    b - - - - w - - 
+    w - - w - w - w 
+    - - w - - - - - 
+    w b - w w - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - - b b b - 
+    - - - - - - - - 
+    b - - - - b - - 
+    w - - w - w - w 
+    - - w - - - - - 
+    w b - w w - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: white
+===
+===
+    - - - - b b b - 
+    - - - - - - - - 
+    b - - - - b - - 
+    w - - w - w - w 
+    - - w - - w - - 
+    w b - w - - - - 
+    - - - - - b - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - - b b b - 
+    - - - - - - - - 
+    b - - - - b - - 
+    w - - w - w - w 
+    - - w - - w - - 
+    w b - w - - b - 
+    - - - - - - - - 
+    b w - - - - b - 
+Next move: white
+===
+===
+    - - - - b b b - 
+    - - - - - - - - 
+    b - - - - b - - 
+    w - - w - - - w 
+    - - w - - w - - 
+    w b - w - - b - 
+    - - w - - - - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b - - 
+    w - - w - - - w 
+    - - w - - w - - 
+    w b - w - - b - 
+    - - w - - - - - 
+    b w - - - - b - 
+Next move: white
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b - - 
+    w - - w w - - - 
+    - - w - - w - - 
+    w b - w - - b - 
+    - - w - - - - - 
+    b w - - - - b - 
+Next move: black
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b - - 
+    w - - w w - - - 
+    - - w b - w - - 
+    w b - w - - b - 
+    - - w - - - - - 
+    - w - - - - b - 
+Next move: white
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b - - 
+    w - - w w - - - 
+    - - w b - w - - 
+    w w - w - - b - 
+    - - w - - - - - 
+    - - - - - - b - 
+Next move: black
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b - - 
+    w - - w w - - - 
+    - - w b - w b - 
+    w w - w - - b - 
+    - - w - - - - - 
+    - - - - - - - - 
+Next move: white
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b - - 
+    w - - w w - - - 
+    - - w b w w b - 
+    w w - w - - b - 
+    - - - - - - - - 
+    - - - - - - - - 
+Next move: black
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    b - - - - b b - 
+    w - - w w - - - 
+    - - w b w w b - 
+    w w - w - - - - 
+    - - - - - - - - 
+    - - - - - - - - 
+Next move: white
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    w - - - - b b - 
+    w - - w w - - - 
+    - - w b w w b - 
+    - w - w - - - - 
+    - - - - - - - - 
+    - - - - - - - - 
+Next move: black
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    w - - - - b b - 
+    w - - w w - - - 
+    - - w - w w b - 
+    - w - w b - - - 
+    - - - - - - - - 
+    - - - - - - - - 
+Next move: white
+===
+===
+    - - - - - b b - 
+    - - - b - - - - 
+    w - - - - b b - 
+    w - - w w - - - 
+    - w w - w w b - 
+    - - - w b - - - 
+    - - - - - - - - 
+    - - - - - - - - 
+Next move: black
+===

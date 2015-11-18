@@ -43,7 +43,7 @@ public class Game extends Logger {
         this._players = new ArrayList<Player>();
 
 
-        this._players.add(new AcyclicMachinePlayer(Piece.BP, 0, this));
+        this._players.add(new HumanPlayer(Piece.BP, 0));
         this._players.add(new DensityMachinePlayer(Piece.WP,0, this));
     }
     
@@ -198,7 +198,9 @@ public class Game extends Logger {
             
             this.log(currentPlayer().team().fullName() + " wins.", LogLevel.GAME_STATE);
             this.setPlaying(false);
-            throw new GameVictoryException(currentPlayer());
+            Player winner = currentPlayer();
+            playerIndex = (playerIndex + 1) %_players.size();
+            throw new GameVictoryException(winner);
         }
         
         currentPlayer().setScore(contScore);

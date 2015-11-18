@@ -19,6 +19,7 @@ import loa.exceptions.GameException;
 import loa.exceptions.InvalidMoveException;
 import loa.exceptions.UnknownPlayerException;
 import loa.players.AcyclicMachinePlayer;
+import loa.players.DensityMachinePlayer;
 import loa.players.HumanPlayer;
 import loa.players.MachinePlayer;
 import loa.util.LogListener;
@@ -251,8 +252,9 @@ public class LoaTextUI extends GameUI implements LogListener {
      */
     private void autoCommand(String player) throws UnknownPlayerException {
         Piece team = Piece.playerValueOf(player);
-        //TODO: Use appropriate score above and below.
-        game().setPlayer(team, new AcyclicMachinePlayer(team,0, game()));
+        
+        game().setPlayer(team, 
+                new DensityMachinePlayer(team,0, game()));
     }
 
     /**
