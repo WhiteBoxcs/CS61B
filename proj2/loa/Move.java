@@ -28,6 +28,8 @@ public class Move {
                           board.toColPos(p2), board.toRowPos(p2), board);
         } else {
             return new Move(s);
+
+            
         }
     }
 

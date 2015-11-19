@@ -1,4 +1,4 @@
-package loa.test;
+package loa.tests;
 
 import static org.junit.Assert.*;
 
