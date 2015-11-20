@@ -19,6 +19,7 @@ public abstract class Player {
     public Player(Piece team, double initScore){
         this._team = team;
         setScore(initScore);
+        
     }
     
     /**
