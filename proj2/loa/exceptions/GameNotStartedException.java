@@ -1,11 +1,10 @@
 /**
- * 
+ *
  */
 package loa.exceptions;
 
 /**
  * @author William Hebgen Guss
- *
  */
 public class GameNotStartedException extends GameException {
 

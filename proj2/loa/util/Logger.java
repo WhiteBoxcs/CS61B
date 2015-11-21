@@ -7,67 +7,73 @@ import java.util.TreeMap;
 /**
  * Represents a logger class for the game.
  * @author william
- *
  */
 public class Logger {
     private String _name;
     private String _log;
     private TreeMap<Integer, ArrayList<LogListener>> _listeners;
 
-    public Logger(String name){
+    public Logger(String name) {
         this.setName(name);
         this._listeners = new TreeMap<Integer, ArrayList<LogListener>>();
         this._log = "";
     }
-    
+
     /**
-     * Logs a message to all log listeners of level lower or equal. Performs a range query.
-     * @param level The level (which log listeners will receive the message).
-     * @param message The  message to send.
+     * Logs a message to all log listeners of level lower or equal. Performs a
+     * range query.
+     * @param level
+     *            The level (which log listeners will receive the message).
+     * @param message
+     *            The message to send.
      */
-    public void log( String message, int level){
+    public void log(String message, int level) {
         Map.Entry<Integer, ArrayList<LogListener>> entry;
-        level+= 1;
-        while(((entry =_listeners.lowerEntry(level)) != null))
-        {
+        level += 1;
+        while ((entry = this._listeners.lowerEntry(level)) != null) {
             level = entry.getKey();
             entry.getValue().forEach(x -> x.receive(this, message));
         }
         this._log += message + "\n";
     }
-    
+
     /**
      * Attaches a listener to THIS logger.
-     * @param listener the LogListener to attach.
-     * @param level the level below and at which the LISTENER will receive messages.
+     * @param listener
+     *            the LogListener to attach.
+     * @param level
+     *            the level below and at which the LISTENER will receive
+     *            messages.
      */
-    public void attach(LogListener listener, int level){
+    public void attach(LogListener listener, int level) {
         ArrayList<LogListener> leveledList = this._listeners.get(level);
-        
-        if(leveledList == null){
+
+        if (leveledList == null) {
             leveledList = new ArrayList<LogListener>();
             this._listeners.put(level, leveledList);
         }
-        
+
         leveledList.add(listener);
     }
-    
+
     /**
      * Detaches LISTENER from THIS Logger.
-     * @param listener the LogListener to detach.
+     * @param listener
+     *            the LogListener to detach.
      */
-    public void detach(LogListener listener){
-        for(Map.Entry<Integer, ArrayList<LogListener>> entry : _listeners.entrySet()){
+    public void detach(LogListener listener) {
+        for (Map.Entry<Integer, ArrayList<LogListener>> entry : this._listeners
+                .entrySet()) {
             entry.getValue().remove(listener);
         }
-        
+
     }
-    
+
     /**
      * Returns the whole log delimited by \n per entry.
      * @return the string of the log.
      */
-    public String getLog(){
+    public String getLog() {
         return this._log;
     }
 
@@ -76,16 +82,16 @@ public class Logger {
      * @return The name of the logger.
      */
     public String getName() {
-        return _name;
+        return this._name;
     }
 
     /**
      * Sets the name of the logger.
-     * @param _name The new name.
+     * @param _name
+     *            The new name.
      */
     public void setName(String _name) {
         this._name = _name;
     }
-    
-    
+
 }

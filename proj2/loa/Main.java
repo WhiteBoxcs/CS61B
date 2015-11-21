@@ -1,55 +1,47 @@
-// Remove all comments that begin with //, and replace appropriately.
-// Feel free to modify ANYTHING in this file.
 package loa;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import loa.views.GameUI;
 import loa.views.LoaGUI;
 import loa.views.LoaTextUI;
-
-import java.io.IOException;
-
 import ucb.util.CommandArgs;
 
-import static loa.Piece.*;
-
-/** Main class of the Lines of Action program.
- * @author
+/**
+ * Main class of the Lines of Action program.
+ * @author William Guss.
  */
 public class Main {
 
     /** Version designator. */
     public static final String VERSION = "1.0";
 
-    /** The main Lines of Action. Possible ARGS are
-     *      --display       Use a GUI.
-     *      --debug=LEVEL   Turn on debugging output.  Print debugging
-     *                      meesages up to level LEVEL.  0 indicates no
-     *                      debugging messages (the default).  (This option
-     *                      is not part of the spec.)
+    /**
+     * The main Lines of Action. Possible ARGS are --display Use a GUI.
+     * --debug=LEVEL Turn on debugging output. Print debugging meesages up to
+     * level LEVEL. 0 indicates no debugging messages (the default). (This
+     * option is not part of the spec.)
+     * @param args The oprogram arguments.
      */
     public static void main(String... args) {
         CommandArgs options =
-            new CommandArgs("--debug=(\\d+){0,1} --display{0,1}", args);
+                new CommandArgs("--debug=(\\d+){0,1} --display{0,1}", args);
 
         if (!options.ok()) {
             usage();
         }
-        
+
         Game game = new Game("LOA_BASIC");
         GameUI view;
-        
+
         if (options.contains("--display")) {
             view = new LoaGUI(game);
-        }
-        else
-        {
+        } else {
             view = new LoaTextUI(game);
         }
-
 
         view.open();
     }
@@ -60,20 +52,23 @@ public class Main {
         System.exit(1);
     }
 
-    /** Print the contents of the resource named NAME on the standard error.
-     *  The resource can be any file in the class directory.  File
-     *  loa/foo.txt, for example, is named simply "loa/foo.txt". */
+    /**
+     * Print the contents of the resource named NAME on the standard error. The
+     * resource can be any file in the class directory. File loa/foo.txt, for
+     * example, is named simply "loa/foo.txt".
+     * @param name The name of the resopurce.
+     * @param err The error.
+     */
     public static void printResource(String name, boolean err) {
         try {
             InputStream resourceStream =
-                Main.class.getClassLoader().getResourceAsStream(name);
+                    Main.class.getClassLoader().getResourceAsStream(name);
             BufferedReader str =
-                new BufferedReader(new InputStreamReader(resourceStream));
-            for (String s = str.readLine(); s != null; s = str.readLine())  {
-                if(err){
-                System.err.println(s);
-                }
-                else{
+                    new BufferedReader(new InputStreamReader(resourceStream));
+            for (String s = str.readLine(); s != null; s = str.readLine()) {
+                if (err) {
+                    System.err.println(s);
+                } else {
                     System.out.println(s);
                 }
             }
@@ -82,26 +77,31 @@ public class Main {
             System.out.println("No help found.");
         }
     }
-    
-    /** Print the contents of the resource named NAME on the standard error.
-     *  The resource can be any file in the class directory.  File
-     *  loa/foo.txt, for example, is named simply "loa/foo.txt". */
-    static void printResource(String name){
+
+    /**
+     * Print the contents of the resource named NAME on the standard error. The
+     * resource can be any file in the class directory. File loa/foo.txt, for
+     * example, is named simply "loa/foo.txt".
+     */
+    static void printResource(String name) {
         printResource(name, true);
     }
 
-    /** Report an error and exit program with EXIT as the
-     *  exit code if _strict is false; otherwise exit with code 2.
-     *  FORMAT is the message format (as for printf), and ARGS any
-     *  additional arguments. */
+    /**
+     * Report an error and exit program with EXIT as the exit code if _strict
+     * is false; otherwise exit with code 2. FORMAT is the message format (as
+     * for printf), and ARGS any additional arguments.
+     */
     static void error(int exit, String format, Object... args) {
         error(format, args);
         System.exit(exit);
     }
 
-    /** Report an error.  If _strict, then exit (code 2).  Otherwise,
-     *  simply return. FORMAT is the message format (as for printf),
-     *  and ARGS any additional arguments. */
+    /**
+     * Report an error. If _strict, then exit (code 2). Otherwise, simply
+     * return. FORMAT is the message format (as for printf), and ARGS any
+     * additional arguments.
+     */
     static void error(String format, Object... args) {
         System.err.print("Error: ");
         System.err.printf(format, args);

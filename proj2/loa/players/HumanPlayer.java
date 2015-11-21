@@ -4,18 +4,19 @@ import loa.Game;
 import loa.Game.LogLevel;
 import loa.Move;
 import loa.Piece;
-import loa.exceptions.InvalidMoveException;
 
 /**
  * Represents a human plawyer class.
  * @author william
  */
-public class HumanPlayer extends Player{
+public class HumanPlayer extends Player {
 
     /**
      * Constructs a human player.
-     * @param team The team of the player.
-     * @param initScore THe initial score of the palyer.
+     * @param team
+     *            The team of the player.
+     * @param initScore
+     *            THe initial score of the palyer.
      */
     public HumanPlayer(Piece team, double initScore) {
         super(team, initScore);

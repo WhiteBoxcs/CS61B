@@ -1,9 +1,7 @@
 package loa.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import loa.util.StringTools;
@@ -13,7 +11,7 @@ import loa.util.StringTools;
  * @author william
  */
 public class StringToolsTest {
-    
+
     /**
      * Tests the capitalizing of the first letter.
      */
@@ -21,12 +19,13 @@ public class StringToolsTest {
     public void testCapitalizeFirstLetter() {
         String empty = "";
         assertEquals(empty, StringTools.capitalizeFirstLetter(empty));
-        
+
         String normal = "hi";
         assertEquals("Hi", StringTools.capitalizeFirstLetter(normal));
-        
+
         String numericStart = "1isd";
-        assertEquals(numericStart, StringTools.capitalizeFirstLetter(numericStart));
+        assertEquals(numericStart,
+                StringTools.capitalizeFirstLetter(numericStart));
     }
 
 }

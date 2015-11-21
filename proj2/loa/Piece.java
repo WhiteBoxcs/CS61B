@@ -1,18 +1,20 @@
-// Remove all comments that begin with //, and replace appropriately.
-// Feel free to modify ANYTHING in this file.
 package loa;
 
-/** A Piece denotes the contents of a square, or identifies one side
- *  (Black or White) of a game.
- *  @author
+/**
+ * A Piece denotes the contents of a square, or identifies one side (Black or
+ * White) of a game.
+ * @author William Guss.
  */
 public enum Piece {
-    /** The names of the pieces.  EMP indicates an empty square. The
-     *  arguments give names to the piece colors. */
+    /**
+     * The names of the pieces. EMP indicates an empty square. The arguments
+     * give names to the piece colors.
+     */
     BP, WP, EMP;
 
-    /** Returns the full name of this piece (black, white, or
-     *  empty). */
+    /**
+     * Returns the full name of this piece (black, white, or empty).
+     */
     public String fullName() {
         switch (this) {
         case BP:
@@ -24,8 +26,10 @@ public enum Piece {
         }
     }
 
-    /** Returns the one-character denotation of this piece on the standard
-     *  text display of a board. */
+    /**
+     * Returns the one-character denotation of this piece on the standard text
+     * display of a board.
+     */
     public String abbrev() {
         switch (this) {
         case BP:
@@ -37,8 +41,9 @@ public enum Piece {
         }
     }
 
-    /** Return player (white or black piece) for which  .fullName()
-     *  returns NAME. */
+    /**
+     * Return player (white or black piece) for which .fullName() returns NAME.
+     */
     public static Piece playerValueOf(String name) {
         switch (name.toLowerCase()) {
         case "black":
@@ -78,7 +83,9 @@ public enum Piece {
 
     /** The textual representation of this piece. */
     private String _fullName;
-    /** The one-character abbreviation of this piece, used in printed
-     *  representations ot the board. */
+    /**
+     * The one-character abbreviation of this piece, used in printed
+     * representations ot the board.
+     */
     private String _abbrev;
 }

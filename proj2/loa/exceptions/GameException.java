@@ -1,11 +1,10 @@
 /**
- * 
+ *
  */
 package loa.exceptions;
 
 /**
  * @author William Hebgen Guss
- *
  */
 public class GameException extends Exception {
     private boolean error = false;
@@ -15,12 +14,12 @@ public class GameException extends Exception {
      */
     public GameException(String message) {
         super(message);
-        setError(true);
-        
+        this.setError(true);
+
     }
 
     public boolean isError() {
-        return error;
+        return this.error;
     }
 
     public void setError(boolean error) {

@@ -17,7 +17,7 @@ public class LoaGUI extends GameUI {
     @Override
     public void error(String format, Object... args) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

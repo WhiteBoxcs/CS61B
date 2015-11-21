@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package loa.exceptions;
 
@@ -8,7 +8,6 @@ import loa.util.StringTools;
 
 /**
  * @author william
- *
  */
 public class GameVictoryException extends GameException {
 
@@ -16,9 +15,9 @@ public class GameVictoryException extends GameException {
      * @param message
      */
     public GameVictoryException(Player victor) {
-        super(StringTools.capitalizeFirstLetter(
-                victor.team().fullName()) + " wins.");
-        setError(false);
+        super(StringTools.capitalizeFirstLetter(victor.team().fullName())
+                + " wins.");
+        this.setError(false);
     }
 
 }

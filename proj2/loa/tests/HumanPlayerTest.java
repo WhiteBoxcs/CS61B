@@ -1,9 +1,9 @@
 package loa.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import loa.Board;
@@ -21,42 +21,42 @@ public class HumanPlayerTest {
 
     @Before
     public void setUp() throws Exception {
-        player = new HumanPlayer(Piece.BP, 0);
-        board = new Board(new Game("test"));
+        this.player = new HumanPlayer(Piece.BP, 0);
+        this.board = new Board(new Game("test"));
     }
 
     @Test
     public void testInputExpected() {
-        assertTrue(player.inputExpected());
+        assertTrue(this.player.inputExpected());
     }
 
     @Test
     public void testAct() {
-        Move c = Move.create("b1-b3", board);
-        assertEquals(c, player.act(c));
+        Move c = Move.create("b1-b3", this.board);
+        assertEquals(c, this.player.act(c));
     }
 
     @Test
     public void testTurn() {
-        Move validMove = Move.create("b1-b3", board);
+        Move validMove = Move.create("b1-b3", this.board);
         try {
-            assertEquals(validMove, player.turn(validMove));
+            assertEquals(validMove, this.player.turn(validMove));
         } catch (InvalidMoveException e) {
             assertTrue(false);
         }
-        
-        Move invalidMove = Move.create("a3-c3", board);
+
+        Move invalidMove = Move.create("a3-c3", this.board);
         try {
-            player.turn(invalidMove);
+            this.player.turn(invalidMove);
             assertTrue(false);
         } catch (InvalidMoveException e) {
             assertTrue(true);
-        }  
+        }
     }
 
     @Test
     public void testTeam() {
-        assertEquals(Piece.BP, player.team());
+        assertEquals(Piece.BP, this.player.team());
     }
 
 }
