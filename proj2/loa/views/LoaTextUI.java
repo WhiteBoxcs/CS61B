@@ -25,12 +25,19 @@ import loa.util.Logger;
  * @author William Hebgen Guss
  */
 public class LoaTextUI extends GameUI implements LogListener {
+    /**
+     * Gives the log level to display to the standard input.
+     */
     private static final LogLevel LOG_LEVEL = LogLevel.MOVES_AI;
+    /**
+     * Grabs input from the standard input.
+     */
     private BufferedReader _input;
 
     /**
      * Builds a LoaTextUI and attaches it to the game at a MOVES_AI level.
      * @param game
+     *            The game.
      */
     public LoaTextUI(Game game) {
         super(game);
@@ -200,7 +207,8 @@ public class LoaTextUI extends GameUI implements LogListener {
      */
     private void setCommand(String pos, String setValue) {
         try {
-            if (pos == null || !pos.matches("[a-h][1-9]") || setValue == "") {
+            if (pos == null || !pos.matches("[a-h][1-9]")
+                    || setValue.equals("")) {
                 throw new IllegalArgumentException();
             }
 
@@ -232,7 +240,7 @@ public class LoaTextUI extends GameUI implements LogListener {
 
     /**
      * Sets the general seed for all games.
-     * @param seed
+     * @param seed The seed.
      */
     private void seedCommand(String seed) {
         try {
