@@ -10,10 +10,26 @@ import loa.Move;
 import loa.Piece;
 import loa.exceptions.InvalidMoveException;
 
+/**
+ * Creates a new machine player.
+ * @author William
+ */
 public class MachinePlayer extends Player {
+    /**
+     * The search depth.
+     */
     protected static final int SEARCH_DEPTH = 2;
+    /**
+     * The game.
+     */
     protected Game _game;
 
+    /**
+     * Creates a new machine player.
+     * @param team The team.
+     * @param initScore The init score.
+     * @param container The container.
+     */
     public MachinePlayer(Piece team, double initScore, Game container) {
         super(team, initScore);
         this._game = container;
@@ -45,9 +61,7 @@ public class MachinePlayer extends Player {
      * Calculates suggested moves based on a board.
      * @param b
      *            The board on which the suggested moves are calculated.
-     * @return
-     * @throws InvalidMoveException
-     *             If something goes wrong with finding possible moves.
+     * @return Hold in there.
      */
     protected TreeMap<Double, Move> suggestedMoves(Board b) {
         TreeMap<Double, Move> actions = new TreeMap<>();
@@ -74,8 +88,6 @@ public class MachinePlayer extends Player {
      * @param depth
      *            The depth to which the minimax is performed (2 is best).
      * @return The score for the minimax algorithm.
-     * @throws InvalidMoveException
-     *             If the minimax algorithm performs anything stupid.
      */
     protected double deepMinimax(Move move, Board b, int depth) {
         Board pb = b.clone();

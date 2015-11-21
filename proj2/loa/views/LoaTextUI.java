@@ -240,7 +240,8 @@ public class LoaTextUI extends GameUI implements LogListener {
 
     /**
      * Sets the general seed for all games.
-     * @param seed The seed.
+     * @param seed
+     *            The seed.
      */
     private void seedCommand(String seed) {
         try {

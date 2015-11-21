@@ -57,7 +57,8 @@ public class Game extends Logger {
 
     /**
      * Initializes with a new board.
-     * @param name the name of the game. lol.
+     * @param name
+     *            the name of the game. lol.
      */
     public Game(String name) {
         super(name);
@@ -72,7 +73,8 @@ public class Game extends Logger {
 
     /**
      * Plays a move in the game.
-     * @param input The input from a view.
+     * @param input
+     *            The input from a view.
      * @throws GameException
      *             Throws an exception iff either the move is invalid or the
      *             game is not started.
@@ -238,9 +240,9 @@ public class Game extends Logger {
             throw new GameVictoryException(this.winner);
         }
 
-        double contScore = this._board
-                .contiguityScore(this.currentPlayer().team());
-        if (this.currentPlayer().getScore() == 1 ||  contScore == 1) {
+        double contScore =
+                this._board.contiguityScore(this.currentPlayer().team());
+        if (this.currentPlayer().getScore() == 1 || contScore == 1) {
             this.currentPlayer().setScore(contScore);
 
             this.log(this.currentPlayer().team().fullName() + " wins.",

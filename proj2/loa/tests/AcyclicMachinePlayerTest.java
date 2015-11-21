@@ -34,17 +34,32 @@ public class AcyclicMachinePlayerTest extends AcyclicMachinePlayer {
                 Move.create("b1-b7", board) };
 
         testBed = new Move[][] { { s[0] }, { s[0], s[1], s[0], s[1] },
-                { s[0], s[1], s[0], s[2] },
-                { s[0], s[1], s[3], s[0], s[1], s[3] },
-                { s[0], s[1], s[3], s[0], s[1], s[1] },
-                { s[0], s[0], s[0], s[0], s[0], s[0] },
-                { s[0], s[1], s[3], s[0], s[1] } };
+            { s[0], s[1], s[0], s[2] },
+            { s[0], s[1], s[3], s[0], s[1], s[3] },
+            { s[0], s[1], s[3], s[0], s[1], s[1] },
+            { s[0], s[0], s[0], s[0], s[0], s[0] },
+            { s[0], s[1], s[3], s[0], s[1] } };
 
     }
 
+    /**
+     * The test bed.
+     */
     private static Move[][] testBed;
+
+    /**
+     * The mopves.
+     */
     private static Move[] s;
+
+    /**
+     * The game.
+     */
     private static Game game;
+
+    /**
+     * The board.
+     */
     private static Board board;
 
     /**

@@ -14,7 +14,8 @@ public abstract class GameUI {
 
     /**
      * Constructs a game user interface with respect to a game.
-     * @param game The game.
+     * @param game
+     *            The game.
      */
     protected GameUI(Game game) {
         this._game = game;
@@ -30,8 +31,10 @@ public abstract class GameUI {
 
     /**
      * Propagates an error message to the user interface.
-     * @param format The format of the error.
-     * @param args The arguments to format within the error.
+     * @param format
+     *            The format of the error.
+     * @param args
+     *            The arguments to format within the error.
      */
     public abstract void error(String format, Object... args);
 

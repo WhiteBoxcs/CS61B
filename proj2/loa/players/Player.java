@@ -9,12 +9,24 @@ import loa.Piece;
 import loa.exceptions.InvalidMoveException;
 
 /**
- * @author William Hebgen Guss Represents an abstract player class.
+ * @author William Hebgen Guss
+ * Represents an abstract player class.
  */
 public abstract class Player {
+    /**
+     * The team on which you are.
+     */
     private Piece _team;
+    /**
+     * The score of the game.
+     */
     private double _score;
 
+    /**
+     * Builds a new player with inital score and team.
+     * @param team The team.
+     * @param initScore The iniital score.
+     */
     public Player(Piece team, double initScore) {
         this._team = team;
         this.setScore(initScore);
@@ -35,16 +47,16 @@ public abstract class Player {
 
     /**
      * Makes a move given an optional input parameter.
-     * @param input
-     * @return
+     * @param input The input.
+     * @return The move inouted or a modification.
      * @throws InvalidMoveException
      */
     public abstract Move act(Move input);
 
     /**
      * Enacts the turn of a player. DO not override.
-     * @param input
-     * @return
+     * @param input The input to the turn.
+     * @return The move for chaining.
      * @throws InvalidMoveException
      *             If the player is moving a type of piece not of the same
      *             team.
@@ -63,7 +75,6 @@ public abstract class Player {
      * @return The team on which the player resides.
      */
     public Piece team() {
-        // TODO Auto-generated method stub
         return this._team;
     }
 
@@ -81,7 +92,6 @@ public abstract class Player {
      * @return the player
      */
     public double getScore() {
-        // TODO Auto-generated method stub
         return this._score;
     }
 

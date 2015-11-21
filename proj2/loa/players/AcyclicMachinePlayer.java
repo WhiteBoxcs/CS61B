@@ -8,12 +8,27 @@ import java.util.TreeMap;
 import loa.Game;
 import loa.Move;
 import loa.Piece;
-import loa.exceptions.InvalidMoveException;
 
+/**
+ * @author William
+ * An acyclic machine algorith.
+ */
 public class AcyclicMachinePlayer extends MachinePlayer {
+    /**
+     * The depth at which to explore for cycles.
+     */
     private static final int SEARCH_HISTORY_DEPTH = 10;
+    /**
+     * The history of previous moves.
+     */
     protected LinkedList<Move> history;
 
+    /**
+     * Coinstructs anb acyclic machine learning algorithm.
+     * @param team The team.
+     * @param initScore The inital score.
+     * @param container The container.
+     */
     public AcyclicMachinePlayer(Piece team, double initScore, Game container) {
         super(team, initScore, container);
         this.history = new LinkedList<>();
@@ -22,7 +37,7 @@ public class AcyclicMachinePlayer extends MachinePlayer {
     /**
      * Performs the machine player algorithm while avoiding cycles.
      * @param input
-     * @return
+     * @return Lol.
      * @throws InvalidMoveException
      */
     @Override
@@ -49,7 +64,7 @@ public class AcyclicMachinePlayer extends MachinePlayer {
 
     /**
      * Performs an O(n) search of the array to find a cycle.
-     * @param value
+     * @param value The value.
      * @return False if only 3 moves are made since there couldn't possibly be
      *         a cycle. False if there is no cycle.
      */

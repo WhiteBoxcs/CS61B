@@ -12,7 +12,7 @@ import loa.util.StringTools;
 public class GameVictoryException extends GameException {
 
     /**
-     * @param message
+     * @param victor the victor.
      */
     public GameVictoryException(Player victor) {
         super(StringTools.capitalizeFirstLetter(victor.team().fullName())

@@ -24,7 +24,8 @@ public class Main {
      * --debug=LEVEL Turn on debugging output. Print debugging meesages up to
      * level LEVEL. 0 indicates no debugging messages (the default). (This
      * option is not part of the spec.)
-     * @param args The oprogram arguments.
+     * @param args
+     *            The oprogram arguments.
      */
     public static void main(String... args) {
         CommandArgs options =
@@ -56,8 +57,10 @@ public class Main {
      * Print the contents of the resource named NAME on the standard error. The
      * resource can be any file in the class directory. File loa/foo.txt, for
      * example, is named simply "loa/foo.txt".
-     * @param name The name of the resopurce.
-     * @param err The error.
+     * @param name
+     *            The name of the resopurce.
+     * @param err
+     *            The error.
      */
     public static void printResource(String name, boolean err) {
         try {
