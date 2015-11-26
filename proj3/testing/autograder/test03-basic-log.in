@@ -1,0 +1,20 @@
+# Set up a simple chain of commits and check their log.
+> init
+<<<
++ wug.txt wug.txt
+> add wug.txt
+<<<
+> commit "added wug"
+<<<
+> log
+===
+Commit [a-f0-9]+
+\d\d\d\d-\d\d-\d\d\s+\d\d:\d\d:\d\d
+added wug
+
+===
+Commit [a-f0-9]+
+\d\d\d\d-\d\d-\d\d\s+\d\d:\d\d:\d\d
+initial commit
+
+<<<*
