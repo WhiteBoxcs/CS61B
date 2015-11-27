@@ -8,6 +8,6 @@
 <<<
 + wug.txt notwug.txt
 # Must change
-> checkout wug.txt
+> checkout -- wug.txt
 <<<
 = wug.txt wug.txt
