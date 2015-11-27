@@ -2,6 +2,8 @@ package gitlet;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,43 +18,30 @@ class Utils {
 
     /* SHA-1 HASH VALUES. */
 
-    /** Returns the SHA-1 hash of the concatenation of byte arrays in
-     *  VALS. */
-    static String sha1(byte[]... vals) {
+    /** Returns the SHA-1 hash of the concatenation of VALS, which may
+     *  be any mixture of byte arrays and Strings. */
+    static String sha1(Object... vals) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            for (byte[] val : vals) {
-                md.update(val);
+            for (Object val : vals) {
+                if (val instanceof byte[]) {
+                    md.update((byte[]) val);
+                } else if (val instanceof String) {
+                    md.update(((String) val).getBytes(StandardCharsets.UTF_8));
+                } else {
+                    throw new IllegalArgumentException("improper type to sha1");
+                }
             }
             return md.toString();
         } catch (NoSuchAlgorithmException excp) {
-            System.err.println("System does not support SHA-1!");
-
-            System.exit(1);
-            return null;
+            throw new IllegalArgumentException("System does not support SHA-1");
         }
     }
-
+        
     /** Returns the SHA-1 hash of the concatenation of the strings in
      *  VALS. */
-    static String sha1(String... vals) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            for (String val : vals) {
-                md.update(val.getBytes(StandardCharsets.UTF_8));
-            }
-            return md.toString();
-        } catch (NoSuchAlgorithmException excp) {
-            System.err.println("System does not support SHA-1!");
-            System.exit(1);
-            return null;
-        }
-    }
-
-    /** Returns the SHA-1 hash of the concatenation of the strings in
-     *  VALS. */
-    static String sha1(List<String> vals) {
-        return sha1(vals.toArray(new String[vals.size()]));
+    static String sha1(List<Object> vals) {
+        return sha1(vals.toArray(new Object[vals.size()]));
     }
 
     /* FILE DELETION */
@@ -78,6 +67,34 @@ class Utils {
      *  directory designated by FILE also contains a directory named .gitlet. */
     static boolean restrictedDelete(String file) {
         return restrictedDelete(new File(file));
+    }
+
+    /* READING AND WRITING FILE CONTENTS */
+
+    /** The entire contents of FILE as a byte array.  FILE must be a normal
+     *  file.  Throws IllegalArgumentException in case of problems. */
+    static byte[] readContents(File file) {
+        if (!file.isFile()) {
+            throw new IllegalArgumentException("must be a normal file");
+        }
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException excp) {
+            throw new IllegalArgumentException(excp.getMessage());
+        }
+    }
+
+    /** Write the entire contents of BYTES to FILE, creating or overwriting
+     *  it as needed.  Throws IllegalArgumentException in case of problems. */
+    static void writeContents(File file, byte[] bytes) {
+        try {
+            if (file.isDirectory()) {
+                throw new IllegalArgumentException("cannot overwrite directory");
+            }
+            Files.write(file.toPath(), bytes);
+        } catch (IOException excp) {
+            throw new IllegalArgumentException(excp.getMessage());
+        }
     }
 
     /* DIRECTORIES */
