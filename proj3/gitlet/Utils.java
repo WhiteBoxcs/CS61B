@@ -42,7 +42,7 @@ class Utils {
             throw new IllegalArgumentException("System does not support SHA-1");
         }
     }
-        
+
     /** Returns the SHA-1 hash of the concatenation of the strings in
      *  VALS. */
     static String sha1(List<Object> vals) {

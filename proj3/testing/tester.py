@@ -23,8 +23,16 @@ Usage: python3 tester.py OPTIONS TEST.in ...
 USAGE = SHORT_USAGE + """\
 
 For each TEST.in, change to an empty directory, and execute the instructions
-in TEST.in.  These instructions have one of the following forms:
+in TEST.in.  Before executing an instruction, first replace any occurrence
+of ${VAR} with the current definition of VAR (see the D command below).
+Replace any occurrence of ${N} for non-negative decimal numeral N with
+the value of the Nth captured group in the last ">" command's expected
+output lines.  Undefined if the last ">" command did not end in "<<<*",
+or did not have the indicated group. N=0 indicates the entire matched string.
 
+The instructions each have one of the following forms:
+
+   # ...  A comment, producing no effect.
    T N    Set the timeout for gitlet commands in the rest of this test to N
           seconds.
    + NAME F
@@ -52,6 +60,10 @@ in TEST.in.  These instructions have one of the following forms:
    E NAME
           Check that file or directory NAME exists, and report an error if it
           does not.
+   D VAR "VALUE"
+          Defines the variable VAR to have the literal value VALUE.  VALUE is
+          taken to be a raw Python string (as in r"VALUE").  Substitutions are
+          first applied to VALUE.
 
 For each TEST.in, reports at most one error.  Without the --show option,
 simply indicates tests passed and failed.  If N is postive, also prints details
@@ -152,21 +164,30 @@ def correctFileOutput(name, expected, dir):
     return userData == stdData
 
 def correctProgramOutput(expected, actual, is_regexp):
-    actual = re.split(r'\n\r?', actual.rstrip())
-    expectedLen = len(expected)
-    for i in range(len(expected) - 1, -1, -1):
-        if Match(r'\s*$', expected[i]):
-            expectedLen = i
-    actualLen = len(actual)
-    for i in range(len(actual) - 1, -1, -1):
-        if Match(r'\s*$', actual[i]):
-            actualLen = i
-    if expectedLen != actualLen:
+    global last_groups
+    actual = actual.rstrip()
+    last_groups = (actual,)
+    actual = re.split(r'\n\r?', actual)
+    expected_len = len(expected)
+    for e in expected[-1::-1]:
+        if Match(r'\s*$', e):
+            expected_len -= 1
+        else:
+            break
+    actual_len = len(actual)
+    for a in actual[-1::-1]:
+        if Match(r'\s*$', a):
+            actual_len -= 1
+        else:
+            break
+    if expected_len != actual_len:
         return False
-    for e, a in zip(expected[:expectedLen], actual[:actualLen]):
-        if (is_regexp and not Match(e.strip() + "$", a.strip())) \
-           or (not is_regexp and
-               editDistance(e.strip(), a.strip()) > OUTPUT_TOLERANCE):
+    for e, a in zip(expected[:expected_len], actual[:actual_len]):
+        if is_regexp:
+            if not Match(e.strip() + "$", a.strip()):
+                return False
+            last_groups += Mat.groups()
+        elif editDistance(e.strip(), a.strip()) > OUTPUT_TOLERANCE:
             return False
     return True
 
@@ -195,6 +216,29 @@ def doTest(test):
     if verbose:
         print("Testing directory: {}", tmpdir)
     timeout = TIMEOUT
+    defns = {}
+
+    def do_substs(L):
+        c = 0
+        L0 = None
+        while L0 != L and c < 10:
+            c += 1
+            L0 = L
+            L = re.sub(r'\$\{(.*?)\}', subst_var, L)
+        return L
+
+    def subst_var(M):
+        key = M.group(1)
+        if Match(r'\d+$', key):
+            try:
+                return last_groups[int(key)]
+            except IndexError:
+                raise ValueError("FAILED (nonexistent group: {{{}}})"
+                                 .format(key))
+        elif M.group(1) in defns:
+            return defns[M.group(1)]
+        else:
+            raise ValueError("undefined substitution: ${{{}}}".format(M.group(1)))
 
     try:
         with open(test) as inp:
@@ -205,10 +249,12 @@ def doTest(test):
                 if line == "":
                     print("OK")
                     return True
+                if not Match(r'\s*#', line):
+                    line = do_substs(line)
                 if verbose:
                     print()
                     print("+ {}".format(line.rstrip()), end=" ")
-                if Match(r'\s*#', line):
+                if Match(r'\s*#', line) or Match(r'\s+$', line):
                     pass
                 elif Match(r'T\s*(\S+)', line):
                     try:
@@ -232,7 +278,7 @@ def doTest(test):
                         if Match(r'<<<(\*?)', L):
                             is_regexp = Group(1)
                             break
-                        expected.append(L)
+                        expected.append(do_substs(L))
                     msg, out = doExecute(cmnd, tmpdir, timeout)
                     if verbose:
                         print(re.sub(r'(?m)^', '- ', out), end=" ")
@@ -260,6 +306,8 @@ def doTest(test):
                               .format(Group(1)))
                         reportDetails(test, n)
                         return False
+                elif Match(r'D\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*"(.*)"\s*$', line):
+                    defns[Group(1)] = Group(2)
                 else:
                     raise ValueError("FAILED (bad test line: {})".format(n))
     finally:
