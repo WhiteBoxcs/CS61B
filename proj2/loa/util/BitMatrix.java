@@ -14,9 +14,8 @@ import java.util.BitSet;
  */
 
 public class BitMatrix {
-    // constructor
     /**
-     * initialize a newly created matrix of bit values
+     * initialize a newly created matrix of bit values.
      * @param numRows
      *            number of rows in new matrix
      * @param numColumns
@@ -29,12 +28,13 @@ public class BitMatrix {
         }
     }
 
-    // data field
+    /**
+     * The data for the bit matrix.
+     */
     protected BitSet[] rows;
 
-    // operations
     /**
-     * clear a value in the bit matrix
+     * clear a value in the bit matrix.
      * @param i
      *            row index
      * @param j
@@ -45,7 +45,7 @@ public class BitMatrix {
     }
 
     /**
-     * get a value from the bit matrix
+     * get a value from the bit matrix.
      * @param i
      *            row index
      * @param j
@@ -57,7 +57,7 @@ public class BitMatrix {
     }
 
     /**
-     * set a value in the bit matrix
+     * set a value in the bit matrix.
      * @param i
      *            row index
      * @param j

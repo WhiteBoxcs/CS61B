@@ -27,9 +27,8 @@ public class DensityMachinePlayer extends AcyclicMachinePlayer {
 
     @Override
     protected double calculateRegret(Board pb) {
-        double denseScore = 0;// pb.densityScore(team()) -
-                              // pb.densityScore(team().opposite());
-        return super.calculateRegret(pb) + 0.1 * denseScore;
+        double denseScore = 0;
+        return super.calculateRegret(pb) + denseScore;
     }
 
 }

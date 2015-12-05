@@ -48,7 +48,8 @@ public class Board {
 
     /**
      * Creates a new board object with default initialization.
-     * @param owner The owner.
+     * @param owner
+     *            The owner.
      */
     public Board(Game owner) {
         this._owner = owner;
@@ -81,7 +82,8 @@ public class Board {
 
     /**
      * Gets the column based off of a alphabet character.
-     * @param col The character.
+     * @param col
+     *            The character.
      * @return The column.
      */
     public int toColPos(String col) {
@@ -195,8 +197,10 @@ public class Board {
 
     /**
      * Gets a list of possible moves at a position.
-     * @param row thwe row.
-     * @param col thje col.
+     * @param row
+     *            thwe row.
+     * @param col
+     *            thje col.
      * @return A list of possible m,opves.
      */
     public ArrayList<Move> possibleMoves(int row, int col) {

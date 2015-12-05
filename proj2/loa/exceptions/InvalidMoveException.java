@@ -6,15 +6,20 @@ package loa.exceptions;
 import loa.Move;
 
 /**
- * @author William Hebgen Guss An invalid move exception
+ * An invalid move exception.
+ * @author William Hebgen Guss
  */
 public class InvalidMoveException extends GameException {
+    /**
+     * The move which triggered the excepton.
+     */
     private Move _move;
 
     /**
      * Creates an invalid move exception.
      * @param move
      *            The move which caused the error.
+     * @param exception The exception string.
      */
     public InvalidMoveException(String exception, Move move) {
         super(exception);

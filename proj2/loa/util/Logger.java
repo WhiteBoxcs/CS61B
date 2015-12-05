@@ -9,10 +9,26 @@ import java.util.TreeMap;
  * @author william
  */
 public class Logger {
-    private String _name;
+    /**
+     * THe name of the logger.
+     */
+    private String _logName;
+
+    /**
+     * THe log.
+     */
     private String _log;
+
+    /**
+     * The listeners.
+     */
     private TreeMap<Integer, ArrayList<LogListener>> _listeners;
 
+    /**
+     * Constructs the logger with a new name.
+     * @param name
+     *            The name of the logger.
+     */
     public Logger(String name) {
         this.setName(name);
         this._listeners = new TreeMap<Integer, ArrayList<LogListener>>();
@@ -82,16 +98,16 @@ public class Logger {
      * @return The name of the logger.
      */
     public String getName() {
-        return this._name;
+        return this._logName;
     }
 
     /**
      * Sets the name of the logger.
-     * @param _name
+     * @param name
      *            The new name.
      */
-    public void setName(String _name) {
-        this._name = _name;
+    public void setName(String name) {
+        this._logName = name;
     }
 
 }

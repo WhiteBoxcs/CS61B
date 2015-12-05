@@ -56,8 +56,8 @@ public class Move {
      *            The board on whic the mvoe is created.
      * @return The created move.
      */
-    public static Move create(String s, int column0, int row0, int column1,
-            int row1, Board board) {
+    public static Move create(String s, int column0,
+            int row0, int column1, int row1, Board board) {
         if (!board.inBounds(column0, row0) || !board.inBounds(column1, row1)) {
             return new Move(s);
         }
@@ -69,8 +69,8 @@ public class Move {
     /**
      * Return a K step move from (COLUMN0, ROW0) in the direction DIR on BOARD.
      */
-    static Move create(int column0, int row0, int k, Direction dir,
-            Board board) {
+    static Move create(int column0, int row0,
+            int k, Direction dir, Board board) {
         return create("", column0, row0, column0 + dir.dc * k,
                 row0 + dir.dr * k, board);
     }

@@ -10,24 +10,43 @@ import org.junit.Test;
 import loa.util.BitMatrix;
 
 public class BitMatrixTest {
+    /**
+     * The test matrix.
+     */
     private static boolean[][] testMatrix;
+    /**
+     * The number of rows.
+     */
     private static int numRows;
+    /**
+     * The number of columns.
+     */
     private static int numCols;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testMatrix = new boolean[][] { { true, false, false, true },
-                { false, true, false, true }, { false, false, true, true },
-                { false, false, true, false } };
+            { false, true, false, true }, { false, false, true, true },
+            { false, false, true, false } };
 
         numRows = testMatrix.length;
         numCols = testMatrix[0].length;
 
     }
 
+    /**
+     * The normal bit matrix.
+     */
     private BitMatrix normalBM;
+    /**
+     * Emoty bit matrix.
+     */
     private BitMatrix emptyBM;
 
+    /**
+     * Sets up the test.
+     * @throws Exception Throws an exceptioin.
+     */
     @Before
     public void setUp() throws Exception {
         this.normalBM = new BitMatrix(numRows, numCols);
@@ -35,6 +54,9 @@ public class BitMatrixTest {
 
     }
 
+    /**
+     * Test clearing.
+     */
     @Test
     public void testClear() {
         this.testSetGet();
@@ -47,6 +69,9 @@ public class BitMatrixTest {
         }
     }
 
+    /**
+     * Test the set get feature.
+     */
     @Test
     public void testSetGet() {
         for (int row = 0; row < numRows; row++) {

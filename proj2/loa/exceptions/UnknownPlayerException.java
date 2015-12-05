@@ -17,7 +17,6 @@ public class UnknownPlayerException extends GameException {
      */
     public UnknownPlayerException(Piece player) {
         super("unknown player: " + player.fullName());
-        // TODO Auto-generated constructor stub
     }
 
 }

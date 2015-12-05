@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import loa.Board;
@@ -19,34 +18,44 @@ import loa.Piece;
 
 public class BoardTest {
 
-    static final Piece[][] TEST_BOARD = { { EMP, BP, BP, BP, BP, BP, BP, EMP },
-            { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
-            { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
-            { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
-            { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
-            { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
-            { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
-            { EMP, BP, BP, BP, BP, BP, BP, EMP } };
+    static final Piece[][] TEST_BOARD =
+        { { EMP, BP, BP, BP, BP, BP, BP, EMP },
+        { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
+        { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
+        { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
+        { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
+        { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
+        { WP, EMP, EMP, BP, EMP, EMP, EMP, WP },
+        { EMP, BP, BP, BP, BP, BP, BP, EMP } };
 
     static final Piece[][] EMPTY_BOARD =
-            { { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
-                    { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP } };
+        { { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+        { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP } };
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
 
-    }
-
+    /**
+     * The standard board for testing.
+     */
     private Board standardBoard;
+    /**
+     * The contiguous board for testing.
+     */
     private Board contiguousBoard;
+    /**
+     * The blank board.
+     */
     private Board blankBoard;
 
+    /**
+     * Sets up thwe test.
+     * @throws Exception An interesting exception/.
+     */
     @Before
     public void setUp() throws Exception {
         Game tester = new Game("tester");
@@ -58,6 +67,9 @@ public class BoardTest {
 
     }
 
+    /**
+     * Tests the clearing mechanisms.
+     */
     @Test
     public void testClear() {
         this.standardBoard.clear(EMPTY_BOARD);
