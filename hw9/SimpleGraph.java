@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 /* Do NOT modify. */
 
@@ -73,6 +76,11 @@ public class SimpleGraph<VLabel, ELabel> implements Graph<VLabel, ELabel> {
     @Override
     public ELabel getLabel(Integer v1, Integer v2) {
         return _elabels.get(v1 * (_maxVertex + 1) + v2);
+    }
+    
+    public void apply(VertexConsumer<VLabel> func){
+        for(Entry<Integer, VLabel> label : _vlabels.entrySet())
+            func.accept(label.getKey(), label.getValue());
     }
 
     /** Maximum vertex number. */

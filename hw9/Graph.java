@@ -1,4 +1,7 @@
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /* Do not modify. */
 
@@ -43,5 +46,8 @@ public interface Graph<VLabel, ELabel> {
 
     /** Return the label of the edge (V1, V2). */
     ELabel getLabel(Integer v1, Integer v2);
+    
+    /** Applys a function to every label. */
+    void apply(VertexConsumer<VLabel> func);
 
 }
