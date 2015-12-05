@@ -76,8 +76,9 @@ class Utils {
 
     /* READING AND WRITING FILE CONTENTS */
 
-    /** The entire contents of FILE as a byte array.  FILE must be a normal
-     *  file.  Throws IllegalArgumentException in case of problems. */
+    /** Return the entire contents of FILE as a byte array.  FILE must
+     *  be a normal file.  Throws IllegalArgumentException
+     *  in case of problems. */
     static byte[] readContents(File file) {
         if (!file.isFile()) {
             throw new IllegalArgumentException("must be a normal file");
@@ -94,7 +95,8 @@ class Utils {
     static void writeContents(File file, byte[] bytes) {
         try {
             if (file.isDirectory()) {
-                throw new IllegalArgumentException("cannot overwrite directory");
+                throw
+                    new IllegalArgumentException("cannot overwrite directory");
             }
             Files.write(file.toPath(), bytes);
         } catch (IOException excp) {
