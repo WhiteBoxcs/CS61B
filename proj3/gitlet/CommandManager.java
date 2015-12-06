@@ -3,6 +3,7 @@
  */
 package gitlet;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -23,9 +24,17 @@ public class CommandManager {
 	}
 	
 	public void process(String args[]) throws Exception{
-		String command = args[0];
-		if(!commandMap.containsKey(key)){
-			
+	    if(args == null || args.length == 0){
+	        throw new IllegalStateException("Please enter a command.");
+	    }
+	    
+		String trigger = args[0];
+		
+		Command command = this.commandMap.get(trigger);
+		if(command == null){
+		    throw new IllegalStateException("No command with that name exists.");
 		}
+		
+		command.run(Arrays.copyOfRange(args, 1, args.length));
 	}
 }

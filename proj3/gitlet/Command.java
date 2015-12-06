@@ -7,6 +7,7 @@ package gitlet;
  * @author william
  *
  */
-public class Command {
+public interface Command {
+    public abstract void run(String[] args);
 
 }
