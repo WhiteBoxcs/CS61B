@@ -17,10 +17,6 @@ Usage: python3 tester.py OPTIONS TEST.in ...
        --progdir=DIR  Directory or JAR files containing gitlet application
        --timeout=SEC  Default number of seconds allowed to each execution
                       of gitlet.
-       --src=SRC      Use SRC instead of "src" as the subdirectory containing
-                      files referenced by + and =.
-       --tolerance=N  Set the maximum allowed edit distance between program
-                      output and expected output to N (default 3).
        --verbose      Print extra information about execution.
 """
 
@@ -37,12 +33,6 @@ or did not have the indicated group. N=0 indicates the entire matched string.
 The instructions each have one of the following forms:
 
    # ...  A comment, producing no effect.
-   I FILE Include.  Replace this statement with the contents of FILE,
-          interpreted relative to the directory containing the .in file.
-   C DIR  Create, if necessary, and switch to a subdirectory named DIR under
-          the main directory for this test.  If DIR is missing, changes
-          back to the default directory.  This command is principally
-          intended to let you set up remote repositories.
    T N    Set the timeout for gitlet commands in the rest of this test to N
           seconds.
    + NAME F
@@ -84,6 +74,7 @@ TEST.dir).
 When finished, reports number of tests passed and failed, and the number of
 faulty TEST.in files."""
 
+OUTPUT_TOLERANCE = 2
 GITLET_COMMAND = "java gitlet.Main"
 TIMEOUT = 5
 
@@ -140,7 +131,7 @@ def doDelete(name, dir):
 def doCopy(dest, src, dir):
     try:
         doDelete(dest, dir)
-        copyfile(join(src_dir, src), join(dir, dest))
+        copyfile(join('src', src), join(dir, dest))
     except OSError:
         raise ValueError("file {} could not be copied to {}".format(src, dest))
 
@@ -169,69 +160,61 @@ def fileExists(f, dir):
 
 def correctFileOutput(name, expected, dir):
     userData = canonicalize(contents(join(dir, name)))
-    stdData = canonicalize(contents(join(src_dir, expected)))
+    stdData = canonicalize(contents(join('src', expected)))
     return userData == stdData
 
-def correctProgramOutput(expected, actual, last_groups, is_regexp):
-    expected = re.sub(r'[ \t]+\n', '\n', '\n'.join(expected).rstrip())
-    expected = re.sub(r'(?m)^[ \t]+', ' ', expected)
-    actual = re.sub(r'[ \t]+\n', '\n', actual.rstrip())
-    actual = re.sub(r'(?m)^[ \t]+', ' ', actual)
-
-    last_groups[:] = (actual,)
-    if is_regexp:
-        if not Match(expected + r"\Z", actual):
-            return False
-        last_groups[:] += Mat.groups()
-    elif editDistance(expected, actual) > output_tolerance:
+def correctProgramOutput(expected, actual, is_regexp):
+    global last_groups
+    actual = actual.rstrip()
+    last_groups = (actual,)
+    actual = re.split(r'\n\r?', actual)
+    expected_len = len(expected)
+    for e in expected[-1::-1]:
+        if Match(r'\s*$', e):
+            expected_len -= 1
+        else:
+            break
+    actual_len = len(actual)
+    for a in actual[-1::-1]:
+        if Match(r'\s*$', a):
+            actual_len -= 1
+        else:
+            break
+    if expected_len != actual_len:
         return False
+    for e, a in zip(expected[:expected_len], actual[:actual_len]):
+        if is_regexp:
+            if not Match(e.strip() + "$", a.strip()):
+                return False
+            last_groups += Mat.groups()
+        elif editDistance(e.strip(), a.strip()) > OUTPUT_TOLERANCE:
+            return False
     return True
 
-def reportDetails(test, included_files, line_num):
+def reportDetails(test, n):
     if show is None:
         return
     if show == 0:
         print("   Limit on error details exceeded.")
         return
-    direct = dirname(test)
+    base = basename(test)
     
-    print("    Error on line {} of {}".format(line_num, basename(test)))
-
-    for base in [basename(test)] + included_files:
-        full = join(dirname(test), base)
-        print(("-" * 20 + " {} " + "-" * 20).format(base))
-        text_lines = list(enumerate(re.split(r'[\n\r]+', contents(full))))[:-1]
-        fmt = "{{:{}d}}. {{}}".format(round(log(len(text_lines), 10)))
-        text = '\n'.join(map(lambda p: fmt.format(p[0] + 1, p[1]), text_lines))
-        print(text)
-        print("-" * (42 + len(base)))
-
-def chop_nl(s):
-    if s and s[-1] == '\n':
-        return s[:-1]
-    else:
-        return s
-
-def line_reader(f, prefix):
-    n = 0
-    with open(f) as inp:
-        while True:
-            L = inp.readline()
-            if L == '':
-                return
-            n += 1
-            included_file = yield (prefix + str(n), L)
-            if included_file:
-                yield None
-                yield from line_reader(included_file, prefix + str(n) + ".")
+    print("    Error on line {} of {}".format(n, base))
+    print(("-" * 20 + " {} " + "-" * 20).format(base))
+    fmt = "{{!{}d}}. {{}}".format(round(log(len(text), 10)))
+    text = '\n'.join(map(lambda p: fmt.format(p[0] + 1, p[1]),
+                         enumerate(re.split(r'[\n\r]+', contents(test)))))
+    print(contents(test), end="")
+    print("-" * (42 + len(base)))
 
 def doTest(test):
-    last_groups = []
+    if not exists(test):
+        return
     base = splitext(basename(test))[0]
     print("{}:".format(base), end=" ")
-    cdir = tmpdir = createTempDir(base)
+    tmpdir = createTempDir(base)
     if verbose:
-        print("Testing directory: {}".format(tmpdir))
+        print("Testing directory: {}", tmpdir)
     timeout = TIMEOUT
     defns = {}
 
@@ -258,84 +241,75 @@ def doTest(test):
             raise ValueError("undefined substitution: ${{{}}}".format(M.group(1)))
 
     try:
-        line_num = None
-        inp = line_reader(test, '')
-        included_files = []
-        while True:
-            line_num, line = next(inp, (line_num, ''))
-            if line == "":
-                print("OK")
-                return True
-            if not Match(r'\s*#', line):
-                line = do_substs(line)
-            if verbose:
-                print("+ {}".format(line.rstrip()))
-            if Match(r'\s*#', line) or Match(r'\s+$', line):
-                pass
-            elif Match(r'I\s+(\S+)', line):
-                inp.send(join(dirname(test), Group(1)))
-                included_files.append(Group(1))
-            elif Match(r'C\s*(\S*)', line):
-                if Group(1) == "":
-                    cdir = tmpdir
-                else:
-                    cdir = join(tmpdir, Group(1))
-                    if not exists(cdir):
-                        mkdir(cdir)
-            elif Match(r'T\s*(\S+)', line):
-                try:
-                    timeout = float(Group(1))
-                except:
-                    ValueError("bad time: {}".format(line))
-            elif Match(r'\+\s*(\S+)\s+(\S+)', line):
-                doCopy(Group(1), Group(2), cdir)
-            elif Match(r'-\s*(\S+)', line):
-                doDelete(Group(1), cdir)
-            elif Match(r'>\s*(.*)', line):
-                cmnd = Group(1)
-                expected = []
-                while True:
-                    line_num, L = next(inp, (line_num, ''))
-                    if L == '':
-                        raise ValueError("unterminated command: {}"
-                                         .format(line))
-                    L = L.rstrip()
-                    if Match(r'<<<(\*?)', L):
-                        is_regexp = Group(1)
-                        break
-                    expected.append(do_substs(L))
-                msg, out = doExecute(cmnd, cdir, timeout)
+        with open(test) as inp:
+            n = 0
+            while True:
+                n += 1
+                line = inp.readline()
+                if line == "":
+                    print("OK")
+                    return True
+                if not Match(r'\s*#', line):
+                    line = do_substs(line)
                 if verbose:
-                    print(re.sub(r'(?m)^', '- ', chop_nl(out)))
-                if msg == "OK":
-                    if not correctProgramOutput(expected, out, last_groups,
-                                                is_regexp):
-                        msg = "incorrect output"
-                if msg != "OK":
-                    print("ERROR ({})".format(msg))
-                    reportDetails(test, included_files, line_num)
-                    return False
-            elif Match(r'=\s*(\S+)\s+(\S+)', line):
-                if not correctFileOutput(Group(1), Group(2), cdir):
-                    print("ERROR (file {} has incorrect content)"
-                          .format(Group(1)))
-                    reportDetails(test, included_files, line_num)
-                    return False
-            elif Match(r'\*\s*(\S+)', line):
-                if fileExists(Group(1), cdir):
-                    print("ERROR (file {} present)".format(Group(1)))
-                    reportDetails(test, included_files, line_num)
-                    return False
-            elif Match(r'E\s*(\S+)', line):
-                if not fileExists(Group(1), cdir):
-                    print("ERROR (file or directory {} not present)"
-                          .format(Group(1)))
-                    reportDetails(test, included_files, line_num)
-                    return False
-            elif Match(r'D\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*"(.*)"\s*$', line):
-                defns[Group(1)] = Group(2)
-            else:
-                raise ValueError("bad test line at {}".format(line_num))
+                    print()
+                    print("+ {}".format(line.rstrip()), end=" ")
+                if Match(r'\s*#', line) or Match(r'\s+$', line):
+                    pass
+                elif Match(r'T\s*(\S+)', line):
+                    try:
+                        timeout = float(Group(1))
+                    except:
+                        ValueError("bad time: {}".format(line))
+                elif Match(r'\+\s*(\S+)\s+(\S+)', line):
+                    doCopy(Group(1), Group(2), tmpdir)
+                elif Match(r'-\s*(\S+)', line):
+                    doDelete(Group(1), tmpdir)
+                elif Match(r'>\s*(.*)', line):
+                    cmnd = Group(1)
+                    expected = []
+                    while True:
+                        n += 1
+                        L = inp.readline()
+                        if L == '':
+                            raise ValueError("unterminated command: {}"
+                                             .format(line))
+                        L = L.rstrip()
+                        if Match(r'<<<(\*?)', L):
+                            is_regexp = Group(1)
+                            break
+                        expected.append(do_substs(L))
+                    msg, out = doExecute(cmnd, tmpdir, timeout)
+                    if verbose:
+                        print(re.sub(r'(?m)^', '- ', out), end=" ")
+                    if msg == "OK":
+                        if not correctProgramOutput(expected, out, is_regexp):
+                            msg = "incorrect output"
+                    if msg != "OK":
+                        print("ERROR ({})".format(msg))
+                        reportDetails(test, n)
+                        return False
+                elif Match(r'=\s*(\S+)\s+(\S+)', line):
+                    if not correctFileOutput(Group(1), Group(2), tmpdir):
+                        print("ERROR (file {} has incorrect content)"
+                              .format(Group(1)))
+                        reportDetails(test, n)
+                        return False
+                elif Match(r'\*\s*(\S+)', line):
+                    if fileExists(Group(1), tmpdir):
+                        print("ERROR (file {} present)".format(Group(1)))
+                        reportDetails(test, n)
+                        return False
+                elif Match(r'E\s*(\S+)', line):
+                    if not fileExists(Group(1), tmpdir):
+                        print("ERROR (file or directory {} not present)"
+                              .format(Group(1)))
+                        reportDetails(test, n)
+                        return False
+                elif Match(r'D\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*"(.*)"\s*$', line):
+                    defns[Group(1)] = Group(2)
+                else:
+                    raise ValueError("FAILED (bad test line: {})".format(n))
     finally:
         if not keep:
             cleanTempDir(tmpdir)
@@ -345,14 +319,10 @@ if __name__ == "__main__":
     keep = False
     prog_dir = None
     verbose = False
-    src_dir = 'src'
-    output_tolerance = 3
 
     try:
-        opts, files = \
-            getopt(sys.argv[1:], '',
-                   ['show=', 'keep', 'progdir=', 'verbose', 'src=',
-                    'tolerance='])
+        opts, files = getopt(sys.argv[1:], '',
+                             ['show=', "keep", "progdir=", "verbose" ])
         for opt, val in opts:
             if opt == '--show':
                 show = int(val)
@@ -360,12 +330,8 @@ if __name__ == "__main__":
                 keep = True
             elif opt == "--progdir":
                 prog_dir = val
-            elif opt == "--src":
-                src_dir = val
             elif opt == "--verbose":
                 verbose = True
-            elif opt == "--tolerance":
-                output_tolerance = int(val)
         if prog_dir is None:
             prog_dir = dirname(abspath(getcwd()))
         else:
@@ -389,9 +355,7 @@ if __name__ == "__main__":
 
     for test in files:
         try:
-            if not exists(test):
-                num_tests -= 1
-            elif not doTest(test):
+            if not doTest(test):
                 errs += 1
                 if type(show) is int:
                     show -= 1
@@ -399,9 +363,3 @@ if __name__ == "__main__":
             print("FAILED ({})".format(excp.args[0]))
             fails += 1
                   
-    print()
-    print("Ran {} tests. ".format(num_tests), end="")
-    if errs == fails == 0:
-        print("All passed.")
-    else:
-        print("{} passed.".format(num_tests - errs - fails))
