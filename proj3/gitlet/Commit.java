@@ -4,6 +4,7 @@
 package gitlet;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -21,7 +22,8 @@ public class Commit extends GitlitObject {
     private String parent;
     private String message;
     private OffsetDateTime date;
-    private List<String> blobs;
+    /** The hash map of sha1-filename. */
+    private HashMap<String, String> blobs;
 
 
     /**
@@ -31,7 +33,7 @@ public class Commit extends GitlitObject {
      * @param parent The parent commit.
      * @param blobs The blobs involved in the commit.
      */
-    public Commit(String message, OffsetDateTime date, String parent,  List<String> blobs) {
+    public Commit(String message, OffsetDateTime date, String parent,  HashMap<String,String> blobs) {
         this.parent = parent;
         this.message = message;
         this.date = date;
@@ -66,7 +68,7 @@ public class Commit extends GitlitObject {
     /**
      * @return the blobs
      */
-    public List<String> getBlobs() {
+    public HashMap<String,String> getBlobs() {
         return blobs;
     }
 

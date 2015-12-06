@@ -11,7 +11,15 @@ public class Main {
     	CommandManager processor = new CommandManager();
     	processor.add("init", new InitCommand());
     	
-        // FILL THIS IN
+    	
+    	
+    	Repository repo = new Repository(System.getProperty("user.dir"));
+    	try {
+            processor.process(repo, args);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    	repo.close();
     }
 
 }

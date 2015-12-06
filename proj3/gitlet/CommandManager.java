@@ -14,7 +14,7 @@ public class CommandManager {
 	private HashMap<String,Command> commandMap;
 
 
-	public void CommandManager(){
+	public CommandManager(){
 		this.commandMap = new HashMap<>();
 	}
 	
@@ -23,18 +23,21 @@ public class CommandManager {
 		this.commandMap.put(trigger, newCommand);
 	}
 	
-	public void process(String args[]) throws Exception{
+	public void process(Repository localRepo, String args[]) throws Exception{
 	    if(args == null || args.length == 0){
 	        throw new IllegalStateException("Please enter a command.");
 	    }
 	    
 		String trigger = args[0];
-		
 		Command command = this.commandMap.get(trigger);
+		
 		if(command == null){
 		    throw new IllegalStateException("No command with that name exists.");
 		}
 		
-		command.run(Arrays.copyOfRange(args, 1, args.length));
+		if(command.requiresRepo() && !localRepo.isOpen())
+		    throw new IllegalStateException("Not in an initialized gitlet directory.");
+		
+		command.run(localRepo, Arrays.copyOfRange(args, 1, args.length));
 	}
 }

@@ -8,6 +8,6 @@ package gitlet;
  *
  */
 public interface Command {
-    public abstract void run(String[] args);
-
+    public abstract void run(Repository repo, String[] args);
+    public boolean requiresRepo();
 }
