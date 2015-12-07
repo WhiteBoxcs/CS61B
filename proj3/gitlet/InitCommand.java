@@ -20,9 +20,13 @@ public class InitCommand implements Command {
      * @see gitlet.Command#run(java.lang.String[])
      */
     @Override
-    public void run(String[] args) {
-        // TODO Auto-generated method stub
+    public void run(Repository repo, String[] args) {
+        repo.init();
+    }
 
+    @Override
+    public boolean requiresRepo() {
+        return false;
     }
 
 }

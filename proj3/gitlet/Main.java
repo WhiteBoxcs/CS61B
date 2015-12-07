@@ -10,15 +10,17 @@ public class Main {
     public static void main(String... args) {
     	CommandManager processor = new CommandManager();
     	processor.add("init", new InitCommand());
-    	
-    	
+
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
+    	
     	try {
             processor.process(repo, args);
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
+    	
+    	
     	repo.close();
     }
 

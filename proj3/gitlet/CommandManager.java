@@ -23,7 +23,7 @@ public class CommandManager {
 		this.commandMap.put(trigger, newCommand);
 	}
 	
-	public void process(Repository localRepo, String args[]) throws Exception{
+	public void process(Repository localRepo, String args[]) throws IllegalStateException{
 	    if(args == null || args.length == 0){
 	        throw new IllegalStateException("Please enter a command.");
 	    }
