@@ -3,7 +3,8 @@
  */
 package gitlet;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 
@@ -20,7 +21,7 @@ public class Commit extends GitletObject {
     
     private String parent;
     private String message;
-    private Date date;
+    private LocalDateTime date;
     /** The hash map of filename-sha1. */
     private HashMap<String, String> blobs;
 
@@ -32,7 +33,7 @@ public class Commit extends GitletObject {
      * @param parent The parent commit.
      * @param blobs The blobs involved in the commit.
      */
-    public Commit(String message, Date date, String parent,  HashMap<String,String> blobs) {
+    public Commit(String message, LocalDateTime date, String parent,  HashMap<String,String> blobs) {
         this.parent = parent;
         this.message = message;
         this.date = date;
@@ -44,7 +45,7 @@ public class Commit extends GitletObject {
      * @param message The initial message.
      * @param currentDate The date.
      */
-    public Commit(String message, Date currentDate) {
+    public Commit(String message, LocalDateTime currentDate) {
         this(message, currentDate, "", new HashMap<String,String>());
     }
     
@@ -67,7 +68,7 @@ public class Commit extends GitletObject {
     /**
      * @return the date
      */
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -79,11 +80,18 @@ public class Commit extends GitletObject {
         return blobs;
     }
     
+    /**
+     * Gets the toString of the commit.
+     */
     @Override
     public String toString(){
-        String repr = "===\n";
-        repr += "Commit "+ this.sha1();
-        
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        String dateStr = date.format(formatter).replace('T', ' ');
+        int nanoIndex = dateStr.indexOf('.');
+        return  "===\n"
+                + "Commit "+ this.sha1() +"\n"
+                +  dateStr.substring(0, nanoIndex)+ "\n"
+                + message + "\n";
     }
 
 }

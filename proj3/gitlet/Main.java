@@ -10,7 +10,8 @@ public class Main {
     public static void main(String... args) {
     	CommandManager processor = new CommandManager();
     	processor.add("init", new InitCommand());
-
+    	processor.add("log", new LogCommand());
+    	processor.add("global-log", new GlobalLogCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	
