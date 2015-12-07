@@ -12,6 +12,7 @@ public class Main {
     	processor.add("init", new InitCommand());
     	processor.add("log", new LogCommand());
     	processor.add("global-log", new GlobalLogCommand());
+    	processor.add("find", new FindCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	

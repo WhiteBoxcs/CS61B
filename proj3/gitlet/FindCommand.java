@@ -15,7 +15,8 @@ public class FindCommand implements Command {
     @Override
     public void run(Repository repo, String[] args) {
         repo.applyToCommits((hash, com) -> {
-            if(com.)
+            if(com.getMessage().equals(args[0]))
+                System.out.println(hash);
         });
 
     }
