@@ -151,7 +151,8 @@ public class Repository {
      */
     public String addBlob(Blob blob){
         String hash = blob.sha1();
-        this.loadedObjects.put(BLOB_DIR + hash, blob);
+        if(!this.loadedObjects.containsKey(BLOB_DIR + hash))
+            this.loadedObjects.put(BLOB_DIR + hash, blob);
         return hash;
     }
     

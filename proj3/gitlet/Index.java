@@ -27,14 +27,17 @@ public class Index extends GitletObject {
     private HashMap<String, String> blobs;
     
     
-    private transient HashMap<String, String> modified = new HashMap<>();
-    private transient HashMap<String, String> added = new HashMap<>();
-    private transient HashMap<String, String> removed = new HashMap<>();
+    private HashMap<String, String> modified;
+    private HashMap<String, String> added;
+    private HashMap<String, String> removed;
     /**
      * Creates a gitlet index.
      */
     public Index(){
         blobs = new HashMap<String, String>();
+        removed = new HashMap<>();
+        added = new HashMap<>();
+        modified = new HashMap<>();
     }
     
     /**
