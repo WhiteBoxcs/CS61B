@@ -10,9 +10,10 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * Represents a Gitlet repository.
@@ -72,7 +73,7 @@ public class Repository {
 
         try {
             Files.createDirectory(gitletDir);
-            String initialCommit = this.addCommit(new Commit("initial commit", new Date()));
+            String initialCommit = this.addCommit(new Commit("initial commit",  LocalDateTime.now()));
             this.addBranch("master", initialCommit);
             this.setBranch("master");
             
@@ -107,7 +108,7 @@ public class Repository {
      */
     public String addCommitAtHead(String message, HashMap<String, String> blobs){
         String headHash = getHead();
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
         String commitHash = this.addCommit(new Commit(message, now, headHash, blobs));
         this.setHead(commitHash);
         return commitHash;
@@ -122,6 +123,26 @@ public class Repository {
        return (Commit)this.load(COMMIT_DIR + hash);
     }
     
+    /**
+     * Applies a function to all commits.
+     * @param func The function to apply/
+     */
+    public void applyToCommits(BiConsumer<String, Commit> func){
+        Path commitPath = gitletDir.resolve(COMMIT_DIR);
+        try {
+            for(Path entry : Files.newDirectoryStream(commitPath)){
+                String hash = entry.getFileName().toString();
+                Commit commit = this.getCommit(hash);
+                
+                func.accept(hash, commit);
+                
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+
     
     /**
      * Adds a blob to the store.
@@ -137,6 +158,25 @@ public class Repository {
     /** Gets a blob with a specific hash */
     public Blob getBlob(String hash){
         return (Blob)this.load(BLOB_DIR + hash);
+    }
+    
+    /**
+     * Applies a function to all blobs.
+     * @param func The function to apply/
+     */
+    public void applyToBlobs(BiConsumer<String, Blob> func){
+        Path commitPath = gitletDir.resolve(BLOB_DIR);
+        try {
+            for(Path entry : Files.newDirectoryStream(commitPath)){
+                String hash = entry.getFileName().toString();
+                Blob commit = this.getBlob(hash);
+                
+                func.accept(hash, commit);
+                
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     
