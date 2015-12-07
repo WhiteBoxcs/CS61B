@@ -14,9 +14,11 @@ public class LogCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String commit = repo.getHead();
-        while(commit != null && !commit.equals("")){
-            
+        String commitHash = repo.getHead();
+        while(commitHash != null && !commitHash.equals("")){
+            Commit commit = repo.getCommit(commitHash);
+            System.out.println(commit.toString());
+            commitHash = commit.getParent();
         }
     }
 
