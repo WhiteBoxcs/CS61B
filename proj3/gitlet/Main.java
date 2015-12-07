@@ -14,6 +14,7 @@ public class Main {
     	processor.add("global-log", new GlobalLogCommand());
     	processor.add("find", new FindCommand());
     	processor.add("add", new AddCommand());
+    	processor.add("status", new StatusCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	

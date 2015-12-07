@@ -29,6 +29,8 @@ public class Index extends GitletObject {
     
     private HashMap<String, String> modified;
     private HashMap<String, String> added;
+    private HashMap<String, String> staged;
+    
     private HashMap<String, String> removed;
     /**
      * Creates a gitlet index.
@@ -38,6 +40,7 @@ public class Index extends GitletObject {
         removed = new HashMap<>();
         added = new HashMap<>();
         modified = new HashMap<>();
+        staged = new HashMap<>();
     }
     
     /**
@@ -52,6 +55,7 @@ public class Index extends GitletObject {
         modified.clear();
         removed.clear();
         added.clear();
+        staged.clear();
         
         
         return blobs;
@@ -80,6 +84,9 @@ public class Index extends GitletObject {
         }
         else
             this.added.put(fileName, hash);
+        
+        this.staged.put(fileName, hash);
+        
         this.changed = true;
         this.blobs.put(fileName, hash);
         
@@ -96,6 +103,9 @@ public class Index extends GitletObject {
         
         this.changed = true;
         this.removed.put(fileName, this.blobs.get(fileName));
+        this.staged.remove(fileName);
+        this.added.remove(fileName);
+        this.modified.remove(fileName);
         this.blobs.remove(fileName);
     }
 
@@ -112,12 +122,19 @@ public class Index extends GitletObject {
     public HashMap<String, String> getModified() {
         return modified;
     }
-
+   
     /**
      * @return the removed
      */
     public HashMap<String, String> getRemoved() {
         return removed;
+    }
+    
+    /**
+     * @return the union of removed and modified.
+     */
+    public HashMap<String, String> getStaged(){
+        return staged;
     }
     
     
