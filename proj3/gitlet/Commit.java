@@ -78,5 +78,12 @@ public class Commit extends GitletObject {
     public HashMap<String,String> getBlobs() {
         return blobs;
     }
+    
+    @Override
+    public String toString(){
+        String repr = "===\n";
+        repr += "Commit "+ this.sha1();
+        
+    }
 
 }

@@ -5,23 +5,19 @@ package gitlet;
 
 /**
  * @author william
- *
+ * Represents a log command which logs all of the commits starting from the head.
  */
-public class InitCommand implements Command {
-
-    /**
-     * 
-     */
-    public InitCommand() {
-        // TODO Auto-generated constructor stub
-    }
+public class LogCommand implements Command {
 
     /* (non-Javadoc)
-     * @see gitlet.Command#run(java.lang.String[])
+     * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
-        repo.init();
+        String commit = repo.getHead();
+        while(commit != null && !commit.equals("")){
+            
+        }
     }
 
     /* (non-Javadoc)
@@ -29,9 +25,10 @@ public class InitCommand implements Command {
      */
     @Override
     public boolean requiresRepo() {
-        return false;
+        // TODO Auto-generated method stub
+        return true;
     }
-
+    
     /* (non-Javadoc)
      * @see gitlet.Command#checkOperands()
      */

@@ -16,7 +16,7 @@ public class Main {
     	
     	try {
             processor.process(repo, args);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     	

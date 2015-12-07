@@ -69,12 +69,15 @@ public class Index extends GitletObject {
      * @param hash The hash of the blob.
      */
     public void add(String fileName, String hash){
-        this.changed = true;
-        if(blobs.containsKey(fileName))
-            this.modified.put(fileName, hash);
+        if(blobs.containsKey(fileName)){
+            if(!this.blobs.get(fileName).equals(hash))
+                this.modified.put(fileName, hash);
+            else
+                return;
+        }
         else
             this.added.put(fileName, hash);
-        
+        this.changed = true;
         this.blobs.put(fileName, hash);
         
     }
