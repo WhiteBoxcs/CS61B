@@ -26,10 +26,7 @@ default:
 	$(MAKE) -C .. 
 	$(MAKE) PYTHON=$(PYTHON) check
 
-# The "CLASSPATH=..." clause in front of the command below temporarily 
-# changes the location in which Java searches for classes to be the directory
-# that contains your project.
-check: $(CLASSES)
+check:
 	@echo "Testing application gitlet.Main..."
 	$(TESTER) $(TESTER_FLAGS) $(TESTS)
 
