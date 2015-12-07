@@ -1,6 +1,6 @@
 package gitlet;
 
-public class Blob extends GitlitObject {
+public class Blob extends GitletObject {
 
     /**
      * Thbe base serialization UID for the Blob object.

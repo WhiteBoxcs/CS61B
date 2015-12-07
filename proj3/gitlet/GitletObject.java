@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
  * @author william
  *
  */
-public abstract class GitlitObject implements Serializable{
+public abstract class GitletObject implements Serializable{
 
     /**
      * The serial version ID of the general gitlit object.

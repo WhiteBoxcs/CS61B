@@ -3,16 +3,15 @@
  */
 package gitlet;
 
-import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 
 /**
  * @author william
  * Represents a GIT commit/flat tree..
  */
-public class Commit extends GitlitObject {
+public class Commit extends GitletObject {
 
     /**
      * The serial version ID for the commit class.
@@ -21,7 +20,7 @@ public class Commit extends GitlitObject {
     
     private String parent;
     private String message;
-    private OffsetDateTime date;
+    private Date date;
     /** The hash map of sha1-filename. */
     private HashMap<String, String> blobs;
 
@@ -33,11 +32,20 @@ public class Commit extends GitlitObject {
      * @param parent The parent commit.
      * @param blobs The blobs involved in the commit.
      */
-    public Commit(String message, OffsetDateTime date, String parent,  HashMap<String,String> blobs) {
+    public Commit(String message, Date date, String parent,  HashMap<String,String> blobs) {
         this.parent = parent;
         this.message = message;
         this.date = date;
         this.blobs = blobs;
+    }
+
+    /**
+     * Creates an initial commit.
+     * @param message The initial message.
+     * @param currentDate The date.
+     */
+    public Commit(String message, Date currentDate) {
+        this(message, currentDate, "", new HashMap<String,String>());
     }
 
 
@@ -60,7 +68,7 @@ public class Commit extends GitlitObject {
     /**
      * @return the date
      */
-    public OffsetDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
