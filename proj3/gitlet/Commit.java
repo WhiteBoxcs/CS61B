@@ -21,7 +21,7 @@ public class Commit extends GitletObject {
     private String parent;
     private String message;
     private Date date;
-    /** The hash map of sha1-filename. */
+    /** The hash map of filename-sha1. */
     private HashMap<String, String> blobs;
 
 
@@ -47,8 +47,7 @@ public class Commit extends GitletObject {
     public Commit(String message, Date currentDate) {
         this(message, currentDate, "", new HashMap<String,String>());
     }
-
-
+    
     /**
      * @return the parent
      */

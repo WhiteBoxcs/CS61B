@@ -22,18 +22,38 @@ import java.util.Map;
  */
 public class Repository {
 
-    private boolean open = false;
-    private HashMap<String, Serializable> loadedObjects;
-    private Path workingDir;
-    private Path gitletDir;
-
     private static final String COMMIT_DIR = "objects/commits/";
     private static final String BLOB_DIR = "objects/blobs/";
     private static final String REFHEAD_DIR = "refs/heads/";
     private static final String INDEX = "index";
     private static final String HEAD = "HEAD";
     
+    /**
+     * If the Repository is open and "on."
+     */
+    private boolean open = false;
     
+    /**
+     * All loaded objects.
+     */
+    private HashMap<String, Serializable> loadedObjects;
+    
+    /**
+     * The working path.
+     */
+    private Path workingDir;
+    
+    /**
+     * The gitlet directory.
+     */
+    private Path gitletDir;
+    
+    
+    
+    /**
+     * Declares a repository at the workingDIR.
+     * @param workingDir The working dir.
+     */
     public Repository(String workingDir) {
         this.workingDir = Paths.get(workingDir);
         this.gitletDir = this.workingDir.resolve(".gitlet");
@@ -53,8 +73,12 @@ public class Repository {
 
         try {
             Files.createDirectory(gitletDir);
-
             String initialCommit = this.addCommit(new Commit("initial commit", new Date()));
+            this.addBranch("master", initialCommit);
+            this.setBranch("master");
+            
+            this.loadedObjects.put(INDEX, new Index());
+
             
             
             open = true;
@@ -64,26 +88,164 @@ public class Repository {
         }
         
     }
+
     
-    
+    /**
+     * Adds a commit to the repository.
+     * @param commit The commit.
+     * @return
+     */
     public String addCommit(Commit commit) {
         String hash = commit.sha1();
         this.loadedObjects.put(COMMIT_DIR + hash, commit);
         return hash;
     }
     
+    /**
+     * Adds a commit to the head.
+     * @param commit The commit to add to the head.
+     * @return The Sha-1 of the commit.
+     */
+    public String addCommitAtHead(String message, HashMap<String, String> blobs){
+        String headHash = getHead();
+        Date now = new Date();
+        String commitHash = this.addCommit(new Commit(message, now, headHash, blobs));
+        this.setHead(commitHash);
+        return commitHash;
+    }
+    
+    /**
+     * Gets a commit with a specific hash.
+     * @param hash Ther hash valie.
+     * @return The commit.
+     */
     public Commit getCommit(String hash){
        return (Commit)this.load(COMMIT_DIR + hash);
     }
     
-    public List<Commit> getAllCommits(){
-        Path
+    
+    /**
+     * Adds a blob to the store.
+     * @param blob The blob to add.
+     * @return The hash of the blob.
+     */
+    public String addBlob(Blob blob){
+        String hash = blob.sha1();
+        this.loadedObjects.put(BLOB_DIR + hash, blob);
+        return hash;
     }
-
-    private void addBranch(String name, Commit commit){
-        
+    
+    /** Gets a blob with a specific hash */
+    public Blob getBlob(String hash){
+        return (Blob)this.load(BLOB_DIR + hash);
     }
+    
+    
+    /**
+     * Gets the index.
+     * @return The index.
+     */
+    public Index getIndex(){
+        return (Index)this.load(INDEX);
+    }
+    
+    
+    /**
+     * Gets the head commit.
+     * @return The hash for the head commit.
+     */
+    public String getHead(){
+        String curBranch = getBranch();
+        try{
+            Path branchPath = gitletDir.resolve(REFHEAD_DIR + curBranch);
+            return Files.readAllLines(branchPath).get(0);
+            
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /** Sets the head commit. */
+    private void setHead(String commitHash) {
+        String curBranch = getBranch();
+        try{
+            Path branchPath = gitletDir.resolve(REFHEAD_DIR + curBranch);
+            Files.write(branchPath, commitHash.getBytes());
+            
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    /**
+     * Gets the current branch if it exists.
+     * @return The name of the current branch.
+     */
+    public String getBranch(){
+        try {   
+            Path headPath = gitletDir.resolve(HEAD);
+            String branchUri = Files.readAllLines(headPath).get(0);
+            Path branchPath = gitletDir.resolve(branchUri);
+            if(!Files.exists(branchPath)){
+                throw new IllegalStateException("Current branch does not exist.");
+            }
+            return branchPath.getFileName().toString();
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * Sets the current branch in the head.`
+     * @param branch
+     */
+    private void setBranch(String branch) {
+        try {   
+            Path headPath = gitletDir.resolve(HEAD);
+            Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);
+            if(!Files.exists(branchPath))
+                throw new IllegalStateException("No such branch exists.");
+            
+            Files.write(headPath, (REFHEAD_DIR + branch).getBytes());
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Adds a branch to the reference store at the current head commit.
+     * @param name The name of the branch
+     * @param  commit the commit.
+     */
+    public void addBranch(String name, String commit){
+        try {
+            Path branchPath =  gitletDir.resolve(REFHEAD_DIR + name);
+            if(!Files.exists(branchPath.getParent()))
+                    Files.createDirectories(branchPath.getParent());
+            
+            Files.write(branchPath, commit.getBytes());
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Adds a branch at the head.
+     * @param name The name of the branch.
+     */
+    public void addBranch(String name){
+        this.addBranch(name, this.getHead());
+    }
+    
     
     
     /**
@@ -111,6 +273,11 @@ public class Repository {
 
     }
     
+    /**
+     * Saves a gitlit object.
+     * @param file The file name/relative path.
+     * @param object The object to save.
+     */
     private void save(String file, Serializable object){
         Path filePath = gitletDir.resolve(file);
         try{
@@ -151,12 +318,12 @@ public class Repository {
         }    
     }
     
+    /** Returns if the repository has been opened. */
     public boolean isOpen() {
         return open;
     }
 
-    
-
+    /** Gets the working directory */
     public Path getWorkingDir() {
         return workingDir;
     }
