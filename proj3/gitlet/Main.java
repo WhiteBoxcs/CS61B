@@ -21,6 +21,7 @@ public class Main {
     	processor.add("checkout", new CheckoutCommand());
     	processor.add("branch", new BranchCommand());
     	processor.add("rm-branch", new RemoveBranchCommand());
+    	processor.add("reset", new ResetCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	
