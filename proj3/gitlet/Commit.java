@@ -34,6 +34,8 @@ public class Commit extends GitletObject {
      * @param blobs The blobs involved in the commit.
      */
     public Commit(String message, LocalDateTime date, String parent,  HashMap<String,String> blobs) {
+        if(message == "")
+            throw new IllegalArgumentException("Please enter a commit message.");
         this.parent = parent;
         this.message = message;
         this.date = date;
