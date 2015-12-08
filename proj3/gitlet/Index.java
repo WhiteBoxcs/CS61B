@@ -97,13 +97,14 @@ public class Index extends GitletObject {
      * Untracks a file.
      * @param fileName
      */
-    public void remove(String fileName){
+    public void remove(String fileName, boolean fromLastCommit){
         if(!this.blobs.containsKey(fileName))
             throw new IllegalStateException("No reason to remove the file.");
         
         
         this.changed = true;
-        this.removed.put(fileName, this.blobs.get(fileName));
+        if(fromLastCommit)
+            this.removed.put(fileName, this.blobs.get(fileName));
         this.staged.remove(fileName);
         this.added.remove(fileName);
         this.modified.remove(fileName);

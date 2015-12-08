@@ -59,7 +59,7 @@ public class StatusCommand implements Command {
     private void diff(Index index, Path workingDir) throws IOException{
         HashMap<String, String> curBlobs = new HashMap<String, String>();
 
-
+        
         for(Path entry : Files.newDirectoryStream(workingDir)){
             if(!Files.isDirectory(entry)){
                 String name = entry.getFileName().toString();
