@@ -4,6 +4,7 @@
 package gitlet;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * @author william
@@ -27,20 +28,20 @@ public class Index extends GitletObject {
     private HashMap<String, String> blobs;
     
     
-    private HashMap<String, String> modified;
-    private HashMap<String, String> added;
-    private HashMap<String, String> staged;
+    private TreeMap<String, String> modified;
+    private TreeMap<String, String> added;
+    private TreeMap<String, String> staged;
     
-    private HashMap<String, String> removed;
+    private TreeMap<String, String> removed;
     /**
      * Creates a gitlet index.
      */
     public Index(){
         blobs = new HashMap<String, String>();
-        removed = new HashMap<>();
-        added = new HashMap<>();
-        modified = new HashMap<>();
-        staged = new HashMap<>();
+        removed = new TreeMap<>();
+        added = new TreeMap<>();
+        modified = new TreeMap<>();
+        staged = new TreeMap<>();
     }
     
     /**
@@ -119,23 +120,24 @@ public class Index extends GitletObject {
     /**
      * @return the modified
      */
-    public HashMap<String, String> getModified() {
+    public TreeMap<String, String> getModified() {
         return modified;
     }
    
     /**
      * @return the removed
      */
-    public HashMap<String, String> getRemoved() {
+    public TreeMap<String, String> getRemoved() {
         return removed;
     }
     
     /**
      * @return the union of removed and modified.
      */
-    public HashMap<String, String> getStaged(){
+    public TreeMap<String, String> getStaged(){
         return staged;
     }
+    
     
     
 
