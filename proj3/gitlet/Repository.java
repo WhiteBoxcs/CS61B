@@ -98,19 +98,24 @@ public class Repository {
     public void checkout(Commit commit) {
 
         Index index = getIndex();
+        
         try {
             for (Path entry : Files.newDirectoryStream(getWorkingDir(),
                     x -> !Files.isDirectory(x))) {
                 String name = entry.getFileName().toString();
                 if (commit.getBlobs().containsKey(name)
-                        && !index.getBlobs().containsKey(name))
+                        && (!index.getBlobs().containsKey(name)
+                                || index.getStaged().containsKey(name)))
                     throw new IllegalStateException("There is an untracked "
                             + "file in the way; delete it or add it first.");
             }
 
             for (Path entry : Files.newDirectoryStream(getWorkingDir(),
                     x -> !Files.isDirectory(x))) {
-                Files.delete(entry);
+                String name = entry.getFileName().toString();
+                
+                if(index.getBlobs().containsKey(name))
+                    Files.delete(entry);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -439,6 +444,23 @@ public class Repository {
      */
     public void addBranch(String name) {
         this.addBranch(name, this.getHead());
+    }
+    
+
+    public void removeBranch(String branch) {
+        try {
+            Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);
+            if (!Files.exists(branchPath.getParent()))
+                Files.createDirectories(branchPath.getParent());
+            
+            if(!Files.exists(branchPath))
+                throw new IllegalArgumentException("A branch with that name does not exist.");
+            
+            Files.delete(branchPath);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -24,6 +24,8 @@ public class AddCommand implements Command {
         
         if(!Files.exists(filePath))
             throw new IllegalArgumentException("File does not exist.");
+        if(Files.isDirectory(filePath))
+            throw new IllegalStateException("Cannot add a directory.");
         
         try {
             Blob fileBlob = new Blob(Files.readAllBytes(filePath));
