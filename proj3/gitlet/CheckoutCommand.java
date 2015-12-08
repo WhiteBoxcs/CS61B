@@ -29,7 +29,11 @@ public class CheckoutCommand implements Command {
      * @param commitHash The commit.
      */
     public void checkoutFile(Repository repo, String commitHash, String filename){
-        Commit toCheck = repo.getCommit(commitHash);
+        Commit toCheck;
+        if(commitHash.length() == 40)
+            toCheck = repo.getCommit(commitHash);
+        else
+            toCheck = repo.firstCommitWhere(x -> x.startsWith(commitHash));
         if(toCheck == null)
             throw new IllegalArgumentException("No commit with that id exists.");
         repo.checkout(toCheck, filename);
