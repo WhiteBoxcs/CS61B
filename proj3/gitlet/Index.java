@@ -69,6 +69,20 @@ public class Index extends GitletObject {
         return blobs;
     }
     
+    /**
+     * Checks out a particular file.
+     * @param filename The file to checkout.
+     * @param hash The hash of the file.
+     */
+    public void checkout(String filename, String hash){
+        this.blobs.put(filename, hash);
+        staged.remove(filename);
+        removed.remove(filename);
+        added.remove(filename);
+        modified.remove(filename);
+        if(staged.size() + removed.size() == 0)
+            changed = false;
+    }
     
     /**
      * Adds a blob to the staging area.

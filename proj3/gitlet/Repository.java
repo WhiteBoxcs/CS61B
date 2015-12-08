@@ -90,6 +90,41 @@ public class Repository {
         }
 
     }
+    
+    /**
+     * Checks out a given commit.
+     * @param commit The commit to checkout.
+     */
+    public void checkout(Commit commit) {
+        commit.getBlobs().forEach((file, hash) -> {
+            checkout(commit, file);
+        });
+        
+        this.setHead(commit.sha1());
+    }
+    
+    /**
+     * Checks out a given file of a commit.
+     * @param commit
+     * @param filename
+     */
+    public void checkout(Commit commit, String filename) {
+        String blobHash = commit.getBlobs().get(filename);
+        if(blobHash == null)
+            throw new IllegalArgumentException("File does not exist in that commit.");
+        
+        Blob blob = this.getBlob(blobHash);
+        Path filePath = this.getWorkingDir().resolve(filename);
+        try {
+            Files.write(filePath, blob.getContents());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Index index = this.getIndex();
+        index.checkout(filename, blobHash);
+    }
+    
+    
 
     /**
      * Adds a commit to the repository.
@@ -259,7 +294,7 @@ public class Repository {
     }
 
     /** Sets the head commit. */
-    private void setHead(String commitHash) {
+    public void setHead(String commitHash) {
         String curBranch = getBranch();
         try {
             Path branchPath = gitletDir.resolve(REFHEAD_DIR + curBranch);
@@ -316,7 +351,7 @@ public class Repository {
      * Sets the current branch in the head.`
      * @param branch
      */
-    private void setBranch(String branch) {
+    public void setBranch(String branch) {
         try {
             Path headPath = gitletDir.resolve(HEAD);
             Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);

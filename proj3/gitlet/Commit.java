@@ -74,7 +74,7 @@ public class Commit extends GitletObject {
 
 
     /**
-     * @return the blobs
+     * @return the blobs filename-sha1
      */
     public HashMap<String,String> getBlobs() {
         return blobs;
