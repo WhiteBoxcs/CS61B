@@ -50,13 +50,7 @@ public class Index extends GitletObject {
     public HashMap<String, String> blobsFromStage(){
         if(!changed)
             throw new IllegalStateException("No changes added to the commit.");
- 
-        changed = false;
-        modified.clear();
-        removed.clear();
-        added.clear();
-        staged.clear();
-        
+        clearStage();
         
         return blobs;
     }
@@ -82,6 +76,11 @@ public class Index extends GitletObject {
         modified.remove(filename);
         if(staged.size() + removed.size() == 0)
             changed = false;
+    }
+    
+    public void checkout(Commit commit){
+        clearStage();
+        this.blobs = commit.getBlobs();
     }
     
     /**
@@ -123,6 +122,17 @@ public class Index extends GitletObject {
         this.modified.remove(fileName);
         this.blobs.remove(fileName);
     }
+    
+    /**
+     * Clears the stage.
+     */
+    private void clearStage() {
+        changed = false;
+        modified.clear();
+        removed.clear();
+        added.clear();
+        staged.clear();
+    }
 
     /**
      * @return the changed
@@ -151,8 +161,5 @@ public class Index extends GitletObject {
     public TreeMap<String, String> getStaged(){
         return staged;
     }
-    
-    
-    
 
 }

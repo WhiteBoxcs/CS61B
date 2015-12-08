@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -90,19 +89,47 @@ public class Repository {
         }
 
     }
-    
+
     /**
      * Checks out a given commit.
-     * @param commit The commit to checkout.
+     * @param commit
+     *            The commit to checkout.
      */
     public void checkout(Commit commit) {
+
+        Index index = getIndex();
+        try {
+            for (Path entry : Files.newDirectoryStream(getWorkingDir(),
+                    x -> !Files.isDirectory(x))) {
+                String name = entry.getFileName().toString();
+                if (commit.getBlobs().containsKey(name)
+                        && !index.getBlobs().containsKey(name))
+                    throw new IllegalStateException("There is an untracked "
+                            + "file in the way; delete it or add it first.");
+            }
+
+            for (Path entry : Files.newDirectoryStream(getWorkingDir(),
+                    x -> !Files.isDirectory(x))) {
+                Files.delete(entry);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         commit.getBlobs().forEach((file, hash) -> {
-            checkout(commit, file);
+            Blob blob = this.getBlob(hash);
+            Path filePath = this.getWorkingDir().resolve(file);
+            try {
+                Files.write(filePath, blob.getContents());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
-        
-        this.setHead(commit.sha1());
+
+        index.checkout(commit);
+
     }
-    
+
     /**
      * Checks out a given file of a commit.
      * @param commit
@@ -110,9 +137,10 @@ public class Repository {
      */
     public void checkout(Commit commit, String filename) {
         String blobHash = commit.getBlobs().get(filename);
-        if(blobHash == null)
-            throw new IllegalArgumentException("File does not exist in that commit.");
-        
+        if (blobHash == null)
+            throw new IllegalArgumentException(
+                    "File does not exist in that commit.");
+
         Blob blob = this.getBlob(blobHash);
         Path filePath = this.getWorkingDir().resolve(filename);
         try {
@@ -123,8 +151,6 @@ public class Repository {
         Index index = this.getIndex();
         index.checkout(filename, blobHash);
     }
-    
-    
 
     /**
      * Adds a commit to the repository.
@@ -187,28 +213,26 @@ public class Repository {
     /**
      * Gets the first commit which satisfies the condition.
      * @param func
-     * @return 
+     * @return
      */
-    public Commit firstCommitWhere(Predicate<String> func){
+    public Commit firstCommitWhere(Predicate<String> func) {
         Path commitPath = gitletDir.resolve(COMMIT_DIR);
         try {
             for (Path entry : Files.newDirectoryStream(commitPath)) {
                 String hash = entry.getFileName().toString();
-                
-                if(func.test(hash)){
+
+                if (func.test(hash)) {
                     return this.getCommit(hash);
                 }
             }
-            
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
-    
+
     /**
      * Adds a blob to the store.
      * @param blob
@@ -247,28 +271,27 @@ public class Repository {
         }
     }
 
-
     /**
      * Gets the first blob which satisfies the condition.
      * @param func
-     * @return 
+     * @return
      */
-    public Blob firstBlobWhere(Predicate<String> func){
+    public Blob firstBlobWhere(Predicate<String> func) {
         Path commitPath = gitletDir.resolve(BLOB_DIR);
         try {
             for (Path entry : Files.newDirectoryStream(commitPath)) {
                 String hash = entry.getFileName().toString();
-                
-                if(func.test(hash))
+
+                if (func.test(hash))
                     return this.getBlob(hash);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
+
     /**
      * Gets the index.
      * @return The index.
@@ -363,6 +386,26 @@ public class Repository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Gets the branch head.
+     * @param branch
+     *            The branch.
+     * @return The branch head.
+     */
+    public String getBranchHead(String branch) {
+        try {
+            Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);
+            if (!Files.exists(branchPath))
+                throw new IllegalStateException("No such branch exists.");
+
+            return Files.readAllLines(branchPath).get(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

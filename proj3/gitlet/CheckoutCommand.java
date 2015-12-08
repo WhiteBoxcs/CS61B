@@ -34,6 +34,7 @@ public class CheckoutCommand implements Command {
             toCheck = repo.getCommit(commitHash);
         else
             toCheck = repo.firstCommitWhere(x -> x.startsWith(commitHash));
+        
         if(toCheck == null)
             throw new IllegalArgumentException("No commit with that id exists.");
         repo.checkout(toCheck, filename);
@@ -44,8 +45,11 @@ public class CheckoutCommand implements Command {
      * @param branch The branch to which to changed.
      */
     public void checkoutBranch(Repository repo, String branch){
+        String commitHash = repo.getBranchHead(branch);
+        repo.checkout(repo.getCommit(commitHash));
         repo.setBranch(branch);
-        repo.checkout(repo.getCommit(repo.getHead()));
+        repo.setHead(commitHash);
+        
     }
 
     /* (non-Javadoc)
