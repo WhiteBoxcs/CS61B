@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Represents a Gitlet repository.
@@ -148,6 +150,31 @@ public class Repository {
     }
 
     /**
+     * Gets the first commit which satisfies the condition.
+     * @param func
+     * @return 
+     */
+    public Commit firstCommitWhere(Predicate<String> func){
+        Path commitPath = gitletDir.resolve(COMMIT_DIR);
+        try {
+            for (Path entry : Files.newDirectoryStream(commitPath)) {
+                String hash = entry.getFileName().toString();
+                
+                if(func.test(hash)){
+                    return this.getCommit(hash);
+                }
+            }
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    
+    /**
      * Adds a blob to the store.
      * @param blob
      *            The blob to add.
@@ -185,6 +212,28 @@ public class Repository {
         }
     }
 
+
+    /**
+     * Gets the first blob which satisfies the condition.
+     * @param func
+     * @return 
+     */
+    public Blob firstBlobWhere(Predicate<String> func){
+        Path commitPath = gitletDir.resolve(BLOB_DIR);
+        try {
+            for (Path entry : Files.newDirectoryStream(commitPath)) {
+                String hash = entry.getFileName().toString();
+                
+                if(func.test(hash))
+                    return this.getBlob(hash);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
     /**
      * Gets the index.
      * @return The index.

@@ -17,6 +17,7 @@ public class Main {
     	processor.add("rm", new RemoveCommand());
     	processor.add("status", new StatusCommand());
     	processor.add("commit", new CommitCommand());
+    	processor.add("ls-commit", new LsCommitCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	

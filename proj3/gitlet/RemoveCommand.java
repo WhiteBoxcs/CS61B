@@ -9,33 +9,34 @@ import java.nio.file.Path;
 
 /**
  * @author william
- * 
  */
 public class RemoveCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String file = args[0];  
+        String file = args[0];
         Index index = repo.getIndex();
-        
-        
+
         Commit cur = repo.getCommit(repo.getHead());
-        if(cur.getBlobs().containsKey(file))
-        {
+        if (cur.getBlobs().containsKey(file)) {
             try {
-                Files.delete(repo.getWorkingDir().resolve(file));
                 index.remove(file, true);
+                if (Files.exists(repo.getWorkingDir().resolve(file)))
+                    Files.delete(repo.getWorkingDir().resolve(file));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            index.remove(file, false);
         }
-        index.remove(file, false);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -43,7 +44,8 @@ public class RemoveCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

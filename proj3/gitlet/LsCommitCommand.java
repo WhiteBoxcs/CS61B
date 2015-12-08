@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+package gitlet;
+
+/**
+ * @author william
+ *
+ */
+public class LsCommitCommand implements Command {
+
+    /* (non-Javadoc)
+     * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
+     */
+    @Override
+    public void run(Repository repo, String[] args) {
+        Commit commit;
+        if(args.length == 0){
+            commit = repo.getCommit(repo.getHead());
+        }
+        else
+        {
+            commit = repo.firstCommitWhere(
+                    x-> x.indexOf(args[0]) == 0);
+        }
+        
+        System.out.println(commit.toString());
+        commit.getBlobs().forEach((name, hash) -> {
+            System.out.println(name + "\t" + hash);
+        });
+
+    }
+
+    /* (non-Javadoc)
+     * @see gitlet.Command#requiresRepo()
+     */
+    @Override
+    public boolean requiresRepo() {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see gitlet.Command#checkOperands(java.lang.String[])
+     */
+    @Override
+    public boolean checkOperands(String[] args) {
+        return args.length == 1 || args.length == 0;
+    }
+
+}
