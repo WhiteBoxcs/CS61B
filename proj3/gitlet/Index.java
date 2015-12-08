@@ -31,7 +31,6 @@ public class Index extends GitletObject {
     private TreeMap<String, String> modified;
     private TreeMap<String, String> added;
     private TreeMap<String, String> staged;
-    
     private TreeMap<String, String> removed;
     /**
      * Creates a gitlet index.
