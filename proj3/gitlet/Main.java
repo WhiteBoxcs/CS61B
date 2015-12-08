@@ -19,6 +19,7 @@ public class Main {
     	processor.add("commit", new CommitCommand());
     	processor.add("ls-commit", new LsCommitCommand());
     	processor.add("checkout", new CheckoutCommand());
+    	processor.add("branch", new BranchCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	

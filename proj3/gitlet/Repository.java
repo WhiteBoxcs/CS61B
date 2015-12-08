@@ -420,7 +420,11 @@ public class Repository {
             Path branchPath = gitletDir.resolve(REFHEAD_DIR + name);
             if (!Files.exists(branchPath.getParent()))
                 Files.createDirectories(branchPath.getParent());
-
+            
+            if(Files.exists(branchPath))
+                throw new IllegalArgumentException("A branch with that name already exists.");
+            
+            
             Files.write(branchPath, commit.getBytes());
 
         } catch (IOException e) {
