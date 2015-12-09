@@ -1,21 +1,13 @@
 package gitlet;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * Represents a Gitlet repository.
@@ -42,13 +34,12 @@ public class Repository {
      * The gitlet directory.
      */
     private Path gitletDir;
-    
+
     /**
      * Manages all objects in the repository.
      */
     private GitletObjectManager objectMan;
-    
-    
+
     private String name;
 
     /**
@@ -61,7 +52,7 @@ public class Repository {
     public Repository(String name, String workingDir) {
         this.workingDir = Paths.get(workingDir);
         this.gitletDir = this.workingDir.resolve(".gitlet");
-        objectMan = new GitletObjectManager(gitletDir);
+        this.objectMan = new GitletObjectManager(this.gitletDir);
         this.name = name;
 
         if (Files.exists(this.gitletDir)) {
@@ -90,10 +81,10 @@ public class Repository {
 
         try {
             Files.createDirectory(this.gitletDir);
-            objectMan.open();
-            
-            String initialCommit = this.objects().add(
-                    new Commit("initial commit", LocalDateTime.now()));
+            this.objectMan.open();
+
+            String initialCommit = this.objects()
+                    .add(new Commit("initial commit", LocalDateTime.now()));
             this.addBranch("master", initialCommit);
             this.setBranch("master");
             this.setInitialCommit(initialCommit);
@@ -196,13 +187,12 @@ public class Repository {
         return commitHash;
     }
 
-
     /**
      * Gets the index.
      * @return The index.
      */
     public Index getIndex() {
-        return (Index) this.objects().getDirect(Index.class, INDEX);
+        return this.objects().getDirect(Index.class, INDEX);
     }
 
     /**
@@ -376,8 +366,8 @@ public class Repository {
                     "Close repository before opening a new instance.");
         }
         this.open = true;
-        objectMan.open();
-        
+        this.objectMan.open();
+
     }
 
     /**
@@ -386,7 +376,7 @@ public class Repository {
     public void close() {
         if (this.isOpen()) {
             this.open = false;
-            objectMan.close();
+            this.objectMan.close();
         }
     }
 
@@ -394,7 +384,7 @@ public class Repository {
     public boolean isOpen() {
         return this.open;
     }
-    
+
     /** Gets the working directory */
     public Path getWorkingDir() {
         return this.workingDir;
@@ -433,13 +423,13 @@ public class Repository {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Gets the objects in the repository.
      * @return The manager which holds the objects.
      */
-    public GitletObjectManager objects(){
-        return objectMan;
+    public GitletObjectManager objects() {
+        return this.objectMan;
     }
 
 }

@@ -14,11 +14,15 @@ public class FindCommand implements Command {
      */
     @Override
     public void run(final Repository repo, String[] args) {
+        final int iter[] = {0};
         repo.objects().forEach(Commit.class, (hash, com) -> {
             if (com.getMessage().equals(args[0])) {
+                iter[0]++;
                 System.out.println(hash);
             }
         });
+        if(iter[0] == 0)
+            throw new IllegalArgumentException("Found no commit with that message.");
 
     }
 

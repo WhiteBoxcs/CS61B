@@ -88,6 +88,7 @@ public class StatusCommand implements Command {
         untracked.sort(String::compareTo);
         System.out.println("\n=== Untracked Files ===");
         untracked.forEach(x -> System.out.println(x));
+        System.out.println("");
     }
 
     /*

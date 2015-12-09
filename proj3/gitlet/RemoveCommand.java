@@ -17,7 +17,8 @@ public class RemoveCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        remove(repo, args[0], repo.objects().get(Commit.class, repo.getHead()));
+        remove(repo, args[0],
+                repo.objects().get(Commit.class, repo.getHead()));
     }
 
     public static void remove(Repository repo, String file, Commit head) {

@@ -195,7 +195,8 @@ public class MergeCommand implements Command {
                 Files.write(filePath, "<<<<<<< HEAD\n".getBytes());
 
                 if (head.getBlobs().containsKey(file)) {
-                    Blob headVersion = repo.objects().get(Blob.class, head.getBlobs().get(file));
+                    Blob headVersion = repo.objects().get(Blob.class,
+                            head.getBlobs().get(file));
                     Files.write(filePath, headVersion.getContents(),
                             StandardOpenOption.APPEND);
                 }
@@ -204,8 +205,8 @@ public class MergeCommand implements Command {
                         StandardOpenOption.APPEND);
 
                 if (other.getBlobs().containsKey(file)) {
-                    Blob otherVersion =
-                            repo.objects().get(Blob.class, other.getBlobs().get(file));
+                    Blob otherVersion = repo.objects().get(Blob.class,
+                            other.getBlobs().get(file));
                     Files.write(filePath, otherVersion.getContents(),
                             StandardOpenOption.APPEND);
                 }

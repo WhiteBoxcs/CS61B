@@ -86,6 +86,17 @@ public class Commit extends GitletObject {
     }
 
     /**
+     * Puts a file in the blob.
+     * @param file
+     *            The file to put.
+     * @param blobHash
+     *            The particular hash.
+     */
+    public void put(String file, String blobHash) {
+        this.blobs.put(file, blobHash);
+    }
+
+    /**
      * Gets the toString of the commit.
      */
     @Override

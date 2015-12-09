@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gitlet;
 
@@ -17,14 +17,10 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import gitlet.LazySerialManager.LoadingIterator;
 
 /**
  * @author william Represents a general file object manager.
@@ -50,7 +46,6 @@ public abstract class LazySerialManager<T extends Serializable>
     /** Base file object directory */
     private Path baseDirectory;
 
-
     /**
      * If the Lazy serial manager is open.
      */
@@ -68,7 +63,6 @@ public abstract class LazySerialManager<T extends Serializable>
         this.tracker = new LinkedHashMap<>();
     }
 
-
     /**
      * Gets a serial object.
      * @param file
@@ -77,11 +71,12 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     public <S extends T> S get(Class<S> type, String file) {
         try {
-           T obj = loadedObjects.get(file);
-            if (obj == null)
-                return load(type, file);
-            else
+            T obj = this.loadedObjects.get(file);
+            if (obj == null) {
+                return this.load(type, file);
+            } else {
                 return type.cast(obj);
+            }
         } catch (ClassCastException e) {
             String name = type.getSimpleName();
             throw new IllegalArgumentException(
@@ -150,7 +145,7 @@ public abstract class LazySerialManager<T extends Serializable>
 
             Object unsafe = oin.readObject();
 
-            T loaded = (T) (unsafe);
+            T loaded = (T) unsafe;
 
             oin.close();
             fin.close();
@@ -196,35 +191,35 @@ public abstract class LazySerialManager<T extends Serializable>
     @SuppressWarnings("unchecked")
     public void open() {
         this.open = true;
-        
-        if(!Files.exists(this.getBaseDirectory()))
+
+        if (!Files.exists(this.getBaseDirectory())) {
             try {
                 Files.createDirectories(this.getBaseDirectory());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        
-        Path dbPath = baseDirectory.resolve(DB_NAME);
+        }
+
+        Path dbPath = this.baseDirectory.resolve(DB_NAME);
         if (Files.exists(dbPath)) {
             try {
                 InputStream fin = Files.newInputStream(dbPath);
                 ObjectInputStream oin = new ObjectInputStream(fin);
 
                 Object unsafe = oin.readObject();
-                
-                this.tracker = (HashMap<Class<?>, Set<String>>)
-                        (unsafe);
+
+                this.tracker = (HashMap<Class<?>, Set<String>>) unsafe;
 
                 oin.close();
                 fin.close();
-                
 
             } catch (IOException i) {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else
+        } else {
             this.tracker = new HashMap<>();
+        }
 
     }
 
@@ -243,8 +238,8 @@ public abstract class LazySerialManager<T extends Serializable>
     public void close() {
         if (this.isOpen()) {
             this.open = false;
-            save(DB_NAME, this.tracker);
-            loadedObjects.forEach((file, obj) -> save(file, obj));
+            this.save(DB_NAME, this.tracker);
+            this.loadedObjects.forEach((file, obj) -> this.save(file, obj));
 
         }
     }
@@ -253,10 +248,9 @@ public abstract class LazySerialManager<T extends Serializable>
      * @return the baseDirectory
      */
     public Path getBaseDirectory() {
-        return baseDirectory;
+        return this.baseDirectory;
     }
 
-    
     /**
      * Performs an action for every file of object of type TYPE.
      * @param type
@@ -266,36 +260,39 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     public <S extends T> void lazyForEach(Class<S> type,
             Consumer<? super String> action) {
-        if (!tracker.containsKey(type)) {
+        if (!this.tracker.containsKey(type)) {
             String name = type.getSimpleName();
             throw new IllegalStateException(
                     "No " + name.toLowerCase() + "s exist.");
         }
-        tracker.get(type).forEach(action);
+        this.tracker.get(type).forEach(action);
     }
 
     /**
      * Performs a for each on an object of a certain type.
-     * @param type The type of the object.
-     * @param action The action.
+     * @param type
+     *            The type of the object.
+     * @param action
+     *            The action.
      */
     public <S extends T> void forEach(Class<S> type,
-            final BiConsumer<? super String, ? super S> action){
-        if (!tracker.containsKey(type)) {
+            final BiConsumer<? super String, ? super S> action) {
+        if (!this.tracker.containsKey(type)) {
             String name = type.getSimpleName();
             throw new IllegalStateException(
                     "No " + name.toLowerCase() + "s exist.");
         }
-        tracker.get(type).forEach(file -> action.accept(file, load(type, file)));
+        this.tracker.get(type)
+                .forEach(file -> action.accept(file, this.load(type, file)));
     }
-    
+
     /**
      * Gets an iterator for the lazy serial file manager.
      */
     @Override
     public Iterator<T> iterator() {
         List<Iterator<String>> iterators = new ArrayList<Iterator<String>>();
-        tracker.forEach((type, files) -> iterators.add(files.iterator()));
+        this.tracker.forEach((type, files) -> iterators.add(files.iterator()));
 
         List<Iterator<T>> fileIterators =
                 iterators.stream().map(x -> this.new LoadingIterator(x))
@@ -329,7 +326,7 @@ public abstract class LazySerialManager<T extends Serializable>
          */
         @Override
         public boolean hasNext() {
-            return fileNameIter.hasNext();
+            return this.fileNameIter.hasNext();
         }
 
         /*
@@ -338,7 +335,7 @@ public abstract class LazySerialManager<T extends Serializable>
          */
         @Override
         public T next() {
-            return LazySerialManager.this.loadUnsafe(fileNameIter.next());
+            return LazySerialManager.this.loadUnsafe(this.fileNameIter.next());
         }
 
     }
