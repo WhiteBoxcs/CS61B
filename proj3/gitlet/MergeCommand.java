@@ -13,6 +13,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -84,61 +85,38 @@ public class MergeCommand implements Command {
         List<String> inConflict = new ArrayList<String>();
         
         //TODO: REFACTOR
-        
-        other.getBlobs().forEach((file,hash)-> {
-            String splitFileHash = split.getBlobs().get(file);
-            if(splitFileHash != null){ //present at splitpoint
-                if(!splitFileHash.equals(hash)){
-                    if(head.getBlobs().containsKey(file)){
-                        if(splitFileHash.equals(head.getBlobs().get(file))){
-                            toCheckout.add(file); 
-                        }
-                        else{
-                            inConflict.add(file);
-                        }
-                    }
-                    else
-                    {
-                        inConflict.add(file);
-                    }
-                }
-                else{
-                    if(!head.getBlobs().containsKey(file));
-                }
-                        
-            }
-            else{
-                if(!other.getBlobs().containsKey(file))
-                    toCheckout.add(file);
-                else
-                    inConflict.add(file);
-            }
-        });
-        
-        
-        head.getBlobs().forEach((file, hash) -> {
-            String splitFileHash = split.getBlobs().get(file);
-            if(splitFileHash != null){
-                if(!splitFileHash.equals(hash)){
-                    if(other.getBlobs().containsKey(file)){
-                        if(splitFileHash.equals(other.getBlobs().get(file)));
-                    }
-                    else
-                    {
-                        inConflict.add(file);
-                    }
-                            
-                }
-                else{
-                    if(!other.getBlobs().containsKey(file))
-                        toRemove.add(file);
-                }
-            }
-            else if(!other.getBlobs().containsKey(file));
-            if(head.getBlobs().containsKey(file) &&
-                    !other.getBlobs().containsKey(file))
-                ; 
-        });
+       HashMap<String, String> otherBlobs = other.getBlobs();
+       HashMap<String, String> headBlobs = other.getBlobs();
+       otherBlobs.forEach((file, otherHash) -> {
+           String splitHash = split.getBlobs().get(file);
+           String headHash =  headBlobs.get(file);
+           
+           if(splitHash == null){
+               if(headHash == null)
+                   toCheckout.add(file);
+               else if(!headHash.equals(otherHash))
+                   inConflict.add(file);
+           }
+           else if(!otherHash.equals(headHash)){
+               if(headHash == null)
+                   inConflict.add(file);
+               else if(headHash.equals(splitHash))
+                   toCheckout.add(file);
+               else if(!otherHash.equals(headHash))
+                   inConflict.add(file);
+           }
+       });
+       
+       headBlobs.forEach((file, headHash) ->{
+           String splitHash = split.getBlobs().get(file);
+           String otherHash =  otherBlobs.get(file);
+           if(splitHash != null && otherHash == null){
+               if(headHash.equals(splitHash))
+                   toRemove.add(file);
+               else
+                   inConflict.add(file);
+           }
+       });
         
         mergeCheckout(repo, other, toCheckout);
         mergeRemove(repo, head, toRemove);

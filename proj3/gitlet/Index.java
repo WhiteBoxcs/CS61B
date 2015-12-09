@@ -69,10 +69,11 @@ public class Index extends GitletObject {
      * @param hash The hash of the file.
      */
     public void checkout(String filename, String hash, boolean stage){
-        this.blobs.put(filename, hash);
+        
         if(stage)
             this.add(filename, hash);
         else{
+            this.blobs.put(filename, hash);
             staged.remove(filename);
             removed.remove(filename);
             added.remove(filename);
