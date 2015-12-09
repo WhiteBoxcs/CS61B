@@ -85,7 +85,7 @@ When finished, reports number of tests passed and failed, and the number of
 faulty TEST.in files."""
 
 GITLET_COMMAND = "java gitlet.Main"
-TIMEOUT = 5
+TIMEOUT = 10
 
 def Usage():
     print(SHORT_USAGE, file=sys.stderr)
@@ -146,6 +146,7 @@ def doCopy(dest, src, dir):
 
 def doExecute(cmnd, dir, timeout):
     here = getcwd()
+    out = ""
     try:
         chdir(dir)
         full_cmnd = "{} {}".format(GITLET_COMMAND, cmnd)
@@ -153,7 +154,8 @@ def doExecute(cmnd, dir, timeout):
                            stdin=DEVNULL, stderr=STDOUT, timeout=timeout)
         return "OK", out
     except CalledProcessError as excp:
-        return "java gitlet.Main exited with code {}".format(excp.args[0]), None
+        return ("java gitlet.Main exited with code {}".format(excp.args[0]),
+                excp.output)
     except TimeoutExpired:
         return "timeout", None
     finally:
@@ -173,24 +175,28 @@ def correctFileOutput(name, expected, dir):
     return userData == stdData
 
 def correctProgramOutput(expected, actual, last_groups, is_regexp):
-    expected = re.sub(r'[ \t]+\n', '\n', '\n'.join(expected).rstrip())
+    expected = re.sub(r'[ \t]+\n', '\n', '\n'.join(expected))
     expected = re.sub(r'(?m)^[ \t]+', ' ', expected)
-    actual = re.sub(r'[ \t]+\n', '\n', actual.rstrip())
+    actual = re.sub(r'[ \t]+\n', '\n', actual)
     actual = re.sub(r'(?m)^[ \t]+', ' ', actual)
 
     last_groups[:] = (actual,)
     if is_regexp:
-        if not Match(expected + r"\Z", actual):
-            return False
+        try:
+            if not Match(expected.rstrip() + r"\Z", actual) \
+                   and not Match(expected.rstrip() + r"\Z", actual.rstrip()):
+                return False
+        except:
+            raise ValueError("bad pattern")
         last_groups[:] += Mat.groups()
-    elif editDistance(expected, actual) > output_tolerance:
+    elif editDistance(expected.rstrip(), actual.rstrip()) > output_tolerance:
         return False
     return True
 
 def reportDetails(test, included_files, line_num):
     if show is None:
         return
-    if show == 0:
+    if show <= 0:
         print("   Limit on error details exceeded.")
         return
     direct = dirname(test)
@@ -200,7 +206,7 @@ def reportDetails(test, included_files, line_num):
     for base in [basename(test)] + included_files:
         full = join(dirname(test), base)
         print(("-" * 20 + " {} " + "-" * 20).format(base))
-        text_lines = list(enumerate(re.split(r'[\n\r]+', contents(full))))[:-1]
+        text_lines = list(enumerate(re.split(r'\n\r?', contents(full))))[:-1]
         fmt = "{{:{}d}}. {{}}".format(round(log(len(text_lines), 10)))
         text = '\n'.join(map(lambda p: fmt.format(p[0] + 1, p[1]), text_lines))
         print(text)
@@ -214,16 +220,19 @@ def chop_nl(s):
 
 def line_reader(f, prefix):
     n = 0
-    with open(f) as inp:
-        while True:
-            L = inp.readline()
-            if L == '':
-                return
-            n += 1
-            included_file = yield (prefix + str(n), L)
-            if included_file:
-                yield None
-                yield from line_reader(included_file, prefix + str(n) + ".")
+    try:
+        with open(f) as inp:
+            while True:
+                L = inp.readline()
+                if L == '':
+                    return
+                n += 1
+                included_file = yield (prefix + str(n), L)
+                if included_file:
+                    yield None
+                    yield from line_reader(included_file, prefix + str(n) + ".")
+    except FileNotFoundError:
+        raise ValueError("file {} not found".format(f))
 
 def doTest(test):
     last_groups = []
@@ -306,7 +315,8 @@ def doTest(test):
                     expected.append(do_substs(L))
                 msg, out = doExecute(cmnd, cdir, timeout)
                 if verbose:
-                    print(re.sub(r'(?m)^', '- ', chop_nl(out)))
+                    if out:
+                        print(re.sub(r'(?m)^', '- ', chop_nl(out)))
                 if msg == "OK":
                     if not correctProgramOutput(expected, out, last_groups,
                                                 is_regexp):
@@ -332,7 +342,7 @@ def doTest(test):
                           .format(Group(1)))
                     reportDetails(test, included_files, line_num)
                     return False
-            elif Match(r'D\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*"(.*)"\s*$', line):
+            elif Match(r'(?s)D\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*"(.*)"\s*$', line):
                 defns[Group(1)] = Group(2)
             else:
                 raise ValueError("bad test line at {}".format(line_num))
@@ -405,3 +415,4 @@ if __name__ == "__main__":
         print("All passed.")
     else:
         print("{} passed.".format(num_tests - errs - fails))
+        sys.exit(1)

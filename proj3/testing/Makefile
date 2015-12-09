@@ -26,7 +26,7 @@ default:
 	$(MAKE) -C .. 
 	$(MAKE) PYTHON=$(PYTHON) check
 
-check: $(CLASSES)
+check:
 	@echo "Testing application gitlet.Main..."
 	$(TESTER) $(TESTER_FLAGS) $(TESTS)
 
