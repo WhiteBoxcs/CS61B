@@ -63,7 +63,7 @@ public class UnitTest {
         for (int i = 0; i < 40; i++) {
             Commit com = new Commit("LEFT" + i, LocalDateTime.now(), prev,
                     firstBlobs);
-            left = prev = this.repo.addCommit(com);
+            left = prev = this.repo.objects().add(com);
         }
 
         prev = root;
@@ -71,7 +71,7 @@ public class UnitTest {
         for (int i = 0; i < 27; i++) {
             Commit com = new Commit("RIGHT" + i, LocalDateTime.now(), prev,
                     firstBlobs);
-            right = prev = this.repo.addCommit(com);
+            right = prev = this.repo.objects().add(com);
         }
 
         assertEquals(root, MergeCommand.getSplitPoint(this.repo, left, right));
@@ -81,7 +81,7 @@ public class UnitTest {
         for (int i = 0; i < 40; i++) {
             Commit com = new Commit("LEFT" + i, LocalDateTime.now(), prev,
                     firstBlobs);
-            left = prev = this.repo.addCommit(com);
+            left = prev = this.repo.objects().add(com);
         }
 
         prev = "";
@@ -89,7 +89,7 @@ public class UnitTest {
         for (int i = 0; i < 27; i++) {
             Commit com = new Commit("RIGHT" + i, LocalDateTime.now(), prev,
                     firstBlobs);
-            right = prev = this.repo.addCommit(com);
+            right = prev = this.repo.objects().add(com);
         }
 
         assertEquals("", MergeCommand.getSplitPoint(this.repo, left, right));

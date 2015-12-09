@@ -23,8 +23,6 @@ import java.util.function.Predicate;
  */
 public class Repository {
 
-    private static final String COMMIT_DIR = "objects/commits/";
-    private static final String BLOB_DIR = "objects/blobs/";
     private static final String REFHEAD_DIR = "refs/heads/";
     private static final String INDEX = "index";
     private static final String HEAD = "HEAD";
@@ -36,11 +34,6 @@ public class Repository {
     private boolean open = false;
 
     /**
-     * All loaded objects.
-     */
-    private HashMap<String, Serializable> loadedObjects;
-
-    /**
      * The working path.
      */
     private Path workingDir;
@@ -49,6 +42,13 @@ public class Repository {
      * The gitlet directory.
      */
     private Path gitletDir;
+    
+    /**
+     * Manages all objects in the repository.
+     */
+    private GitletObjectManager objectMan;
+    
+    
     private String name;
 
     /**
@@ -61,13 +61,13 @@ public class Repository {
     public Repository(String name, String workingDir) {
         this.workingDir = Paths.get(workingDir);
         this.gitletDir = this.workingDir.resolve(".gitlet");
+        objectMan = new GitletObjectManager(gitletDir);
         this.name = name;
 
         if (Files.exists(this.gitletDir)) {
             this.open();
         }
 
-        this.loadedObjects = new HashMap<>();
     }
 
     /**
@@ -90,13 +90,15 @@ public class Repository {
 
         try {
             Files.createDirectory(this.gitletDir);
-            String initialCommit = this.addCommit(
+            objectMan.open();
+            
+            String initialCommit = this.objects().add(
                     new Commit("initial commit", LocalDateTime.now()));
             this.addBranch("master", initialCommit);
             this.setBranch("master");
             this.setInitialCommit(initialCommit);
 
-            this.loadedObjects.put(INDEX, new Index());
+            this.objects().add(INDEX, new Index());
 
             this.open = true;
         } catch (IOException e) {
@@ -142,7 +144,7 @@ public class Repository {
         }
 
         commit.getBlobs().forEach((file, hash) -> {
-            Blob blob = this.getBlob(hash);
+            Blob blob = this.objects().get(Blob.class, hash);
             Path filePath = this.getWorkingDir().resolve(file);
             try {
                 Files.write(filePath, blob.getContents());
@@ -167,7 +169,7 @@ public class Repository {
                     "File does not exist in that commit.");
         }
 
-        Blob blob = this.getBlob(blobHash);
+        Blob blob = this.objects().get(Blob.class, blobHash);
         Path filePath = this.getWorkingDir().resolve(filename);
         try {
             Files.write(filePath, blob.getContents());
@@ -176,18 +178,6 @@ public class Repository {
         }
         Index index = this.getIndex();
         index.checkout(filename, blobHash, stage);
-    }
-
-    /**
-     * Adds a commit to the repository.
-     * @param commit
-     *            The commit.
-     * @return
-     */
-    public String addCommit(Commit commit) {
-        String hash = commit.sha1();
-        this.loadedObjects.put(COMMIT_DIR + hash, commit);
-        return hash;
     }
 
     /**
@@ -201,131 +191,18 @@ public class Repository {
         String headHash = this.getHead();
         LocalDateTime now = LocalDateTime.now();
         String commitHash =
-                this.addCommit(new Commit(message, now, headHash, blobs));
+                this.objects().add(new Commit(message, now, headHash, blobs));
         this.setHead(commitHash);
         return commitHash;
     }
 
-    /**
-     * Gets a commit with a specific hash.
-     * @param hash
-     *            Ther hash valie.
-     * @return The commit.
-     */
-    public Commit getCommit(String hash) {
-        return (Commit) this.load(COMMIT_DIR + hash);
-    }
-
-    /**
-     * Applies a function to all commits.
-     * @param func
-     *            The function to apply/
-     */
-    public void applyToCommits(BiConsumer<String, Commit> func) {
-        Path commitPath = this.gitletDir.resolve(COMMIT_DIR);
-        try {
-            for (Path entry : Files.newDirectoryStream(commitPath)) {
-                String hash = entry.getFileName().toString();
-                Commit commit = this.getCommit(hash);
-
-                func.accept(hash, commit);
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets the first commit which satisfies the condition.
-     * @param func
-     * @return
-     */
-    public Commit firstCommitWhere(Predicate<String> func) {
-        Path commitPath = this.gitletDir.resolve(COMMIT_DIR);
-        try {
-            for (Path entry : Files.newDirectoryStream(commitPath)) {
-                String hash = entry.getFileName().toString();
-
-                if (func.test(hash)) {
-                    return this.getCommit(hash);
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    /**
-     * Adds a blob to the store.
-     * @param blob
-     *            The blob to add.
-     * @return The hash of the blob.
-     */
-    public String addBlob(Blob blob) {
-        String hash = blob.sha1();
-        if (!this.loadedObjects.containsKey(BLOB_DIR + hash)) {
-            this.loadedObjects.put(BLOB_DIR + hash, blob);
-        }
-        return hash;
-    }
-
-    /** Gets a blob with a specific hash */
-    public Blob getBlob(String hash) {
-        return (Blob) this.load(BLOB_DIR + hash);
-    }
-
-    /**
-     * Applies a function to all blobs.
-     * @param func
-     *            The function to apply/
-     */
-    public void applyToBlobs(BiConsumer<String, Blob> func) {
-        Path commitPath = this.gitletDir.resolve(BLOB_DIR);
-        try {
-            for (Path entry : Files.newDirectoryStream(commitPath)) {
-                String hash = entry.getFileName().toString();
-                Blob commit = this.getBlob(hash);
-
-                func.accept(hash, commit);
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets the first blob which satisfies the condition.
-     * @param func
-     * @return
-     */
-    public Blob firstBlobWhere(Predicate<String> func) {
-        Path commitPath = this.gitletDir.resolve(BLOB_DIR);
-        try {
-            for (Path entry : Files.newDirectoryStream(commitPath)) {
-                String hash = entry.getFileName().toString();
-
-                if (func.test(hash)) {
-                    return this.getBlob(hash);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     /**
      * Gets the index.
      * @return The index.
      */
     public Index getIndex() {
-        return (Index) this.load(INDEX);
+        return (Index) this.objects().getDirect(Index.class, INDEX);
     }
 
     /**
@@ -491,59 +368,6 @@ public class Repository {
     }
 
     /**
-     * Loads an object into the lazy cache.
-     * @param file
-     * @return
-     */
-    private Serializable load(String file) {
-        if (this.loadedObjects.containsKey(file)) {
-            return this.loadedObjects.get(file);
-        }
-
-        Path filePath = this.gitletDir.resolve(file);
-        try {
-            InputStream fin = Files.newInputStream(filePath);
-            ObjectInputStream oin = new ObjectInputStream(fin);
-            Serializable loaded = (Serializable) oin.readObject();
-            oin.close();
-            fin.close();
-
-            this.loadedObjects.put(file, loaded);
-            return loaded;
-        } catch (IOException i) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-    /**
-     * Saves a gitlit object.
-     * @param file
-     *            The file name/relative path.
-     * @param object
-     *            The object to save.
-     */
-    private void save(String file, Serializable object) {
-        Path filePath = this.gitletDir.resolve(file);
-        try {
-            if (!Files.exists(filePath.getParent())) {
-                Files.createDirectories(filePath.getParent());
-            }
-            OutputStream fin = Files.newOutputStream(filePath);
-            ObjectOutputStream oin = new ObjectOutputStream(fin);
-            oin.writeObject(object);
-            oin.close();
-            fin.close();
-
-        } catch (IOException i) {
-            i.printStackTrace();
-        }
-    }
-
-    /**
      * Opens a repository if the repository failed to open in the first place.
      */
     public void open() {
@@ -552,6 +376,8 @@ public class Repository {
                     "Close repository before opening a new instance.");
         }
         this.open = true;
+        objectMan.open();
+        
     }
 
     /**
@@ -560,11 +386,7 @@ public class Repository {
     public void close() {
         if (this.isOpen()) {
             this.open = false;
-
-            for (Map.Entry<String, Serializable> loaded : this.loadedObjects
-                    .entrySet()) {
-                this.save(loaded.getKey(), loaded.getValue());
-            }
+            objectMan.close();
         }
     }
 
@@ -572,7 +394,7 @@ public class Repository {
     public boolean isOpen() {
         return this.open;
     }
-
+    
     /** Gets the working directory */
     public Path getWorkingDir() {
         return this.workingDir;
@@ -610,6 +432,14 @@ public class Repository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Gets the objects in the repository.
+     * @return The manager which holds the objects.
+     */
+    public GitletObjectManager objects(){
+        return objectMan;
     }
 
 }

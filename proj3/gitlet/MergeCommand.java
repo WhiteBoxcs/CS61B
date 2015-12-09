@@ -60,9 +60,9 @@ public class MergeCommand implements Command {
             splitHash = repo.initialCommit();
         }
 
-        Commit split = repo.getCommit(splitHash);
-        Commit head = repo.getCommit(headHash);
-        Commit other = repo.getCommit(otherHash);
+        Commit split = repo.objects().get(Commit.class, splitHash);
+        Commit head = repo.objects().get(Commit.class, headHash);
+        Commit other = repo.objects().get(Commit.class, otherHash);
 
         boolean conflicts = mergeCompare(repo, head, other, split);
         if (!conflicts) {
@@ -195,7 +195,7 @@ public class MergeCommand implements Command {
                 Files.write(filePath, "<<<<<<< HEAD\n".getBytes());
 
                 if (head.getBlobs().containsKey(file)) {
-                    Blob headVersion = repo.getBlob(head.getBlobs().get(file));
+                    Blob headVersion = repo.objects().get(Blob.class, head.getBlobs().get(file));
                     Files.write(filePath, headVersion.getContents(),
                             StandardOpenOption.APPEND);
                 }
@@ -205,7 +205,7 @@ public class MergeCommand implements Command {
 
                 if (other.getBlobs().containsKey(file)) {
                     Blob otherVersion =
-                            repo.getBlob(other.getBlobs().get(file));
+                            repo.objects().get(Blob.class, other.getBlobs().get(file));
                     Files.write(filePath, otherVersion.getContents(),
                             StandardOpenOption.APPEND);
                 }
@@ -265,7 +265,7 @@ public class MergeCommand implements Command {
         String cur = start;
         while (!cur.isEmpty()) {
             history.add(cur);
-            cur = repo.getCommit(cur).getParent();
+            cur = repo.objects().get(Commit.class, cur).getParent();
         }
         return history;
     }

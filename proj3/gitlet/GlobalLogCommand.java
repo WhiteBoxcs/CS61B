@@ -14,7 +14,9 @@ public class GlobalLogCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        repo.applyToCommits((hash, com) -> System.out.println(com));
+        repo.objects().forEach(Commit.class, (hash, com) -> {
+            System.out.println(com);
+        });
 
     }
 

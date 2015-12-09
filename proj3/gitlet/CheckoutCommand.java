@@ -35,9 +35,9 @@ public class CheckoutCommand implements Command {
             String filename) {
         Commit toCheck;
         if (commitHash.length() == 40) {
-            toCheck = repo.getCommit(commitHash);
+            toCheck = repo.objects().get(Commit.class, commitHash);
         } else {
-            toCheck = repo.firstCommitWhere(x -> x.startsWith(commitHash));
+            toCheck = repo.objects().find(Commit.class, commitHash);
         }
 
         if (toCheck == null) {
@@ -59,7 +59,7 @@ public class CheckoutCommand implements Command {
         }
 
         String commitHash = repo.getBranchHead(branch);
-        repo.checkout(repo.getCommit(commitHash));
+        repo.checkout(repo.objects().get(Commit.class, commitHash));
         repo.setBranch(branch);
         repo.setHead(commitHash);
 

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -73,11 +74,11 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     public <S extends T> S get(Class<S> type, String file) {
         try {
-            S obj = type.cast(loadedObjects.get(file));
+           T obj = loadedObjects.get(file);
             if (obj == null)
                 return load(type, file);
             else
-                return obj;
+                return type.cast(obj);
         } catch (ClassCastException e) {
             String name = type.getSimpleName();
             throw new IllegalArgumentException(
@@ -270,6 +271,24 @@ public abstract class LazySerialManager<T extends Serializable>
         tracker.get(type).forEach(action);
     }
 
+    /**
+     * Performs a for each on an object of a certain type.
+     * @param type The type of the object.
+     * @param action The action.
+     */
+    public <S extends T> void forEach(Class<S> type,
+            final BiConsumer<? super String, ? super S> action){
+        if (!tracker.containsKey(type)) {
+            String name = type.getSimpleName();
+            throw new IllegalStateException(
+                    "No " + name.toLowerCase() + "s exist.");
+        }
+        tracker.get(type).forEach(file -> action.accept(file, load(type, file)));
+    }
+    
+    /**
+     * Gets an iterator for the lazy serial file manager.
+     */
     @Override
     public Iterator<T> iterator() {
         List<Iterator<String>> iterators = new ArrayList<Iterator<String>>();

@@ -27,9 +27,9 @@ public class ResetCommand implements Command {
     public static void reset(Repository repo, String commitHash) {
         Commit toCheck;
         if (commitHash.length() == 40) {
-            toCheck = repo.getCommit(commitHash);
+            toCheck = repo.objects().get(Commit.class, commitHash);
         } else {
-            toCheck = repo.firstCommitWhere(x -> x.startsWith(commitHash));
+            toCheck = repo.objects().find(Commit.class, commitHash);
         }
 
         if (toCheck == null) {

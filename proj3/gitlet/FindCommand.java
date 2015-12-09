@@ -13,8 +13,8 @@ public class FindCommand implements Command {
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
-    public void run(Repository repo, String[] args) {
-        repo.applyToCommits((hash, com) -> {
+    public void run(final Repository repo, String[] args) {
+        repo.objects().forEach(Commit.class, (hash, com) -> {
             if (com.getMessage().equals(args[0])) {
                 System.out.println(hash);
             }

@@ -19,12 +19,22 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
     private static final String OBJ_DIR = "objects/";
 
     public GitletObjectManager(Path base) {
-        super(base.resolve(OBJ_DIR));
+        super(base);
     }
 
     @Override
     public <S extends GitletObject> S get(Class<S> type, String hash) {
         return super.get(type, hashToFile(hash));
+    }
+    
+    /**
+     * Gets the object directly.
+     * @param type The type of object.
+     * @param file The file.
+     * @return The boject.
+     */
+    public <S extends GitletObject> S getDirect(Class<S> type, String file) {
+        return super.get(type, file);
     }
 
     /**
@@ -92,7 +102,7 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
      * @return The file path.
      */
     private static String hashToFile(String hash) {
-        return hash.substring(0, DIR_DELIM) + "/"
+        return OBJ_DIR + hash.substring(0, DIR_DELIM) + "/"
                 + hash.substring(DIR_DELIM, hash.length());
     }
 

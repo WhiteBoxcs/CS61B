@@ -16,9 +16,9 @@ public class LsCommitCommand implements Command {
     public void run(Repository repo, String[] args) {
         Commit commit;
         if (args.length == 0) {
-            commit = repo.getCommit(repo.getHead());
+            commit = repo.objects().get(Commit.class, repo.getHead());
         } else {
-            commit = repo.firstCommitWhere(x -> x.indexOf(args[0]) == 0);
+            commit = repo.objects().find(Commit.class, args[0]);
         }
 
         System.out.println(commit.toString());
