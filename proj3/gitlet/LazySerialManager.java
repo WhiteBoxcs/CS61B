@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,8 @@ public abstract class LazySerialManager<T extends Serializable>
     public LazySerialManager(Path base) {
         this.baseDirectory = base;
         this.open = false;
+        this.loadedObjects = new HashMap<>();
+        this.tracker = new LinkedHashMap<>();
     }
 
 
