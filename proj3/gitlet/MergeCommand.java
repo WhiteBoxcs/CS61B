@@ -84,9 +84,8 @@ public class MergeCommand implements Command {
         List<String> toRemove = new ArrayList<String>();
         List<String> inConflict = new ArrayList<String>();
         
-        //TODO: REFACTOR
        HashMap<String, String> otherBlobs = other.getBlobs();
-       HashMap<String, String> headBlobs = other.getBlobs();
+       HashMap<String, String> headBlobs = head.getBlobs();
        otherBlobs.forEach((file, otherHash) -> {
            String splitHash = split.getBlobs().get(file);
            String headHash =  headBlobs.get(file);
