@@ -5,12 +5,16 @@ package gitlet;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 /**
  * @author william Represents a GIT commit/flat tree..
  */
-public class Commit extends GitletObject {
+public class Commit extends GitletObject implements Map<String, String> {
 
     /**
      * The serial version ID for the commit class.
@@ -86,17 +90,6 @@ public class Commit extends GitletObject {
     }
 
     /**
-     * Puts a file in the blob.
-     * @param file
-     *            The file to put.
-     * @param blobHash
-     *            The particular hash.
-     */
-    public void put(String file, String blobHash) {
-        this.blobs.put(file, blobHash);
-    }
-
-    /**
      * Gets the toString of the commit.
      */
     @Override
@@ -108,4 +101,111 @@ public class Commit extends GitletObject {
                 + dateStr.substring(0, nanoIndex) + "\n" + this.message + "\n";
     }
 
+    
+    
+    /**
+     * Determines the size of the blobs.
+     */
+    @Override
+    public int size() {
+        return blobs.size();
+    }
+
+    /**
+     * Determines if a commit is empty.
+     */
+    @Override
+    public boolean isEmpty() {
+        return blobs.isEmpty();
+    }
+
+    /**
+     * Determines if the commit references a file.
+     */
+    @Override
+    public boolean containsKey(Object fileName) {
+        return blobs.containsKey(fileName);
+    }
+
+    /**
+     * Determines if the commti contains a blob hash.
+     */
+    @Override
+    public boolean containsValue(Object hash) {
+        return blobs.containsValue(hash);
+    }
+
+    /**
+     * Gets a blob hash from a file name.
+     */
+    @Override
+    public String get(Object fileName) {
+        // TODO Auto-generated method stub
+        return this.blobs.get(fileName);
+    }
+
+    /**
+     * Puts an element in the blob set.
+     */
+    @Override
+    public String put(String fileName, String hash) {
+        return blobs.put(fileName, hash);
+    }
+
+    /**
+     * Removes an element from the blob set.
+     */
+    @Override
+    public String remove(Object fileName) {
+        return blobs.remove(fileName);
+    }
+
+    /**
+     * Puts a bunch of blobs in the commit.
+     */
+    @Override
+    public void putAll(Map<? extends String, ? extends String> m) {
+        blobs.putAll(m);
+        
+    }
+
+    /**
+     * Clears the blobs.
+     */
+    @Override
+    public void clear() {
+        blobs.clear();
+    }
+    
+    /**
+     * Gets the blob keyset.
+     */
+    @Override
+    public Set<String> keySet() {
+        return blobs.keySet();
+    }
+
+    /**
+     * Gets the blobs values.
+     */
+    @Override
+    public Collection<String> values() {
+        return blobs.values();
+    }
+
+    /**
+     * Gets the blobs entry set.
+     */
+    @Override
+    public Set<java.util.Map.Entry<String, String>> entrySet() {
+        return blobs.entrySet();
+    }
+    
+    /**
+     * Iterates over the blobs.
+     * @param action The action.
+     */
+    public void forEach(BiConsumer<? super String, ? super String> action){
+        this.blobs.forEach(action);
+    }
 }

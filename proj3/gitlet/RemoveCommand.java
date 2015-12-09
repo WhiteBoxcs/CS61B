@@ -24,7 +24,7 @@ public class RemoveCommand implements Command {
     public static void remove(Repository repo, String file, Commit head) {
         Index index = repo.getIndex();
 
-        if (head.getBlobs().containsKey(file)) {
+        if (head.containsKey(file)) {
             try {
                 index.remove(file, true);
                 if (Files.exists(repo.getWorkingDir().resolve(file))) {

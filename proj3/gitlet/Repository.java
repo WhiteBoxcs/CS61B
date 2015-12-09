@@ -112,11 +112,11 @@ public class Repository {
         try {
             for (Path entry : Files.newDirectoryStream(this.getWorkingDir(),
                     x -> !Files.isDirectory(x))) {
-                String name = entry.getFileName().toString();
+                String fileName = entry.getFileName().toString();
 
-                if (commit.getBlobs().containsKey(name)
-                        && (!index.getBlobs().containsKey(name)
-                                || index.getStaged().containsKey(name))) {
+                if (commit.containsKey(fileName)
+                        && (!index.getBlobs().containsKey(fileName)
+                                || index.getStaged().containsKey(fileName))) {
                     throw new IllegalStateException("There is an untracked "
                             + "file in the way; delete it or add it first.");
                 }
@@ -154,7 +154,7 @@ public class Repository {
      * @param filename
      */
     public void checkout(Commit commit, String filename, boolean stage) {
-        String blobHash = commit.getBlobs().get(filename);
+        String blobHash = commit.get(filename);
         if (blobHash == null) {
             throw new IllegalArgumentException(
                     "File does not exist in that commit.");

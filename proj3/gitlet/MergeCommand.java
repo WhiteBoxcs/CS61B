@@ -93,11 +93,9 @@ public class MergeCommand implements Command {
         List<String> toRemove = new ArrayList<String>();
         List<String> inConflict = new ArrayList<String>();
 
-        HashMap<String, String> otherBlobs = other.getBlobs();
-        HashMap<String, String> headBlobs = head.getBlobs();
-        otherBlobs.forEach((file, otherHash) -> {
-            String splitHash = split.getBlobs().get(file);
-            String headHash = headBlobs.get(file);
+        other.forEach((file, otherHash) -> {
+            String splitHash = split.get(file);
+            String headHash = head.get(file);
 
             if (splitHash == null) {
                 if (headHash == null) {
@@ -116,9 +114,9 @@ public class MergeCommand implements Command {
             }
         });
 
-        headBlobs.forEach((file, headHash) -> {
-            String splitHash = split.getBlobs().get(file);
-            String otherHash = otherBlobs.get(file);
+        head.forEach((file, headHash) -> {
+            String splitHash = split.get(file);
+            String otherHash = other.get(file);
             if (splitHash != null && otherHash == null) {
                 if (headHash.equals(splitHash)) {
                     toRemove.add(file);
@@ -194,7 +192,7 @@ public class MergeCommand implements Command {
             try {
                 Files.write(filePath, "<<<<<<< HEAD\n".getBytes());
 
-                if (head.getBlobs().containsKey(file)) {
+                if (head.containsKey(file)) {
                     Blob headVersion = repo.objects().get(Blob.class,
                             head.getBlobs().get(file));
                     Files.write(filePath, headVersion.getContents(),

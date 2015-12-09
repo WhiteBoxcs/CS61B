@@ -20,9 +20,11 @@ public class LsCommitCommand implements Command {
         } else {
             commit = repo.objects().find(Commit.class, args[0]);
         }
+        if(commit == null)
+            throw new IllegalArgumentException("No such commit exists.");
 
         System.out.println(commit.toString());
-        commit.getBlobs().forEach((name, hash) -> {
+        commit.forEach((name, hash) -> {
             System.out.println(name + "\t" + hash);
         });
 

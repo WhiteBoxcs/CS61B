@@ -86,28 +86,29 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
 
         String delim =
                 search.substring(0, Math.min(search.length(), DIR_DELIM));
+        
         String rest = "";
         if (search.length() > DIR_DELIM) {
             rest = search.substring(DIR_DELIM, search.length());
         }
 
-        Path base = this.getBaseDirectory();
+        Path base = this.getBaseDirectory().resolve(OBJ_DIR);
         try (DirectoryStream<Path> str =
                 Files.newDirectoryStream(base, x -> Files.isDirectory(x))) {
-
+            
             for (Path entry : str) {
                 String directoryName = entry.getFileName().toString();
-
+                
                 if (directoryName.startsWith(delim)) {
                     DirectoryStream<Path> substr =
                             Files.newDirectoryStream(entry);
-
+                    
                     for (Path subEntry : substr) {
                         String fileName = subEntry.getFileName().toString();
-
+                
                         if (fileName.startsWith(rest)) {
                             String targetHash = directoryName + fileName;
-                            if (contents.contains(targetHash)) {
+                            if (contents.contains(OBJ_DIR + directoryName + "/" + fileName)) {
                                 return this.get(type, targetHash);
                             }
                         }
