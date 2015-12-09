@@ -28,7 +28,7 @@ public class CheckoutCommand implements Command {
      * @param filename The file name.
      * @param commitHash The commit.
      */
-    public void checkoutFile(Repository repo, String commitHash, String filename){
+    public static void checkoutFile(Repository repo, String commitHash, String filename){
         Commit toCheck;
         if(commitHash.length() == 40)
             toCheck = repo.getCommit(commitHash);
@@ -37,14 +37,14 @@ public class CheckoutCommand implements Command {
         
         if(toCheck == null)
             throw new IllegalArgumentException("No commit with that id exists.");
-        repo.checkout(toCheck, filename);
+        repo.checkout(toCheck, filename, false);
     }
     
     /**
      * Checks out an entire branch.
      * @param branch The branch to which to changed.
      */
-    public void checkoutBranch(Repository repo, String branch){
+    public static void checkoutBranch(Repository repo, String branch){
         if(branch.equals(repo.getBranch()))
             throw new IllegalStateException("No need to checkout the current branch.");
         

@@ -68,14 +68,18 @@ public class Index extends GitletObject {
      * @param filename The file to checkout.
      * @param hash The hash of the file.
      */
-    public void checkout(String filename, String hash){
+    public void checkout(String filename, String hash, boolean stage){
         this.blobs.put(filename, hash);
-        staged.remove(filename);
-        removed.remove(filename);
-        added.remove(filename);
-        modified.remove(filename);
-        if(staged.size() + removed.size() == 0)
-            changed = false;
+        if(stage)
+            this.add(filename, hash);
+        else{
+            staged.remove(filename);
+            removed.remove(filename);
+            added.remove(filename);
+            modified.remove(filename);
+            if(staged.size() + removed.size() == 0)
+                changed = false;
+        }
     }
     
     public void checkout(Commit commit){

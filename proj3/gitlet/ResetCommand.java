@@ -14,7 +14,15 @@ public class ResetCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String commitHash = args[0];
+        reset(repo, args[0]);
+    }
+    
+    /**
+     * Resets the repo to a given commit.
+     * @param repo The repo.
+     * @param commitHash The commit.
+     */
+    public static void reset(Repository repo, String commitHash){
         Commit toCheck;
         if(commitHash.length() == 40)
             toCheck = repo.getCommit(commitHash);
