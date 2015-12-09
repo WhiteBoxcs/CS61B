@@ -22,6 +22,7 @@ public class Main {
     	processor.add("branch", new BranchCommand());
     	processor.add("rm-branch", new RemoveBranchCommand());
     	processor.add("reset", new ResetCommand());
+    	processor.add("merge", new MergeCommand());
     	
     	Repository repo = new Repository(System.getProperty("user.dir"));
     	

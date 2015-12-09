@@ -61,7 +61,12 @@ public class MergeCommand implements Command {
         Commit head = repo.getCommit(headHash);
         Commit other = repo.getCommit(otherHash);
         
-        mergeCompare(repo, head, other, split);
+        boolean conflicts = mergeCompare(repo, head, other, split);
+        if(!conflicts)
+            repo.addCommitAtHead("Merged " + repo.getBranch()
+            + " with " + branch + ".", repo.getIndex().blobsFromStage());
+        else
+            throw new IllegalStateException("Encountered a merge conflict.");
     }
 
     /**
@@ -70,8 +75,9 @@ public class MergeCommand implements Command {
      * @param head The head.
      * @param other The other.
      * @param split The split.
+     * @return if there was a conflict.
      */
-    private static void mergeCompare(Repository repo, Commit head, Commit other, Commit split){
+    private static boolean mergeCompare(Repository repo, Commit head, Commit other, Commit split){
         
         List<String> toCheckout = new ArrayList<String>();
         List<String> toRemove = new ArrayList<String>();
@@ -136,9 +142,11 @@ public class MergeCommand implements Command {
         
         mergeCheckout(repo, other, toCheckout);
         mergeRemove(repo, head, toRemove);
-        mergeConflict(repo, head, other, split, inConflict);
-        mergeCommit(repo);
+        mergeConflict(repo, head, other, inConflict);
+        
+        return !inConflict.isEmpty();
     }
+
 
     /**
      * Checks out all files that mergeCompare deems mergable.
@@ -216,7 +224,8 @@ public class MergeCommand implements Command {
         
     }
 
-
+    
+    
     /**
      * Gets the split point.
      * @param repo The repository.
