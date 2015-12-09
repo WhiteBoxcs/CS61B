@@ -90,6 +90,10 @@ public abstract class LazySerialManager<T extends Serializable>
      * @param toAdd
      */
     public <S extends T> void add(String file, S toAdd) {
+        if(this.loadedObjects.get(file) != null
+                || this.loadUnsafe(file) != null)
+            throw new IllegalStateException(
+                    toAdd.getClass().getSimpleName() + " as specified already exists.");
         this.loadedObjects.put(file, toAdd);
         Set<String> tracked = this.tracker.get(toAdd.getClass());
         if (tracked == null) {
