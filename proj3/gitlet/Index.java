@@ -121,6 +121,7 @@ public class Index extends GitletObject {
         this.changed = true;
         if(fromLastCommit)
             this.removed.put(fileName, this.blobs.get(fileName));
+        
         this.staged.remove(fileName);
         this.added.remove(fileName);
         this.modified.remove(fileName);

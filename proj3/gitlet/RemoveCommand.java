@@ -18,11 +18,14 @@ public class RemoveCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String file = args[0];
+        remove(repo, args[0], repo.getCommit(repo.getHead()));
+    }
+    
+    
+    public static void remove(Repository repo, String file, Commit head){
         Index index = repo.getIndex();
 
-        Commit cur = repo.getCommit(repo.getHead());
-        if (cur.getBlobs().containsKey(file)) {
+        if (head.getBlobs().containsKey(file)) {
             try {
                 index.remove(file, true);
                 if (Files.exists(repo.getWorkingDir().resolve(file)))

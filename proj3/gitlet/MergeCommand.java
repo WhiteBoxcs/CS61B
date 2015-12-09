@@ -3,7 +3,15 @@
  */
 package gitlet;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.ByteChannel;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -83,6 +91,10 @@ public class MergeCommand implements Command {
                             inConflict.add(file);
                         }
                     }
+                    else
+                    {
+                        inConflict.add(file);
+                    }
                 }
                 else{
                     if(!head.getBlobs().containsKey(file));
@@ -92,6 +104,8 @@ public class MergeCommand implements Command {
             else{
                 if(!other.getBlobs().containsKey(file))
                     toCheckout.add(file);
+                else
+                    inConflict.add(file);
             }
         });
         
@@ -100,8 +114,14 @@ public class MergeCommand implements Command {
             String splitFileHash = split.getBlobs().get(file);
             if(splitFileHash != null){
                 if(!splitFileHash.equals(hash)){
-                    if(other.getBlobs().containsKey(file) 
-                            && splitFileHash.equals(other.getBlobs().get(file)));
+                    if(other.getBlobs().containsKey(file)){
+                        if(splitFileHash.equals(other.getBlobs().get(file)));
+                    }
+                    else
+                    {
+                        inConflict.add(file);
+                    }
+                            
                 }
                 else{
                     if(!other.getBlobs().containsKey(file))
@@ -114,30 +134,85 @@ public class MergeCommand implements Command {
                 ; 
         });
         
-        //TODO check if some files in the way!
-        mergeCheckout(repo, head, other, split, toCheckout);
-        mergeRemove(repo, head, other, split, toRemove);
+        mergeCheckout(repo, other, toCheckout);
+        mergeRemove(repo, head, toRemove);
         mergeConflict(repo, head, other, split, inConflict);
+        mergeCommit(repo);
     }
-    
-    private static void mergeCheckout(Repository repo, Commit head,
-            Commit other, Commit split, Collection<String> toCheckout) {
+
+    /**
+     * Checks out all files that mergeCompare deems mergable.
+     * @param repo The repository.
+     * @param other The commit from which to checkout.
+     * @param toCheckout The files to checkout.
+     */
+    private static void mergeCheckout(Repository repo,
+            Commit other, Collection<String> toCheckout) {
+        Path workingDir = repo.getWorkingDir();
+        Index index = repo.getIndex();
+        
         for(String file : toCheckout){
-            
+            if (Files.exists(workingDir.resolve(file))
+                    && (!index.getBlobs().containsKey(file)))
+                throw new IllegalStateException("There is an untracked "
+                        + "file in the way; delete it or add it first.");
         }
         
+        toCheckout.forEach(x -> repo.checkout(other, x, true));
     }
 
+    /**
+     * Removes all files from the repository which the mergeCompare deems removable.
+     * @param repo
+     * @param head
+     * @param other
+     * @param split
+     * @param toRemove
+     */
+    private static void mergeRemove(Repository repo, Commit head,
+           Collection<String> toRemove) {
+        toRemove.forEach(x-> RemoveCommand.remove(repo, x, head));
+    }
     
-    private static void mergeConflict(Repository repo, Commit head,
-            Commit other, Commit split, List<String> inConflict) {
-        // TODO Auto-generated method stub
-        
-    }
 
-    private static void mergeRemove(Repository repo, Commit head, Commit other,
-            Commit split, List<String> toRemove) {
-        // TODO Auto-generated method stub
+    /**
+     * Merges the conflicts by displaying their differences.
+     * @param repo The repository.
+     * @param head The head.
+     * @param other The other.
+     * @param inConflict The files in conflict.
+     */
+    private static void mergeConflict(Repository repo, Commit head,
+            Commit other, Collection<String> inConflict) {
+        Index index = repo.getIndex();
+        for(String file : inConflict){
+            Path filePath = repo.getWorkingDir().resolve(file);
+            
+            try {
+                Files.write(filePath, "<<<<<<< HEAD\n".getBytes());
+    
+                if(head.getBlobs().containsKey(file)){
+                    Blob headVersion = repo.getBlob(head.getBlobs().get(file));
+                    Files.write(filePath, headVersion.getContents(), StandardOpenOption.APPEND);
+                }
+    
+                Files.write(filePath, "=======\n".getBytes(), StandardOpenOption.APPEND);
+                
+                if(other.getBlobs().containsKey(file)){
+                    Blob otherVersion = repo.getBlob(other.getBlobs().get(file));
+                    Files.write(filePath, otherVersion.getContents(), StandardOpenOption.APPEND);
+                }
+                
+                Files.write(filePath, ">>>>>>>\n".getBytes(), StandardOpenOption.APPEND);
+                
+                // unstage the file.
+                if(index.getBlobs().containsKey(file))
+                    index.remove(file, false);
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         
     }
 
