@@ -19,9 +19,9 @@ public class ConcatIterator<T> implements Iterator<T> {
     /**
      * The iterators to union.
      */
-    private List<Iterator<? extends T>> iterators;
+    private List<Iterator<T>> iterators;
 
-    public ConcatIterator(List<Iterator<? extends T>> iterators){
+    public ConcatIterator(List<Iterator<T>> iterators){
         this.iterators = iterators;
         this.index = 0;
     }

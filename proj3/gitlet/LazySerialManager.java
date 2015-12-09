@@ -14,8 +14,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -40,10 +43,11 @@ public abstract class LazySerialManager<T extends Serializable>
     /**
      * List of all objects that could possibly be loaded.
      */
-    private HashMap<Class<?>, List<String>> tracker;
+    protected HashMap<Class<?>, Set<String>> tracker;
 
     /** Base file object directory */
     private Path baseDirectory;
+
 
     /**
      * If the Lazy serial manager is open.
@@ -59,6 +63,7 @@ public abstract class LazySerialManager<T extends Serializable>
         this.baseDirectory = base;
         this.open = false;
     }
+
 
     /**
      * Gets a serial object.
@@ -87,9 +92,9 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     public <S extends T> void add(String file, S toAdd) {
         this.loadedObjects.put(file, toAdd);
-        List<String> tracked = this.tracker.get(toAdd.getClass());
+        Set<String> tracked = this.tracker.get(toAdd.getClass());
         if (tracked == null) {
-            tracked = new ArrayList<String>();
+            tracked = new LinkedHashSet<String>();
             this.tracker.put(toAdd.getClass(), tracked);
         }
         tracked.add(file);
@@ -187,6 +192,14 @@ public abstract class LazySerialManager<T extends Serializable>
     @SuppressWarnings("unchecked")
     public void open() {
         this.open = true;
+        
+        if(!Files.exists(this.getBaseDirectory()))
+            try {
+                Files.createDirectories(this.getBaseDirectory());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        
         Path dbPath = baseDirectory.resolve(DB_NAME);
         if (Files.exists(dbPath)) {
             try {
@@ -195,7 +208,7 @@ public abstract class LazySerialManager<T extends Serializable>
 
                 Object unsafe = oin.readObject();
                 
-                this.tracker = (HashMap<Class<?>, List<String>>)
+                this.tracker = (HashMap<Class<?>, Set<String>>)
                         (unsafe);
 
                 oin.close();
@@ -232,6 +245,14 @@ public abstract class LazySerialManager<T extends Serializable>
         }
     }
 
+    /**
+     * @return the baseDirectory
+     */
+    public Path getBaseDirectory() {
+        return baseDirectory;
+    }
+
+    
     /**
      * Performs an action for every file of object of type TYPE.
      * @param type
