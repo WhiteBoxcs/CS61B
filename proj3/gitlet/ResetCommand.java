@@ -33,7 +33,7 @@ public class ResetCommand implements Command {
             throw new IllegalArgumentException("No commit with that id exists.");
         
         repo.checkout(toCheck);
-        repo.setHead(commitHash);
+        repo.setHead(toCheck.sha1());
     }
 
     /* (non-Javadoc)
