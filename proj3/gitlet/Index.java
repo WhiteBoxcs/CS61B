@@ -17,18 +17,18 @@ public class Index extends GitletObject {
     private static final long serialVersionUID = -8630621570840209428L;
 
     /**
-     * A map of filename-sha1.
-     */
-    private boolean changed = false;
-
-    /**
      * Gets a list of blobs.
      */
     private HashMap<String, String> blobs;
 
-    private TreeMap<String, String> modified;
-    private TreeMap<String, String> added;
+    /**
+     * A tree map of the staged files in the index.
+     */
     private TreeMap<String, String> staged;
+    
+    /**
+     * A tree map of the removed (staged) files in the index.
+     */
     private TreeMap<String, String> removed;
 
     /**
@@ -37,8 +37,6 @@ public class Index extends GitletObject {
     public Index() {
         this.blobs = new HashMap<String, String>();
         this.removed = new TreeMap<>();
-        this.added = new TreeMap<>();
-        this.modified = new TreeMap<>();
         this.staged = new TreeMap<>();
     }
 
@@ -47,11 +45,11 @@ public class Index extends GitletObject {
      * @return A hashmap of filenames to blobs.
      */
     public HashMap<String, String> blobsFromStage() {
-        if (!this.changed) {
+        if (!this.isChanged()) {
             throw new IllegalStateException("No changes added to the commit.");
         }
+        
         this.clearStage();
-
         return this.blobs;
     }
 
@@ -78,11 +76,6 @@ public class Index extends GitletObject {
             this.blobs.put(filename, hash);
             this.staged.remove(filename);
             this.removed.remove(filename);
-            this.added.remove(filename);
-            this.modified.remove(filename);
-            if (this.staged.size() + this.removed.size() == 0) {
-                this.changed = false;
-            }
         }
     }
 
@@ -99,20 +92,13 @@ public class Index extends GitletObject {
      *            The hash of the blob.
      */
     public void add(String fileName, String hash) {
-        if (this.blobs.containsKey(fileName)) {
-            if (!this.blobs.get(fileName).equals(hash)) {
-                this.modified.put(fileName, hash);
-            } else {
-                return;
-            }
-        } else {
-            this.added.put(fileName, hash);
+        if(this.removed.containsKey(fileName)){
+            String removedHash = this.removed.remove(fileName);
+            this.blobs.put(fileName, removedHash);
+        } else{
+            this.staged.put(fileName, hash);
+            this.blobs.put(fileName, hash);
         }
-
-        this.staged.put(fileName, hash);
-
-        this.changed = true;
-        this.blobs.put(fileName, hash);
 
     }
 
@@ -124,15 +110,11 @@ public class Index extends GitletObject {
         if (!this.blobs.containsKey(fileName)) {
             throw new IllegalStateException("No reason to remove the file.");
         }
-
-        this.changed = true;
         if (fromLastCommit) {
             this.removed.put(fileName, this.blobs.get(fileName));
         }
 
         this.staged.remove(fileName);
-        this.added.remove(fileName);
-        this.modified.remove(fileName);
         this.blobs.remove(fileName);
     }
 
@@ -140,25 +122,8 @@ public class Index extends GitletObject {
      * Clears the stage.
      */
     private void clearStage() {
-        this.changed = false;
-        this.modified.clear();
         this.removed.clear();
-        this.added.clear();
         this.staged.clear();
-    }
-
-    /**
-     * @return the changed
-     */
-    public boolean isChanged() {
-        return this.changed;
-    }
-
-    /**
-     * @return the modified
-     */
-    public TreeMap<String, String> getModified() {
-        return this.modified;
     }
 
     /**
@@ -173,6 +138,15 @@ public class Index extends GitletObject {
      */
     public TreeMap<String, String> getStaged() {
         return this.staged;
+    }
+    
+    /**
+     * Determines if the staging area has changed.
+     * @return If it has changed.
+     */
+    public boolean isChanged() {
+        // TODO Auto-generated method stub
+        return removed.size() + staged.size() != 0;
     }
 
 }
