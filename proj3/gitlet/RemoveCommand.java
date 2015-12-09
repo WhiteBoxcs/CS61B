@@ -1,11 +1,10 @@
 /**
- * 
+ *
  */
 package gitlet;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * @author william
@@ -20,16 +19,16 @@ public class RemoveCommand implements Command {
     public void run(Repository repo, String[] args) {
         remove(repo, args[0], repo.getCommit(repo.getHead()));
     }
-    
-    
-    public static void remove(Repository repo, String file, Commit head){
+
+    public static void remove(Repository repo, String file, Commit head) {
         Index index = repo.getIndex();
 
         if (head.getBlobs().containsKey(file)) {
             try {
                 index.remove(file, true);
-                if (Files.exists(repo.getWorkingDir().resolve(file)))
+                if (Files.exists(repo.getWorkingDir().resolve(file))) {
                     Files.delete(repo.getWorkingDir().resolve(file));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

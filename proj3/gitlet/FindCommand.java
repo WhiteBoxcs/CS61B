@@ -1,27 +1,29 @@
 /**
- * 
+ *
  */
 package gitlet;
 
 /**
  * @author william
- *
  */
 public class FindCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
         repo.applyToCommits((hash, com) -> {
-            if(com.getMessage().equals(args[0]))
+            if (com.getMessage().equals(args[0])) {
                 System.out.println(hash);
+            }
         });
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -29,7 +31,8 @@ public class FindCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

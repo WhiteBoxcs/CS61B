@@ -4,24 +4,25 @@ import java.util.HashMap;
 
 /**
  * @author william
- *
  */
 public class CommitCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
         String message = args[0];
-        
+
         Index index = repo.getIndex();
         HashMap<String, String> blobs = index.blobsFromStage();
-        
+
         repo.addCommitAtHead(message, blobs);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -29,7 +30,8 @@ public class CommitCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

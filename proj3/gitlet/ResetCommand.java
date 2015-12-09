@@ -1,42 +1,48 @@
 /**
- * 
+ *
  */
 package gitlet;
 
 /**
  * @author william
- *
  */
 public class ResetCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
         reset(repo, args[0]);
     }
-    
+
     /**
      * Resets the repo to a given commit.
-     * @param repo The repo.
-     * @param commitHash The commit.
+     * @param repo
+     *            The repo.
+     * @param commitHash
+     *            The commit.
      */
-    public static void reset(Repository repo, String commitHash){
+    public static void reset(Repository repo, String commitHash) {
         Commit toCheck;
-        if(commitHash.length() == 40)
+        if (commitHash.length() == 40) {
             toCheck = repo.getCommit(commitHash);
-        else
+        } else {
             toCheck = repo.firstCommitWhere(x -> x.startsWith(commitHash));
-        
-        if(toCheck == null)
-            throw new IllegalArgumentException("No commit with that id exists.");
-        
+        }
+
+        if (toCheck == null) {
+            throw new IllegalArgumentException(
+                    "No commit with that id exists.");
+        }
+
         repo.checkout(toCheck);
         repo.setHead(toCheck.sha1());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -44,7 +50,8 @@ public class ResetCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

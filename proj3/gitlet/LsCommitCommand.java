@@ -1,29 +1,26 @@
 /**
- * 
+ *
  */
 package gitlet;
 
 /**
  * @author william
- *
  */
 public class LsCommitCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
         Commit commit;
-        if(args.length == 0){
+        if (args.length == 0) {
             commit = repo.getCommit(repo.getHead());
+        } else {
+            commit = repo.firstCommitWhere(x -> x.indexOf(args[0]) == 0);
         }
-        else
-        {
-            commit = repo.firstCommitWhere(
-                    x-> x.indexOf(args[0]) == 0);
-        }
-        
+
         System.out.println(commit.toString());
         commit.getBlobs().forEach((name, hash) -> {
             System.out.println(name + "\t" + hash);
@@ -31,7 +28,8 @@ public class LsCommitCommand implements Command {
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -39,7 +37,8 @@ public class LsCommitCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

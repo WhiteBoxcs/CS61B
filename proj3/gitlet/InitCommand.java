@@ -1,22 +1,21 @@
 /**
- * 
+ *
  */
 package gitlet;
 
 /**
  * @author william
- *
  */
 public class InitCommand implements Command {
 
     /**
-     * 
+     *
      */
     public InitCommand() {
-        // TODO Auto-generated constructor stub
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(java.lang.String[])
      */
     @Override
@@ -24,7 +23,8 @@ public class InitCommand implements Command {
         repo.init();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -32,7 +32,8 @@ public class InitCommand implements Command {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands()
      */
     @Override

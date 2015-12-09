@@ -7,7 +7,7 @@ public class Blob extends GitletObject {
      */
     private static final long serialVersionUID = 4865064372716910861L;
     private byte[] contents;
-    
+
     /**
      * Generates a Blob.
      * @param contents
@@ -20,8 +20,7 @@ public class Blob extends GitletObject {
      * @return the contents
      */
     public byte[] getContents() {
-        return contents;
+        return this.contents;
     }
-
 
 }

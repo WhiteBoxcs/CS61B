@@ -1,27 +1,30 @@
 /**
- * 
+ *
  */
 package gitlet;
 
 /**
  * @author william
- *
  */
 public class RemoveBranchCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
     public void run(Repository repo, String[] args) {
         String branch = args[0];
-        if(repo.getBranch().equals(branch))
-            throw new IllegalArgumentException("Cannot remove the current branch.");
-        
+        if (repo.getBranch().equals(branch)) {
+            throw new IllegalArgumentException(
+                    "Cannot remove the current branch.");
+        }
+
         repo.removeBranch(branch);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -29,7 +32,8 @@ public class RemoveBranchCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

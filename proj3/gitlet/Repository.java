@@ -63,10 +63,11 @@ public class Repository {
         this.gitletDir = this.workingDir.resolve(".gitlet");
         this.name = name;
 
-        if (Files.exists(gitletDir))
-            open();
+        if (Files.exists(this.gitletDir)) {
+            this.open();
+        }
 
-        loadedObjects = new HashMap<>();
+        this.loadedObjects = new HashMap<>();
     }
 
     /**
@@ -82,12 +83,13 @@ public class Repository {
      * Initializes a repository if one does not already exist there.
      */
     public void init() {
-        if (isOpen())
+        if (this.isOpen()) {
             throw new IllegalStateException(
                     "A gitlet version-control system already exists in the current directory.");
+        }
 
         try {
-            Files.createDirectory(gitletDir);
+            Files.createDirectory(this.gitletDir);
             String initialCommit = this.addCommit(
                     new Commit("initial commit", LocalDateTime.now()));
             this.addBranch("master", initialCommit);
@@ -96,7 +98,7 @@ public class Repository {
 
             this.loadedObjects.put(INDEX, new Index());
 
-            open = true;
+            this.open = true;
         } catch (IOException e) {
             System.out.println(
                     "Something went wrong while initializing the repository!");
@@ -112,25 +114,28 @@ public class Repository {
      */
     public void checkout(Commit commit) {
 
-        Index index = getIndex();
+        Index index = this.getIndex();
 
         try {
-            for (Path entry : Files.newDirectoryStream(getWorkingDir(),
+            for (Path entry : Files.newDirectoryStream(this.getWorkingDir(),
                     x -> !Files.isDirectory(x))) {
                 String name = entry.getFileName().toString();
+
                 if (commit.getBlobs().containsKey(name)
                         && (!index.getBlobs().containsKey(name)
-                                || index.getStaged().containsKey(name)))
+                                || index.getStaged().containsKey(name))) {
                     throw new IllegalStateException("There is an untracked "
                             + "file in the way; delete it or add it first.");
+                }
             }
 
-            for (Path entry : Files.newDirectoryStream(getWorkingDir(),
+            for (Path entry : Files.newDirectoryStream(this.getWorkingDir(),
                     x -> !Files.isDirectory(x))) {
                 String name = entry.getFileName().toString();
 
-                if (index.getBlobs().containsKey(name))
+                if (index.getBlobs().containsKey(name)) {
                     Files.delete(entry);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,9 +162,10 @@ public class Repository {
      */
     public void checkout(Commit commit, String filename, boolean stage) {
         String blobHash = commit.getBlobs().get(filename);
-        if (blobHash == null)
+        if (blobHash == null) {
             throw new IllegalArgumentException(
                     "File does not exist in that commit.");
+        }
 
         Blob blob = this.getBlob(blobHash);
         Path filePath = this.getWorkingDir().resolve(filename);
@@ -192,7 +198,7 @@ public class Repository {
      */
     public String addCommitAtHead(String message,
             HashMap<String, String> blobs) {
-        String headHash = getHead();
+        String headHash = this.getHead();
         LocalDateTime now = LocalDateTime.now();
         String commitHash =
                 this.addCommit(new Commit(message, now, headHash, blobs));
@@ -216,7 +222,7 @@ public class Repository {
      *            The function to apply/
      */
     public void applyToCommits(BiConsumer<String, Commit> func) {
-        Path commitPath = gitletDir.resolve(COMMIT_DIR);
+        Path commitPath = this.gitletDir.resolve(COMMIT_DIR);
         try {
             for (Path entry : Files.newDirectoryStream(commitPath)) {
                 String hash = entry.getFileName().toString();
@@ -236,7 +242,7 @@ public class Repository {
      * @return
      */
     public Commit firstCommitWhere(Predicate<String> func) {
-        Path commitPath = gitletDir.resolve(COMMIT_DIR);
+        Path commitPath = this.gitletDir.resolve(COMMIT_DIR);
         try {
             for (Path entry : Files.newDirectoryStream(commitPath)) {
                 String hash = entry.getFileName().toString();
@@ -261,8 +267,9 @@ public class Repository {
      */
     public String addBlob(Blob blob) {
         String hash = blob.sha1();
-        if (!this.loadedObjects.containsKey(BLOB_DIR + hash))
+        if (!this.loadedObjects.containsKey(BLOB_DIR + hash)) {
             this.loadedObjects.put(BLOB_DIR + hash, blob);
+        }
         return hash;
     }
 
@@ -277,7 +284,7 @@ public class Repository {
      *            The function to apply/
      */
     public void applyToBlobs(BiConsumer<String, Blob> func) {
-        Path commitPath = gitletDir.resolve(BLOB_DIR);
+        Path commitPath = this.gitletDir.resolve(BLOB_DIR);
         try {
             for (Path entry : Files.newDirectoryStream(commitPath)) {
                 String hash = entry.getFileName().toString();
@@ -297,13 +304,14 @@ public class Repository {
      * @return
      */
     public Blob firstBlobWhere(Predicate<String> func) {
-        Path commitPath = gitletDir.resolve(BLOB_DIR);
+        Path commitPath = this.gitletDir.resolve(BLOB_DIR);
         try {
             for (Path entry : Files.newDirectoryStream(commitPath)) {
                 String hash = entry.getFileName().toString();
 
-                if (func.test(hash))
+                if (func.test(hash)) {
                     return this.getBlob(hash);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -325,9 +333,9 @@ public class Repository {
      * @return The hash for the head commit.
      */
     public String getHead() {
-        String curBranch = getBranch();
+        String curBranch = this.getBranch();
         try {
-            Path branchPath = gitletDir.resolve(REFHEAD_DIR + curBranch);
+            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + curBranch);
             return Files.readAllLines(branchPath).get(0);
 
         } catch (IOException e) {
@@ -338,9 +346,9 @@ public class Repository {
 
     /** Sets the head commit. */
     public void setHead(String commitHash) {
-        String curBranch = getBranch();
+        String curBranch = this.getBranch();
         try {
-            Path branchPath = gitletDir.resolve(REFHEAD_DIR + curBranch);
+            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + curBranch);
             Files.write(branchPath, commitHash.getBytes());
 
         } catch (IOException e) {
@@ -354,9 +362,9 @@ public class Repository {
      */
     public String getBranch() {
         try {
-            Path headPath = gitletDir.resolve(HEAD);
+            Path headPath = this.gitletDir.resolve(HEAD);
             String branchUri = Files.readAllLines(headPath).get(0);
-            Path branchPath = gitletDir.resolve(branchUri);
+            Path branchPath = this.gitletDir.resolve(branchUri);
             if (!Files.exists(branchPath)) {
                 throw new IllegalStateException(
                         "Current branch does not exist.");
@@ -383,7 +391,6 @@ public class Repository {
                 func.accept(entry.getFileName().toString());
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -395,10 +402,11 @@ public class Repository {
      */
     public void setBranch(String branch) {
         try {
-            Path headPath = gitletDir.resolve(HEAD);
-            Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);
-            if (!Files.exists(branchPath))
+            Path headPath = this.gitletDir.resolve(HEAD);
+            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + branch);
+            if (!Files.exists(branchPath)) {
                 throw new IllegalStateException("No such branch exists.");
+            }
 
             Files.write(headPath, (REFHEAD_DIR + branch).getBytes());
 
@@ -415,9 +423,10 @@ public class Repository {
      */
     public String getBranchHead(String branch) {
         try {
-            Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);
-            if (!Files.exists(branchPath))
+            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + branch);
+            if (!Files.exists(branchPath)) {
                 throw new IllegalStateException("No such branch exists.");
+            }
 
             return Files.readAllLines(branchPath).get(0);
 
@@ -436,13 +445,15 @@ public class Repository {
      */
     public void addBranch(String name, String commit) {
         try {
-            Path branchPath = gitletDir.resolve(REFHEAD_DIR + name);
-            if (!Files.exists(branchPath.getParent()))
+            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + name);
+            if (!Files.exists(branchPath.getParent())) {
                 Files.createDirectories(branchPath.getParent());
+            }
 
-            if (Files.exists(branchPath))
+            if (Files.exists(branchPath)) {
                 throw new IllegalArgumentException(
                         "A branch with that name already exists.");
+            }
 
             Files.write(branchPath, commit.getBytes());
 
@@ -462,13 +473,15 @@ public class Repository {
 
     public void removeBranch(String branch) {
         try {
-            Path branchPath = gitletDir.resolve(REFHEAD_DIR + branch);
-            if (!Files.exists(branchPath.getParent()))
+            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + branch);
+            if (!Files.exists(branchPath.getParent())) {
                 Files.createDirectories(branchPath.getParent());
+            }
 
-            if (!Files.exists(branchPath))
+            if (!Files.exists(branchPath)) {
                 throw new IllegalArgumentException(
                         "A branch with that name does not exist.");
+            }
 
             Files.delete(branchPath);
 
@@ -483,10 +496,11 @@ public class Repository {
      * @return
      */
     private Serializable load(String file) {
-        if (loadedObjects.containsKey(file))
-            return loadedObjects.get(file);
+        if (this.loadedObjects.containsKey(file)) {
+            return this.loadedObjects.get(file);
+        }
 
-        Path filePath = gitletDir.resolve(file);
+        Path filePath = this.gitletDir.resolve(file);
         try {
             InputStream fin = Files.newInputStream(filePath);
             ObjectInputStream oin = new ObjectInputStream(fin);
@@ -513,10 +527,11 @@ public class Repository {
      *            The object to save.
      */
     private void save(String file, Serializable object) {
-        Path filePath = gitletDir.resolve(file);
+        Path filePath = this.gitletDir.resolve(file);
         try {
-            if (!Files.exists(filePath.getParent()))
+            if (!Files.exists(filePath.getParent())) {
                 Files.createDirectories(filePath.getParent());
+            }
             OutputStream fin = Files.newOutputStream(filePath);
             ObjectOutputStream oin = new ObjectOutputStream(fin);
             oin.writeObject(object);
@@ -532,9 +547,10 @@ public class Repository {
      * Opens a repository if the repository failed to open in the first place.
      */
     public void open() {
-        if (isOpen())
+        if (this.isOpen()) {
             throw new IllegalStateException(
                     "Close repository before opening a new instance.");
+        }
         this.open = true;
     }
 
@@ -545,7 +561,7 @@ public class Repository {
         if (this.isOpen()) {
             this.open = false;
 
-            for (Map.Entry<String, Serializable> loaded : loadedObjects
+            for (Map.Entry<String, Serializable> loaded : this.loadedObjects
                     .entrySet()) {
                 this.save(loaded.getKey(), loaded.getValue());
             }
@@ -554,29 +570,29 @@ public class Repository {
 
     /** Returns if the repository has been opened. */
     public boolean isOpen() {
-        return open;
+        return this.open;
     }
 
     /** Gets the working directory */
     public Path getWorkingDir() {
-        return workingDir;
+        return this.workingDir;
     }
 
     /** Gets the gitlet dir. */
     public Path getGitletDir() {
-        return gitletDir;
+        return this.gitletDir;
     }
 
     /**
      * @return the name
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String initialCommit() {
         try {
-            Path branchPath = gitletDir.resolve(REFS_DIR + "init");
+            Path branchPath = this.gitletDir.resolve(REFS_DIR + "init");
             return Files.readAllLines(branchPath).get(0);
 
         } catch (IOException e) {
@@ -584,12 +600,12 @@ public class Repository {
         }
         return null;
     }
-    
-    private void setInitialCommit(String hash){
-        try {
-            Path branchPath = gitletDir.resolve(REFS_DIR + "init");
 
-             Files.write(branchPath, hash.getBytes());
+    private void setInitialCommit(String hash) {
+        try {
+            Path branchPath = this.gitletDir.resolve(REFS_DIR + "init");
+
+            Files.write(branchPath, hash.getBytes());
 
         } catch (IOException e) {
             e.printStackTrace();

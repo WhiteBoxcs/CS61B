@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gitlet;
 
@@ -13,9 +13,8 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * @author william
- *
  */
-public abstract class GitletObject implements Serializable{
+public abstract class GitletObject implements Serializable {
 
     /**
      * The serial version ID of the general gitlit object.
@@ -26,8 +25,8 @@ public abstract class GitletObject implements Serializable{
      * Generates the SHA-1 for the Gitlit object.
      * @return The SHA-1.
      */
-    public String sha1(){        
-        
+    public String sha1() {
+
         try {
             MessageDigest mDigest = MessageDigest.getInstance("SHA1");
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -36,15 +35,16 @@ public abstract class GitletObject implements Serializable{
 
             byte[] result = mDigest.digest(bos.toByteArray());
             StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < result.length; i++) {
-                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+            for (byte element : result) {
+                sb.append(Integer.toString((element & 0xff) + 0x100, 16)
+                        .substring(1));
             }
-             
+
             return sb.toString();
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 
