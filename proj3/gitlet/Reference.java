@@ -27,28 +27,62 @@ public class Reference implements Serializable {
     private String target;
     
     /**
+     * If the reference links forward.
+     */
+    private ReferenceType targetType;
+    
+    public Reference(ReferenceType targetType, String targetRef){
+        this.targetType = targetType;
+        this.target = targetRef;
+    }
+    
+    /**
      * Constructs a reference with a target.
      * @param target The target.
      */
     public Reference(String target){
-        this.target = target;
+        this(ReferenceType.NONE, target);
     }
     
     /**
      * Gets the target of this reference.
      * @return The target.
      */
-    public String getTarget(){
+    public String target(){
         return target;
     }
+    
 
+    /**
+     * Sets the target of a reference.
+     * @param target The reference target.
+     */
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    /**
+     * If the target is another reference.
+     */
+    public boolean targetIsReference(){
+        return targetType != ReferenceType.NONE;
+    }
+    
+    /**
+     * Gets the target type.
+     */
+    public ReferenceType targetType(){
+        return this.targetType;
+    }
+    
     /**
      * Overloads serial write object.
      * @param out The output strea,/
      * @throws IOException An IO Exception.
      */
     private void writeObject(ObjectOutputStream out) throws IOException{
-        out.writeObject(target.getBytes());
+        out.writeBytes(target);
+        out.writeObject((targetType));
     }
     
     /**
@@ -60,6 +94,7 @@ public class Reference implements Serializable {
     private void readObject(ObjectInputStream in)
             throws IOException, ClassNotFoundException{
         this.target = in.readUTF();
+        this.targetType = (ReferenceType)in.readObject();
         
     }
 }

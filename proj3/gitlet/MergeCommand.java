@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import static gitlet.ReferenceType.*;
 
 /**
  * @author william
@@ -35,16 +36,16 @@ public class MergeCommand implements Command {
      *            The commit from which the content will be merged into TO.
      */
     public static void merge(Repository repo, String branch) {
-        if (branch.equals(repo.getBranch())) {
+        if (branch.equals(repo.getCurrentBranch())) {
             throw new IllegalArgumentException(
                     "Cannot merge a branch with itself.");
         }
-        if (repo.getIndex().isChanged()) {
+        if (repo.index().isChanged()) {
             throw new IllegalStateException("You have uncommitted changes.");
         }
 
-        String otherHash = repo.getBranchHead(branch);
-        String headHash = repo.getHead();
+        String otherHash = repo.refs().resolve(BRANCH, branch);
+        String headHash = repo.refs().resolve(HEAD);
 
         String splitHash = getSplitPoint(repo, headHash, otherHash);
 
@@ -67,8 +68,8 @@ public class MergeCommand implements Command {
         boolean conflicts = mergeCompare(repo, head, other, split);
         if (!conflicts) {
             repo.addCommitAtHead(
-                    "Merged " + repo.getBranch() + " with " + branch + ".",
-                    repo.getIndex().blobsFromStage());
+                    "Merged " + repo.getCurrentBranch() + " with " + branch + ".",
+                    repo.index().blobsFromStage());
         } else {
             throw new IllegalStateException("Encountered a merge conflict.");
         }
@@ -145,7 +146,7 @@ public class MergeCommand implements Command {
     private static void mergeCheckout(Repository repo, Commit other,
             Collection<String> toCheckout) {
         Path workingDir = repo.getWorkingDir();
-        Index index = repo.getIndex();
+        Index index = repo.index();
 
         for (String file : toCheckout) {
             if (Files.exists(workingDir.resolve(file))
@@ -185,7 +186,7 @@ public class MergeCommand implements Command {
      */
     private static void mergeConflict(Repository repo, Commit head,
             Commit other, Collection<String> inConflict) {
-        Index index = repo.getIndex();
+        Index index = repo.index();
         for (String file : inConflict) {
             Path filePath = repo.getWorkingDir().resolve(file);
 

@@ -3,6 +3,8 @@
  */
 package gitlet;
 
+import static gitlet.ReferenceType.HEAD;
+
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -18,11 +20,11 @@ public class RemoveCommand implements Command {
     @Override
     public void run(Repository repo, String[] args) {
         remove(repo, args[0],
-                repo.objects().get(Commit.class, repo.getHead()));
+                repo.objects().get(Commit.class, repo.refs().resolve(HEAD)));
     }
 
     public static void remove(Repository repo, String file, Commit head) {
-        Index index = repo.getIndex();
+        Index index = repo.index();
 
         if (head.containsKey(file)) {
             try {

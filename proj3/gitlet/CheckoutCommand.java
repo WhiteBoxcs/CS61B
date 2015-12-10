@@ -3,6 +3,7 @@
  */
 package gitlet;
 
+import static gitlet.ReferenceType.*;
 /**
  * @author william
  */
@@ -17,7 +18,7 @@ public class CheckoutCommand implements Command {
         if (args.length == 1) {
             checkoutBranch(repo, args[0]);
         } else if (args.length == 2) {
-            checkoutFile(repo, repo.getHead(), args[1]);
+            checkoutFile(repo, repo.refs().resolve(HEAD), args[1]);
         } else if (args.length == 3) {
             checkoutFile(repo, args[0], args[2]);
         }
@@ -53,15 +54,15 @@ public class CheckoutCommand implements Command {
      *            The branch to which to changed.
      */
     public static void checkoutBranch(Repository repo, String branch) {
-        if (branch.equals(repo.getBranch())) {
+        if (branch.equals(repo.getCurrentBranch())) {
             throw new IllegalStateException(
                     "No need to checkout the current branch.");
         }
 
-        String commitHash = repo.getBranchHead(branch);
+        String commitHash = repo.refs().resolve(BRANCH, branch);
         repo.checkout(repo.objects().get(Commit.class, commitHash));
-        repo.setBranch(branch);
-        repo.setHead(commitHash);
+        repo.setCurrentBranch(branch);
+        repo.getCurrentBranch().setTarget(commitHash);
 
     }
 

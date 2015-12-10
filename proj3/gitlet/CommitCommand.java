@@ -15,7 +15,7 @@ public class CommitCommand implements Command {
     public void run(Repository repo, String[] args) {
         String message = args[0];
 
-        Index index = repo.getIndex();
+        Index index = repo.index();
         HashMap<String, String> blobs = index.blobsFromStage();
 
         repo.addCommitAtHead(message, blobs);

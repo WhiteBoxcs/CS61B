@@ -25,32 +25,29 @@ import java.util.stream.Collectors;
 /**
  * @author william Represents a general file object manager.
  */
-public abstract class LazySerialManager<T extends Serializable>
+public class LazySerialManager<T extends Serializable>
         implements Iterable<T> {
 
     /**
      * The database name.
      */
     private static final String DB_NAME = "SERIAL";
-
     /**
      * All loaded objects.
      */
-    private HashMap<String, T> loadedObjects;
-
+    private HashMap<String, Serializable> loadedObjects;
     /**
      * List of all objects that could possibly be loaded.
      */
     protected HashMap<Class<?>, Set<String>> tracker;
-
     /** Base file object directory */
     private Path baseDirectory;
-
     /**
      * If the Lazy serial manager is open.
      */
     private boolean open;
 
+    
     /**
      * Builds a lazy serial manager.
      * @param base
@@ -71,7 +68,7 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     public <S extends T> S get(Class<S> type, String file) {
         try {
-            T obj = this.loadedObjects.get(file);
+            Serializable obj = this.loadedObjects.get(file);
             if (obj == null) {
                 return this.load(type, file);
             } else {
@@ -104,95 +101,60 @@ public abstract class LazySerialManager<T extends Serializable>
     }
 
     /**
-     * Loads an object into the lazy cache.
-     * @param file
-     * @return
+     * Determines if the lazy serial manager contains a file.
+     * @param file The file to check.
+     * @return If ti does contain the file.
      */
-    private <S extends T> S load(Class<S> type, String file)
-            throws ClassCastException {
-        Path filePath = this.baseDirectory.resolve(file);
-        try {
-            InputStream fin = Files.newInputStream(filePath);
-            ObjectInputStream oin = new ObjectInputStream(fin);
-
-            Object unsafe = oin.readObject();
-
-            S loaded = type.cast(unsafe);
-
-            oin.close();
-            fin.close();
-
-            this.loadedObjects.put(file, loaded);
-            return loaded;
-
-        } catch (IOException i) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-
+    public boolean contains(String file){
+        for(Class<?> type : tracker.keySet())
+            if(contains(type, file))
+                return true;
+        
+        return false;
     }
-
+    
     /**
-     * Loads a file unsafeley.
-     * @param file
-     *            The file to load.
-     * @return The loaded gile.
+     * Determines if the serial manager contains a given file.
+     * @param type The type to check./
+     * @param file The fuile name.
+     * @return If it does.
      */
-    @SuppressWarnings("unchecked")
-    private T loadUnsafe(String file) {
-        Path filePath = this.baseDirectory.resolve(file);
-        try {
-            InputStream fin = Files.newInputStream(filePath);
-            ObjectInputStream oin = new ObjectInputStream(fin);
-
-            Object unsafe = oin.readObject();
-
-            T loaded = (T) unsafe;
-
-            oin.close();
-            fin.close();
-
-            this.loadedObjects.put(file, loaded);
-            return loaded;
-
-        } catch (IOException i) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public <S extends T> boolean contains(Class<?> type, String file){
+        Set<String> files = this.tracker.get(type);
+        if(files == null)
+            return false;
+        
+        return files.contains(file);
     }
-
+    
     /**
-     * Saves a serilizable object object.
-     * @param file
-     *            The file name/relative path.
-     * @param object
-     *            The object to save.
+     * Removes a file from the Lazy Serial manager.
+     * @param type The tpe.
+     * @param file The file.
      */
-    private void save(String file, Object object) {
-        Path filePath = this.baseDirectory.resolve(file);
+    public <S extends T> void remove(Class<S> type, String file){
         try {
-            if (!Files.exists(filePath.getParent())) {
-                Files.createDirectories(filePath.getParent());
-            }
-            OutputStream fin = Files.newOutputStream(filePath);
-            ObjectOutputStream oin = new ObjectOutputStream(fin);
-            oin.writeObject(object);
-            oin.close();
-            fin.close();
+            Path filePath = this.baseDirectory.resolve(file);
 
-        } catch (IOException i) {
-            i.printStackTrace();
+            if(!tracker.containsKey(type) ||
+                    !tracker.get(type).contains(file))
+                throw new IllegalArgumentException(
+                        type.getSimpleName() + " as specified does not exist.");
+            
+            if (Files.exists(filePath)) 
+               Files.delete(filePath);
+            
+            this.tracker.get(type).remove(file);
+            this.loadedObjects.remove(file);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
+    
     /**
      * Opens a lazy serial manager.
      */
-    @SuppressWarnings("unchecked")
     public void open() {
         this.open = true;
 
@@ -203,31 +165,18 @@ public abstract class LazySerialManager<T extends Serializable>
                 e.printStackTrace();
             }
         }
-
-        Path dbPath = this.baseDirectory.resolve(DB_NAME);
-        if (Files.exists(dbPath)) {
-            try {
-                InputStream fin = Files.newInputStream(dbPath);
-                ObjectInputStream oin = new ObjectInputStream(fin);
-
-                Object unsafe = oin.readObject();
-
-                this.tracker = (HashMap<Class<?>, Set<String>>) unsafe;
-
-                oin.close();
-                fin.close();
-
-            } catch (IOException i) {
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            this.tracker = new HashMap<>();
-        }
+        
+        @SuppressWarnings("unchecked")
+        HashMap<Class<?>, Set<String>> trck = 
+                (HashMap<Class<?>, Set<String>>)this.loadUnsafe(DB_NAME);
+        
+        if(trck == null)
+            this.loadedObjects.put(DB_NAME, this.tracker);
+        else
+            this.tracker = trck;
 
     }
 
-    /** Returns if the repository has been opened. */
     /**
      * Returns if the serial manager is open.
      * @return If the manager is open.
@@ -342,6 +291,93 @@ public abstract class LazySerialManager<T extends Serializable>
             return LazySerialManager.this.loadUnsafe(this.fileNameIter.next());
         }
 
+    }
+    
+
+    /**
+     * Loads an object into the lazy cache.
+     * @param file
+     * @return
+     */
+    private <S extends T> S load(Class<S> type, String file)
+            throws ClassCastException {
+        Path filePath = this.baseDirectory.resolve(file);
+        try {
+            InputStream fin = Files.newInputStream(filePath);
+            ObjectInputStream oin = new ObjectInputStream(fin);
+
+            Object unsafe = oin.readObject();
+
+            S loaded = type.cast(unsafe);
+
+            oin.close();
+            fin.close();
+
+            this.loadedObjects.put(file, loaded);
+            return loaded;
+
+        } catch (IOException i) {
+            return null;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    /**
+     * Loads a file unsafeley.
+     * @param file
+     *            The file to load.
+     * @return The loaded gile.
+     */
+    @SuppressWarnings("unchecked")
+    private T loadUnsafe(String file) {
+        Path filePath = this.baseDirectory.resolve(file);
+        try {
+            InputStream fin = Files.newInputStream(filePath);
+            ObjectInputStream oin = new ObjectInputStream(fin);
+
+            Object unsafe = oin.readObject();
+
+            T loaded = (T) unsafe;
+
+            oin.close();
+            fin.close();
+
+            this.loadedObjects.put(file, loaded);
+            return loaded;
+
+        } catch (IOException i) {
+            return null;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Saves a serilizable object object.
+     * @param file
+     *            The file name/relative path.
+     * @param object
+     *            The object to save.
+     */
+    private void save(String file, Object object) {
+        Path filePath = this.baseDirectory.resolve(file);
+        try {
+            if (!Files.exists(filePath.getParent())) {
+                Files.createDirectories(filePath.getParent());
+            }
+            OutputStream fin = Files.newOutputStream(filePath);
+            ObjectOutputStream oin = new ObjectOutputStream(fin);
+            oin.writeObject(object);
+            oin.close();
+            fin.close();
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
     }
 
 }

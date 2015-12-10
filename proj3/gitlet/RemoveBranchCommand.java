@@ -3,6 +3,8 @@
  */
 package gitlet;
 
+import static gitlet.ReferenceType.*;
+
 /**
  * @author william
  */
@@ -15,12 +17,12 @@ public class RemoveBranchCommand implements Command {
     @Override
     public void run(Repository repo, String[] args) {
         String branch = args[0];
-        if (repo.getBranch().equals(branch)) {
+        if (repo.getCurrentBranch().equals(branch)) {
             throw new IllegalArgumentException(
                     "Cannot remove the current branch.");
         }
 
-        repo.removeBranch(branch);
+        repo.refs().remove(BRANCH, args[0]);
     }
 
     /*

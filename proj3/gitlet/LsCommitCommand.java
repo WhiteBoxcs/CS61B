@@ -2,6 +2,7 @@
  *
  */
 package gitlet;
+import static gitlet.ReferenceType.*;
 
 /**
  * @author william
@@ -16,7 +17,7 @@ public class LsCommitCommand implements Command {
     public void run(Repository repo, String[] args) {
         Commit commit;
         if (args.length == 0) {
-            commit = repo.objects().get(Commit.class, repo.getHead());
+            commit = repo.objects().get(Commit.class, repo.refs().resolve(HEAD));
         } else {
             commit = repo.objects().find(Commit.class, args[0]);
         }

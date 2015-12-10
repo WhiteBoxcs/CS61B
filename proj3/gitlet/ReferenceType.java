@@ -9,7 +9,8 @@ public enum ReferenceType{
     HEAD(""),
     BRANCH("refs/branch/"),
     REMOTE("refs/remote/"),
-    TAG("refs/tags/");
+    TAG("refs/tags/"),
+    NONE("");
     
     /**
      * The base directory for this type of reference.
@@ -31,5 +32,6 @@ public enum ReferenceType{
     public String getBaseDir() {
         return baseDir;
     }
+    
     
 }

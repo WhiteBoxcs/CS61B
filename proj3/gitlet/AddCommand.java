@@ -33,7 +33,7 @@ public class AddCommand implements Command {
             Blob fileBlob = new Blob(Files.readAllBytes(filePath));
 
             String blobHash = repo.objects().add(fileBlob);
-            Index index = repo.getIndex();
+            Index index = repo.index();
 
             index.add(file, blobHash);
         } catch (IOException e) {

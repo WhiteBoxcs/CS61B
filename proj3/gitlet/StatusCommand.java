@@ -23,14 +23,14 @@ public class StatusCommand implements Command {
     public void run(Repository repo, String[] args) {
         String currentBranch = repo.getBranch();
         System.out.println("=== Branches ===");
-        repo.applyToBranches((branch) -> {
+        repo.refs().((branch) -> {
             if (branch.equals(currentBranch)) {
                 System.out.print('*');
             }
             System.out.println(branch);
         });
 
-        Index index = repo.getIndex();
+        Index index = repo.index();
         Path workingDir = repo.getWorkingDir();
 
         System.out.println("\n=== Staged Files ===");

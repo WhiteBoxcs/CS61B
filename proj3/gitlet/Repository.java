@@ -1,29 +1,23 @@
 package gitlet;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.function.Consumer;
+import static gitlet.ReferenceType.*;
 
 /**
  * Represents a Gitlet repository.
  * @author william
  */
-public class Repository {
-
-    private static final String REFHEAD_DIR = "refs/heads/";
+public class Repository extends LazySerialManager<Serializable>{
+    private static final String GITLET_DIR = ".gitlet";
     private static final String INDEX = "index";
-    private static final String HEAD = "HEAD";
+    private static final String OBJ_DIR = "objects/";
     private static final String REFS_DIR = "refs/";
-
-    /**
-     * If the Repository is open and "on."
-     */
-    private boolean open = false;
 
     /**
      * The working path.
@@ -40,8 +34,11 @@ public class Repository {
      */
     private GitletObjectManager objectMan;
 
-    private String name;
-
+    /**
+     * Manages all of the references.
+     */
+    private ReferenceManager refMan;
+    
     /**
      * Declares a repository at the workingDIR.
      * @param workingDir
@@ -49,11 +46,13 @@ public class Repository {
      * @param name
      *            the name.
      */
-    public Repository(String name, String workingDir) {
-        this.workingDir = Paths.get(workingDir);
-        this.gitletDir = this.workingDir.resolve(".gitlet");
-        this.objectMan = new GitletObjectManager(this.gitletDir);
-        this.name = name;
+    public Repository(String workingDir) {
+        super(Paths.get(workingDir).resolve(GITLET_DIR));
+        this.workingDir = this.getBaseDirectory().getParent();
+        this.gitletDir = this.getBaseDirectory();
+        
+        this.objectMan = new GitletObjectManager(this.gitletDir.resolve(OBJ_DIR));
+        this.refMan = new ReferenceManager(this.gitletDir.resolve(REFS_DIR));
 
         if (Files.exists(this.gitletDir)) {
             this.open();
@@ -61,14 +60,6 @@ public class Repository {
 
     }
 
-    /**
-     * Declares a repository at the workingDIR.
-     * @param workingDir
-     *            The working dir.
-     */
-    public Repository(String workingDir) {
-        this("local", workingDir);
-    }
 
     /**
      * Initializes a repository if one does not already exist there.
@@ -79,24 +70,17 @@ public class Repository {
                     "A gitlet version-control system already exists in the current directory.");
         }
 
-        try {
-            Files.createDirectory(this.gitletDir);
-            this.objectMan.open();
+        super.open();
+        this.objectMan.open();
+        this.refMan.open();
 
-            String initialCommit = this.objects()
-                    .add(new Commit("initial commit", LocalDateTime.now()));
-            this.addBranch("master", initialCommit);
-            this.setBranch("master");
-            this.setInitialCommit(initialCommit);
+        String initialCommit = this.objects()
+                .add(new Commit("initial commit", LocalDateTime.now()));
+        this.addBranch("master", initialCommit);
+        this.setBranch("master");
+        this.setInitialCommit(initialCommit);
 
-            this.objects().add(INDEX, new Index());
-
-            this.open = true;
-        } catch (IOException e) {
-            System.out.println(
-                    "Something went wrong while initializing the repository!");
-            e.printStackTrace();
-        }
+        this.add(INDEX, new Index());
 
     }
 
@@ -107,7 +91,7 @@ public class Repository {
      */
     public void checkout(Commit commit) {
 
-        Index index = this.getIndex();
+        Index index = this.index();
 
         try {
             for (Path entry : Files.newDirectoryStream(this.getWorkingDir(),
@@ -167,7 +151,7 @@ public class Repository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Index index = this.getIndex();
+        Index index = this.index();
         index.checkout(filename, blobHash, stage);
     }
 
@@ -179,11 +163,12 @@ public class Repository {
      */
     public String addCommitAtHead(String message,
             HashMap<String, String> blobs) {
-        String headHash = this.getHead();
+        String headHash = this.refs().resolve(HEAD);
         LocalDateTime now = LocalDateTime.now();
         String commitHash =
                 this.objects().add(new Commit(message, now, headHash, blobs));
-        this.setHead(commitHash);
+        
+        this.getCurrentBranch().setTarget(commitHash);
         return commitHash;
     }
 
@@ -191,117 +176,28 @@ public class Repository {
      * Gets the index.
      * @return The index.
      */
-    public Index getIndex() {
-        return this.objects().getDirect(Index.class, INDEX);
+    public Index index() {
+        return this.get(Index.class, INDEX);
     }
 
     /**
      * Gets the head commit.
      * @return The hash for the head commit.
      */
-    public String getHead() {
-        String curBranch = this.getBranch();
-        try {
-            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + curBranch);
-            return Files.readAllLines(branchPath).get(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public Reference getCurrentBranch() {
+        Reference head = this.refs().get(HEAD);
+        return this.refs().get(BRANCH, head.target());
     }
 
-    /** Sets the head commit. */
-    public void setHead(String commitHash) {
-        String curBranch = this.getBranch();
-        try {
-            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + curBranch);
-            Files.write(branchPath, commitHash.getBytes());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets the current branch if it exists.
-     * @return The name of the current branch.
-     */
-    public String getBranch() {
-        try {
-            Path headPath = this.gitletDir.resolve(HEAD);
-            String branchUri = Files.readAllLines(headPath).get(0);
-            Path branchPath = this.gitletDir.resolve(branchUri);
-            if (!Files.exists(branchPath)) {
-                throw new IllegalStateException(
-                        "Current branch does not exist.");
-            }
-            return branchPath.getFileName().toString();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Applies a functional to all of the branches.
-     * @param func
-     */
-    public void applyToBranches(Consumer<String> func) {
-        Path branchDir = this.gitletDir.resolve(REFHEAD_DIR);
-        try {
-            DirectoryStream<Path> contents =
-                    Files.newDirectoryStream(branchDir);
-
-            for (Path entry : contents) {
-                func.accept(entry.getFileName().toString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * Sets the current branch in the head.`
      * @param branch
      */
-    public void setBranch(String branch) {
-        try {
-            Path headPath = this.gitletDir.resolve(HEAD);
-            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + branch);
-            if (!Files.exists(branchPath)) {
-                throw new IllegalStateException("No such branch exists.");
-            }
-
-            Files.write(headPath, (REFHEAD_DIR + branch).getBytes());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setCurrentBranch(String branch) {
+        this.refs().get(HEAD).setTarget(branch);
     }
 
-    /**
-     * Gets the branch head.
-     * @param branch
-     *            The branch.
-     * @return The branch head.
-     */
-    public String getBranchHead(String branch) {
-        try {
-            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + branch);
-            if (!Files.exists(branchPath)) {
-                throw new IllegalStateException("No such branch exists.");
-            }
-
-            return Files.readAllLines(branchPath).get(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * Adds a branch to the reference store at the current head commit.
@@ -338,34 +234,28 @@ public class Repository {
         this.addBranch(name, this.getHead());
     }
 
-    public void removeBranch(String branch) {
-        try {
-            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + branch);
-            if (!Files.exists(branchPath.getParent())) {
-                Files.createDirectories(branchPath.getParent());
-            }
-
-            if (!Files.exists(branchPath)) {
-                throw new IllegalArgumentException(
-                        "A branch with that name does not exist.");
-            }
-
-            Files.delete(branchPath);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Gets the objects in the repository.
+     * @return The manager which holds the objects.
+     */
+    public GitletObjectManager objects() {
+        return this.objectMan;
     }
 
     /**
+     * Gets the reference ma nager.
+     */
+    public ReferenceManager refs(){
+        return this.refMan;
+    }
+    
+    /**
      * Opens a repository if the repository failed to open in the first place.
      */
+    @Override
     public void open() {
-        if (this.isOpen()) {
-            throw new IllegalStateException(
-                    "Close repository before opening a new instance.");
-        }
-        this.open = true;
+        super.open();
+        this.refMan.open();
         this.objectMan.open();
 
     }
@@ -373,26 +263,17 @@ public class Repository {
     /**
      * Closes a repository and serializes every loaded object.
      */
+    @Override
     public void close() {
-        if (this.isOpen()) {
-            this.open = false;
-            this.objectMan.close();
-        }
+        super.close();
+        this.refMan.close();
+        this.objectMan.close();
     }
 
-    /** Returns if the repository has been opened. */
-    public boolean isOpen() {
-        return this.open;
-    }
 
     /** Gets the working directory */
     public Path getWorkingDir() {
         return this.workingDir;
-    }
-
-    /** Gets the gitlet dir. */
-    public Path getGitletDir() {
-        return this.gitletDir;
     }
 
     /**
@@ -424,12 +305,5 @@ public class Repository {
         }
     }
 
-    /**
-     * Gets the objects in the repository.
-     * @return The manager which holds the objects.
-     */
-    public GitletObjectManager objects() {
-        return this.objectMan;
-    }
 
 }

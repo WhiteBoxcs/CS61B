@@ -3,13 +3,14 @@
  */
 package gitlet;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
  * @author william
  */
-public class Index extends GitletObject {
+public class Index implements Serializable {
 
     /**
      * Serialization ID for gitlet.

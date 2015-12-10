@@ -16,7 +16,6 @@ import java.util.function.BiConsumer;
 public class GitletObjectManager extends LazySerialManager<GitletObject> {
 
     private static final int DIR_DELIM = 2;
-    private static final String OBJ_DIR = "objects/";
 
     public GitletObjectManager(Path base) {
         super(base);
@@ -25,18 +24,6 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
     @Override
     public <S extends GitletObject> S get(Class<S> type, String hash) {
         return super.get(type, hashToFile(hash));
-    }
-
-    /**
-     * Gets the object directly.
-     * @param type
-     *            The type of object.
-     * @param file
-     *            The file.
-     * @return The boject.
-     */
-    public <S extends GitletObject> S getDirect(Class<S> type, String file) {
-        return super.get(type, file);
     }
 
     /**
@@ -49,10 +36,7 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
             BiConsumer<? super String, ? super S> action) {
         BiConsumer<? super String, ? super S> hashedAction =
                 (file, com) -> {
-                    if(file.startsWith(OBJ_DIR))
                         action.accept(fileToHash(file), com);
-                    else
-                        action.accept(file, com);
                 };
         super.forEach(type, hashedAction);
     };
@@ -69,6 +53,14 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
         return hash;
     }
 
+    /**
+     * Removes a hash from the object store.
+     */
+    @Override
+    public <S extends GitletObject> void remove(Class<S> type, String hash) {
+        super.remove(type, hashToFile(hash));
+    }
+    
     /**
      * Uses the speed of the file system to load an object of a given type
      * satisfying the search.
@@ -92,7 +84,7 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
             rest = search.substring(DIR_DELIM, search.length());
         }
 
-        Path base = this.getBaseDirectory().resolve(OBJ_DIR);
+        Path base = this.getBaseDirectory();
         try (DirectoryStream<Path> str =
                 Files.newDirectoryStream(base, x -> Files.isDirectory(x))) {
             
@@ -108,7 +100,7 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
                 
                         if (fileName.startsWith(rest)) {
                             String targetHash = directoryName + fileName;
-                            if (contents.contains(OBJ_DIR + directoryName + "/" + fileName)) {
+                            if (contents.contains(directoryName + "/" + fileName)) {
                                 return this.get(type, targetHash);
                             }
                         }
@@ -128,7 +120,7 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
      * @return The file path.
      */
     private static String hashToFile(String hash) {
-        return OBJ_DIR + hash.substring(0, DIR_DELIM) + "/"
+        return  hash.substring(0, DIR_DELIM) + "/"
                 + hash.substring(DIR_DELIM, hash.length());
     }
 
@@ -138,7 +130,6 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
      * @return
      */
     private static String fileToHash(String file) {
-        file = file.replaceFirst(OBJ_DIR, "");
         return file.replaceFirst("/", "");
     }
 }

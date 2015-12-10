@@ -38,7 +38,7 @@ public class ResetCommand implements Command {
         }
 
         repo.checkout(toCheck);
-        repo.setHead(toCheck.sha1());
+        repo.getCurrentBranch().setTarget(toCheck.sha1());
     }
 
     /*

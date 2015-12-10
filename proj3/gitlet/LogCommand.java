@@ -2,6 +2,7 @@
  *
  */
 package gitlet;
+import static gitlet.ReferenceType.*;
 
 /**
  * @author william Represents a log command which logs all of the commits
@@ -15,7 +16,7 @@ public class LogCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String commitHash = repo.getHead();
+        String commitHash = repo.refs().resolve(HEAD);
         while (commitHash != null && !commitHash.equals("")) {
             Commit commit = repo.objects().get(Commit.class, commitHash);
             System.out.println(commit.toString());
