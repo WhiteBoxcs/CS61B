@@ -57,7 +57,7 @@ public class ReferenceManager extends LazySerialManager<Reference> {
     
     
     public String resolve(ReferenceType type, String fileName){
-        Reference cur =  this.get(Reference.class, type.getBaseDir() + fileName);
+        Reference cur =  this.get(type, fileName);
         while(cur.targetIsReference()){
             cur = this.get(cur.targetType(), cur.target());
         }

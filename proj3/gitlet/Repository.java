@@ -98,7 +98,7 @@ public class Repository extends LazySerialManager<Serializable> {
         this.refMan.open();
 
         String initialCommit = this.objects()
-                .add(new Commit("initial commit", LocalDateTime.now()));
+                .put(new Commit("initial commit", LocalDateTime.now()));
 
         this.refs().add(BRANCH, "master", new Reference(initialCommit));
         this.refs().add(HEAD, new Reference(BRANCH, "master"));
@@ -190,7 +190,7 @@ public class Repository extends LazySerialManager<Serializable> {
         String headHash = this.refs().resolve(HEAD);
         LocalDateTime now = LocalDateTime.now();
         String commitHash =
-                this.objects().add(new Commit(message, now, headHash, blobs));
+                this.objects().put(new Commit(message, now, headHash, blobs));
 
         this.getCurrentBranch().setTarget(commitHash);
         return commitHash;

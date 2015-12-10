@@ -48,7 +48,12 @@ public class PushCommand implements Command {
             throw new IllegalStateException("Remote directory not found.");
         
         String head = repo.refs().resolve(HEAD);
-        String remoteHead = remote.refs().resolve(BRANCH, remoteBranch);
+        
+        String remoteHead = "";
+        if(remote.refs().contains(BRANCH, remoteBranch))
+            remoteHead = remote.refs().resolve(BRANCH, remoteBranch);
+        else
+            remote.refs().add(BRANCH, remoteBranch, new Reference(""));
         
         if(head.equals(remoteHead))
             return;
@@ -56,7 +61,7 @@ public class PushCommand implements Command {
         
         Collection<String> intersecting = intersectBranches(repo, remote, head, remoteHead);
         pushCommits(repo, remote, intersecting);
-        feedForward(remote, remoteBranch, head);
+        fastForward(remote, remoteBranch, head);
         
   
         remote.close();
@@ -73,7 +78,7 @@ public class PushCommand implements Command {
      */
     private static Collection<String> intersectBranches(Repository repo, Repository remote, String head, String remoteHead){
         Collection<String> localHistory = MergeCommand.getHistory(repo, head, new LinkedHashSet<String>());
-        if(!localHistory.contains(remoteHead)){
+        if(!localHistory.contains(remoteHead) && !remoteHead.isEmpty()){
             remote.close();
             throw new IllegalStateException("Please pull down remote changes before pushing.");
         }
@@ -87,7 +92,7 @@ public class PushCommand implements Command {
      * @param remote the remiote.
      * @param remoteBranch the remote branch
      */
-    private static void feedForward(Repository remote, String remoteBranch, String head){
+    private static void fastForward(Repository remote, String remoteBranch, String head){
         if(remote.refs().get(HEAD).target().equals(remoteBranch))
             ResetCommand.reset(remote, head);
         else{
@@ -108,16 +113,14 @@ public class PushCommand implements Command {
 
             Commit c = repo.objects().get(Commit.class, hash);
             List<GitletObject> blobs = c.values().stream()
-                    .filter(x -> !remote.objects().contains(Blob.class, x))
                     .map((x) -> {
                 return repo.objects().get(Blob.class, x);
             }).collect(Collectors.toList());
-            if(!remote.objects().contains(Commit.class, hash))
-                outgoing.add(c);
             
+            outgoing.add(c);
             outgoing.addAll(blobs);
         }
-        remote.objects().addAll(outgoing);
+        remote.objects().putAll(outgoing);
     }
 
     /* (non-Javadoc)

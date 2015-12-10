@@ -13,6 +13,7 @@ public class Main {
     public static void main(String... args) {
         CommandManager processor = new CommandManager();
         processor.add("init", new InitCommand());
+        processor.add("init-remote", new InitRemoteCommand());
         processor.add("log", new LogCommand());
         processor.add("global-log", new GlobalLogCommand());
         processor.add("find", new FindCommand());
@@ -30,6 +31,8 @@ public class Main {
         processor.add("add-remote", new AddRemoteCommand());
         processor.add("rm-remote", new RemoveRemoteCommand());
         processor.add("push", new PushCommand());
+        processor.add("fetch", new FetchCommand());
+        processor.add("pull", new PullCommand());
 
         Repository repo = new Repository(System.getProperty("user.dir"));
 

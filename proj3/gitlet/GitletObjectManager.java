@@ -45,25 +45,19 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
     @Override
     public <S extends GitletObject> boolean contains(Class<?> type,
             String hash) {
-        // TODO Auto-generated method stub
         return super.contains(type, hashToFile(hash));
     }
     
-    @Override
-    public boolean contains(String hash) {
-        // TODO Auto-generated method stub
-        return super.contains(hashToFile(hash));
-    }
-    
     /**
-     * Adds a gitlet object.
+     * Puts a gitlet object overwriting if necisarry.
      * @param obj
      *            The object to add.
      * @return The hash of the object.
      */
-    public String add(GitletObject obj) {
+    public String put(GitletObject obj) {
         String hash = obj.sha1();
-        this.add(hashToFile(hash), obj);
+        if(!this.contains(hash))
+            this.add(hashToFile(hash), obj);
         return hash;
     }
 
@@ -71,9 +65,9 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
      * Adds all gitlet objects of a certain type.
      * @param objs
      */
-    public void addAll(Collection<? extends GitletObject> objs){
+    public void putAll(Collection<? extends GitletObject> objs){
         for(GitletObject q : objs)
-            this.add(q);
+            this.put(q);
     }
     
     /**
