@@ -47,20 +47,22 @@ public abstract class GitletObject implements Serializable {
 
         return null;
     }
-    
+
     @Override
     public int hashCode() {
-        return sha1().hashCode();
+        return this.sha1().hashCode();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (getClass() != obj.getClass())
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
         GitletObject other = (GitletObject) obj;
-        
+
         return this.sha1().equals(other.sha1());
     }
 }

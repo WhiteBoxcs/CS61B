@@ -1,16 +1,19 @@
 /**
- * 
+ *
  */
 package gitlet;
-import static gitlet.ReferenceType.*;
+
+import static gitlet.ReferenceType.BRANCH;
+import static gitlet.ReferenceType.HEAD;
+import static gitlet.ReferenceType.TAG;
 
 /**
  * @author william
- *
  */
 public class InitRemoteCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
@@ -23,7 +26,8 @@ public class InitRemoteCommand implements Command {
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -31,7 +35,8 @@ public class InitRemoteCommand implements Command {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

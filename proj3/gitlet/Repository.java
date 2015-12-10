@@ -1,5 +1,9 @@
 package gitlet;
 
+import static gitlet.ReferenceType.BRANCH;
+import static gitlet.ReferenceType.HEAD;
+import static gitlet.ReferenceType.TAG;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -7,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import static gitlet.ReferenceType.*;
 
 /**
  * Represents a Gitlet repository.
@@ -143,14 +146,14 @@ public class Repository extends LazySerialManager<Serializable> {
         }
 
         commit.getBlobs().forEach((file, hash) -> {
-            Blob blob = this.objects().get(Blob.class, hash);
-            Path filePath = this.getWorkingDir().resolve(file);
-            try {
-                Files.write(filePath, blob.getContents());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+                Blob blob = this.objects().get(Blob.class, hash);
+                Path filePath = this.getWorkingDir().resolve(file);
+                try {
+                    Files.write(filePath, blob.getContents());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
         index.checkout(commit);
 
@@ -240,7 +243,6 @@ public class Repository extends LazySerialManager<Serializable> {
         return this.workingDir;
     }
 
-    
     @Override
     protected boolean niceSerialization() {
         return false;

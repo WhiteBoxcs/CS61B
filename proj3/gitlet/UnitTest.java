@@ -1,7 +1,9 @@
 package gitlet;
 
+import static gitlet.ReferenceType.HEAD;
+import static gitlet.ReferenceType.TAG;
 import static org.junit.Assert.assertEquals;
-import static gitlet.ReferenceType.*;
+
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -39,8 +41,9 @@ public class UnitTest {
     @Before
     public void setUp() {
         this.repo = new Repository(tempDir.getPath().toString());
-        if(!repo.isOpen())
+        if (!this.repo.isOpen()) {
             this.repo.init();
+        }
     }
 
     @After
@@ -49,23 +52,25 @@ public class UnitTest {
     }
 
     @Test
-    public void refsTest(){
+    public void refsTest() {
         HashMap<String, String> firstBlobs = new HashMap<>();
         firstBlobs.put("lol.file", "a");
         firstBlobs.put("friend.file", "b");
 
-        assertEquals(this.repo.refs().resolve(TAG, "initial"), this.repo.getCurrentBranch().target());
-        assertEquals(this.repo.refs().resolve(TAG, "initial"), this.repo.refs().resolve(HEAD));
-        
+        assertEquals(this.repo.refs().resolve(TAG, "initial"),
+                this.repo.getCurrentBranch().target());
+        assertEquals(this.repo.refs().resolve(TAG, "initial"),
+                this.repo.refs().resolve(HEAD));
+
         String root = this.repo.addCommitAtHead("ROOT!", firstBlobs);
         assertEquals(root, this.repo.refs().resolve(HEAD));
     }
-    
+
     @Test
-    public void objTest(){
-        
+    public void objTest() {
+
     }
-    
+
     /**
      * Tests for a split point.
      */

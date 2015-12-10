@@ -49,7 +49,6 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     private boolean open;
 
-    
     /**
      * Builds a lazy serial manager.
      * @param base
@@ -90,10 +89,10 @@ public abstract class LazySerialManager<T extends Serializable>
      */
     public <S extends T> void add(String file, S toAdd) {
 
-        if(this.loadedObjects.get(file) != null
-                || this.loadUnsafe(file) != null){
-            throw new IllegalStateException(
-                    toAdd.getClass().getSimpleName() + " as specified already exists.");
+        if (this.loadedObjects.get(file) != null
+                || this.loadUnsafe(file) != null) {
+            throw new IllegalStateException(toAdd.getClass().getSimpleName()
+                    + " as specified already exists.");
         }
         this.loadedObjects.put(file, toAdd);
         Set<String> tracked = this.tracker.get(toAdd.getClass());
@@ -106,48 +105,58 @@ public abstract class LazySerialManager<T extends Serializable>
 
     /**
      * Determines if the lazy serial manager contains a file.
-     * @param file The file to check.
+     * @param file
+     *            The file to check.
      * @return If ti does contain the file.
      */
-    public boolean contains(String file){
-        for(Class<?> type : tracker.keySet())
-            if(contains(type, file))
+    public boolean contains(String file) {
+        for (Class<?> type : this.tracker.keySet()) {
+            if (this.contains(type, file)) {
                 return true;
-        
+            }
+        }
+
         return false;
     }
-    
+
     /**
      * Determines if the serial manager contains a given file.
-     * @param type The type to check./
-     * @param file The fuile name.
+     * @param type
+     *            The type to check./
+     * @param file
+     *            The fuile name.
      * @return If it does.
      */
-    public <S extends T> boolean contains(Class<?> type, String file){
+    public <S extends T> boolean contains(Class<?> type, String file) {
         Set<String> files = this.tracker.get(type);
-        if(files == null)
+        if (files == null) {
             return false;
-        
+        }
+
         return files.contains(file);
     }
-    
+
     /**
      * Removes a file from the Lazy Serial manager.
-     * @param type The tpe.
-     * @param file The file.
+     * @param type
+     *            The tpe.
+     * @param file
+     *            The file.
      */
-    public <S extends T> void remove(Class<S> type, String file){
+    public <S extends T> void remove(Class<S> type, String file) {
         try {
             Path filePath = this.baseDirectory.resolve(file);
 
-            if(!tracker.containsKey(type) ||
-                    !tracker.get(type).contains(file))
-                throw new IllegalArgumentException(
-                        type.getSimpleName() + " as specified does not exist.");
-            
-            if (Files.exists(filePath)) 
-               Files.delete(filePath);
-            
+            if (!this.tracker.containsKey(type)
+                    || !this.tracker.get(type).contains(file)) {
+                throw new IllegalArgumentException(type.getSimpleName()
+                        + " as specified does not exist.");
+            }
+
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+
             this.tracker.get(type).remove(file);
             this.loadedObjects.remove(file);
 
@@ -155,11 +164,9 @@ public abstract class LazySerialManager<T extends Serializable>
             e.printStackTrace();
         }
     }
-    
-    
-    protected abstract boolean niceSerialization(); 
-    
-    
+
+    protected abstract boolean niceSerialization();
+
     /**
      * Opens a lazy serial manager.
      */
@@ -173,15 +180,16 @@ public abstract class LazySerialManager<T extends Serializable>
                 e.printStackTrace();
             }
         }
-        
+
         @SuppressWarnings("unchecked")
-        HashMap<Class<?>, Set<String>> trck = 
-                (HashMap<Class<?>, Set<String>>)this.loadUnsafe(DB_NAME);
-        
-        if(trck == null)
+        HashMap<Class<?>, Set<String>> trck =
+                (HashMap<Class<?>, Set<String>>) this.loadUnsafe(DB_NAME);
+
+        if (trck == null) {
             this.loadedObjects.put(DB_NAME, this.tracker);
-        else
+        } else {
             this.tracker = trck;
+        }
 
     }
 
@@ -300,7 +308,6 @@ public abstract class LazySerialManager<T extends Serializable>
         }
 
     }
-    
 
     /**
      * Loads an object into the lazy cache.
@@ -315,13 +322,13 @@ public abstract class LazySerialManager<T extends Serializable>
             ObjectInputStream oin = new ObjectInputStream(fin);
 
             Object unsafe;
-            if(this.niceSerialization()){
+            if (this.niceSerialization()) {
                 XMLDecoder e = new XMLDecoder(oin);
                 unsafe = e.readObject();
                 e.close();
-            }
-            else
+            } else {
                 unsafe = oin.readObject();
+            }
 
             S loaded = type.cast(unsafe);
 
@@ -354,13 +361,13 @@ public abstract class LazySerialManager<T extends Serializable>
             ObjectInputStream oin = new ObjectInputStream(fin);
 
             Object unsafe;
-            if(this.niceSerialization()){
+            if (this.niceSerialization()) {
                 XMLDecoder e = new XMLDecoder(oin);
                 unsafe = e.readObject();
                 e.close();
-            }
-            else
+            } else {
                 unsafe = oin.readObject();
+            }
 
             T loaded = (T) unsafe;
 
@@ -393,13 +400,13 @@ public abstract class LazySerialManager<T extends Serializable>
             }
             OutputStream fin = Files.newOutputStream(filePath);
             ObjectOutputStream oin = new ObjectOutputStream(fin);
-            if(this.niceSerialization()){
+            if (this.niceSerialization()) {
                 XMLEncoder e = new XMLEncoder(oin);
                 e.writeObject(object);
                 e.close();
-            }
-            else
+            } else {
                 oin.writeObject(object);
+            }
             oin.close();
             fin.close();
 

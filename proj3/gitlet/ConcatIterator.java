@@ -20,8 +20,12 @@ public class ConcatIterator<T> implements Iterator<T> {
      */
     private List<Iterator<T>> iterators;
 
-    public ConcatIterator(List<Iterator<T>> iterators) {
-        this.iterators = iterators;
+    /**
+     * Creates concat iter.
+     * @param iteratorss The iterator.
+     */
+    public ConcatIterator(List<Iterator<T>> iteratorss) {
+        this.iterators = iteratorss;
         this.index = 0;
     }
 

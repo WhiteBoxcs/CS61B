@@ -1,16 +1,17 @@
 /**
- * 
+ *
  */
 package gitlet;
-import static gitlet.ReferenceType.*;
+
+import static gitlet.ReferenceType.REMOTE;
 
 /**
  * @author william
- *
  */
 public class RemoveRemoteCommand implements Command {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#run(gitlet.Repository, java.lang.String[])
      */
     @Override
@@ -20,7 +21,8 @@ public class RemoveRemoteCommand implements Command {
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#requiresRepo()
      */
     @Override
@@ -28,7 +30,8 @@ public class RemoveRemoteCommand implements Command {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see gitlet.Command#checkOperands(java.lang.String[])
      */
     @Override

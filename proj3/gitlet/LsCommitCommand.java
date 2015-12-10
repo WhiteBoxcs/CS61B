@@ -2,7 +2,8 @@
  *
  */
 package gitlet;
-import static gitlet.ReferenceType.*;
+
+import static gitlet.ReferenceType.HEAD;
 
 /**
  * @author william
@@ -17,12 +18,14 @@ public class LsCommitCommand implements Command {
     public void run(Repository repo, String[] args) {
         Commit commit;
         if (args.length == 0) {
-            commit = repo.objects().get(Commit.class, repo.refs().resolve(HEAD));
+            commit = repo.objects().get(Commit.class,
+                    repo.refs().resolve(HEAD));
         } else {
             commit = repo.objects().find(Commit.class, args[0]);
         }
-        if(commit == null)
+        if (commit == null) {
             throw new IllegalArgumentException("No such commit exists.");
+        }
 
         System.out.println(commit.toString());
         commit.forEach((name, hash) -> {

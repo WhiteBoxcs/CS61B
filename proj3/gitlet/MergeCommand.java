@@ -3,16 +3,18 @@
  */
 package gitlet;
 
+import static gitlet.ReferenceType.BRANCH;
+import static gitlet.ReferenceType.HEAD;
+import static gitlet.ReferenceType.TAG;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import static gitlet.ReferenceType.*;
 
 /**
  * @author william
@@ -67,9 +69,8 @@ public class MergeCommand implements Command {
 
         boolean conflicts = mergeCompare(repo, head, other, split);
         if (!conflicts) {
-            repo.addCommitAtHead(
-                    "Merged " + repo.refs().get(HEAD).target() + " with " + branch + ".",
-                    repo.index().blobsFromStage());
+            repo.addCommitAtHead("Merged " + repo.refs().get(HEAD).target()
+                    + " with " + branch + ".", repo.index().blobsFromStage());
         } else {
             throw new IllegalStateException("Encountered a merge conflict.");
         }
@@ -95,38 +96,39 @@ public class MergeCommand implements Command {
         List<String> inConflict = new ArrayList<String>();
 
         other.forEach((file, otherHash) -> {
-            String splitHash = split.get(file);
-            String headHash = head.get(file);
-
-            if (splitHash == null) {
-                if (headHash == null) {
-                    toCheckout.add(file);
-                } else if (!headHash.equals(otherHash)) {
-                    inConflict.add(file);
-                }
-            } else if (!otherHash.equals(headHash)) {
-                if (headHash == null) {
-                    if(!otherHash.equals(splitHash))
+                String splitHash = split.get(file);
+                String headHash = head.get(file);
+    
+                if (splitHash == null) {
+                    if (headHash == null) {
+                        toCheckout.add(file);
+                    } else if (!headHash.equals(otherHash)) {
                         inConflict.add(file);
-                } else if (headHash.equals(splitHash)) {
-                    toCheckout.add(file);
+                    }
                 } else if (!otherHash.equals(headHash)) {
-                    inConflict.add(file);
+                    if (headHash == null) {
+                        if (!otherHash.equals(splitHash)) {
+                            inConflict.add(file);
+                        }
+                    } else if (headHash.equals(splitHash)) {
+                        toCheckout.add(file);
+                    } else if (!otherHash.equals(headHash)) {
+                        inConflict.add(file);
+                    }
                 }
-            }
-        });
+            });
 
         head.forEach((file, headHash) -> {
-            String splitHash = split.get(file);
-            String otherHash = other.get(file);
-            if (splitHash != null && otherHash == null) {
-                if (headHash.equals(splitHash)) {
-                    toRemove.add(file);
-                } else {
-                    inConflict.add(file);
+                String splitHash = split.get(file);
+                String otherHash = other.get(file);
+                if (splitHash != null && otherHash == null) {
+                    if (headHash.equals(splitHash)) {
+                        toRemove.add(file);
+                    } else {
+                        inConflict.add(file);
+                    }
                 }
-            }
-        });
+            });
 
         mergeCheckout(repo, other, toCheckout);
         mergeRemove(repo, head, toRemove);

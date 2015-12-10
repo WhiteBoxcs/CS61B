@@ -2,7 +2,8 @@
  *
  */
 package gitlet;
-import static gitlet.ReferenceType.*;
+
+import static gitlet.ReferenceType.HEAD;
 
 /**
  * @author william Represents a log command which logs all of the commits

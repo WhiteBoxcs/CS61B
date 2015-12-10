@@ -3,7 +3,9 @@
  */
 package gitlet;
 
-import static gitlet.ReferenceType.*;
+import static gitlet.ReferenceType.BRANCH;
+import static gitlet.ReferenceType.HEAD;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,14 +26,13 @@ public class StatusCommand implements Command {
     public void run(Repository repo, String[] args) {
         String currentBranch = repo.refs().get(HEAD).target();
         System.out.println("=== Branches ===");
-        
-        
+
         repo.refs().forEach(BRANCH, (name, branch) -> {
-            if (name.equals(currentBranch)) {
-                System.out.print('*');
-            }
-            System.out.println(name);
-        });
+                if (name.equals(currentBranch)) {
+                    System.out.print('*');
+                }
+                System.out.println(name);
+            });
 
         Index index = repo.index();
         Path workingDir = repo.getWorkingDir();
@@ -52,8 +53,8 @@ public class StatusCommand implements Command {
 
     /**
      * Outputs the diff between the index and the working dir.
-     * @param index
-     * @param workingDir
+     * @param index The index.
+     * @param workingDir The working ditrectory.
      */
     private void diff(Index index, Path workingDir) throws IOException {
         HashMap<String, String> curBlobs = new HashMap<String, String>();
@@ -71,18 +72,18 @@ public class StatusCommand implements Command {
         List<String> notStaged = new ArrayList<>();
 
         curBlobs.forEach((name, hash) -> {
-            if (!index.getBlobs().containsKey(name)) {
-                untracked.add(name);
-            } else if (!index.getBlobs().get(name).equals(hash)) {
-                notStaged.add(name + " (modified)");
-            }
-        });
+                if (!index.getBlobs().containsKey(name)) {
+                    untracked.add(name);
+                } else if (!index.getBlobs().get(name).equals(hash)) {
+                    notStaged.add(name + " (modified)");
+                }
+            });
 
         index.getBlobs().forEach((name, hash) -> {
-            if (!curBlobs.containsKey(name)) {
-                notStaged.add(name + " (deleted)");
-            }
-        });
+                if (!curBlobs.containsKey(name)) {
+                    notStaged.add(name + " (deleted)");
+                }
+            });
 
         notStaged.sort(String::compareTo);
         System.out.println("\n=== Modifications Not Staged For Commit ===");

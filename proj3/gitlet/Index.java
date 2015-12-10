@@ -26,7 +26,7 @@ public class Index implements Serializable {
      * A tree map of the staged files in the index.
      */
     private TreeMap<String, String> staged;
-    
+
     /**
      * A tree map of the removed (staged) files in the index.
      */
@@ -49,7 +49,7 @@ public class Index implements Serializable {
         if (!this.isChanged()) {
             throw new IllegalStateException("No changes added to the commit.");
         }
-        
+
         this.clearStage();
         return this.blobs;
     }
@@ -93,13 +93,14 @@ public class Index implements Serializable {
      *            The hash of the blob.
      */
     public void add(String fileName, String hash) {
-        if(this.removed.containsKey(fileName)){
+        if (this.removed.containsKey(fileName)) {
             String removedHash = this.removed.remove(fileName);
             this.blobs.put(fileName, removedHash);
-        } else{
-            if(!this.blobs.containsKey(fileName)
-                    || !this.blobs.get(fileName).equals(hash))
+        } else {
+            if (!this.blobs.containsKey(fileName)
+                    || !this.blobs.get(fileName).equals(hash)) {
                 this.staged.put(fileName, hash);
+            }
             this.blobs.put(fileName, hash);
         }
 
@@ -120,8 +121,8 @@ public class Index implements Serializable {
         this.staged.remove(fileName);
         this.blobs.remove(fileName);
     }
-    
-    public void unstage(String fileName){
+
+    public void unstage(String fileName) {
         if (!this.blobs.containsKey(fileName)) {
             throw new IllegalStateException("No reason to remove the file.");
         }
@@ -150,14 +151,14 @@ public class Index implements Serializable {
     public TreeMap<String, String> getStaged() {
         return this.staged;
     }
-    
+
     /**
      * Determines if the staging area has changed.
      * @return If it has changed.
      */
     public boolean isChanged() {
         // TODO Auto-generated method stub
-        return removed.size() + staged.size() != 0;
+        return this.removed.size() + this.staged.size() != 0;
     }
 
 }

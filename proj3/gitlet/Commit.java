@@ -21,32 +21,35 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     private static final long serialVersionUID = 7879186830461498380L;
 
+    /** the parent. */
     private String parent;
+    /** the message. */
     private String message;
+    /** the date. */
     private LocalDateTime date;
     /** The hash map of filename-sha1. */
     private HashMap<String, String> blobs;
 
     /**
      * Creates a commit with a set of blobs.
-     * @param message
+     * @param messages
      *            The commti message.
-     * @param date
+     * @param datee
      *            The date time.
-     * @param parent
+     * @param parentt
      *            The parent commit.
      * @param blobs
      *            The blobs involved in the commit.
      */
-    public Commit(String message, LocalDateTime date, String parent,
+    public Commit(String messages, LocalDateTime datee, String parentt,
             HashMap<String, String> blobs) {
-        if (message == null || message.isEmpty() || message.equals("")) {
+        if (messages == null || messages.isEmpty() || messages.equals("")) {
             throw new IllegalArgumentException(
                     "Please enter a commit message.");
         }
-        this.parent = parent;
-        this.message = message;
-        this.date = date;
+        this.parent = parentt;
+        this.message = messages;
+        this.date = datee;
         this.blobs = blobs;
     }
 
@@ -101,14 +104,12 @@ public class Commit extends GitletObject implements Map<String, String> {
                 + dateStr.substring(0, nanoIndex) + "\n" + this.message + "\n";
     }
 
-    
-    
     /**
      * Determines the size of the blobs.
      */
     @Override
     public int size() {
-        return blobs.size();
+        return this.blobs.size();
     }
 
     /**
@@ -116,7 +117,7 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public boolean isEmpty() {
-        return blobs.isEmpty();
+        return this.blobs.isEmpty();
     }
 
     /**
@@ -124,7 +125,7 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public boolean containsKey(Object fileName) {
-        return blobs.containsKey(fileName);
+        return this.blobs.containsKey(fileName);
     }
 
     /**
@@ -132,7 +133,7 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public boolean containsValue(Object hash) {
-        return blobs.containsValue(hash);
+        return this.blobs.containsValue(hash);
     }
 
     /**
@@ -140,7 +141,6 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public String get(Object fileName) {
-        // TODO Auto-generated method stub
         return this.blobs.get(fileName);
     }
 
@@ -149,7 +149,7 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public String put(String fileName, String hash) {
-        return blobs.put(fileName, hash);
+        return this.blobs.put(fileName, hash);
     }
 
     /**
@@ -157,7 +157,7 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public String remove(Object fileName) {
-        return blobs.remove(fileName);
+        return this.blobs.remove(fileName);
     }
 
     /**
@@ -165,8 +165,8 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public void putAll(Map<? extends String, ? extends String> m) {
-        blobs.putAll(m);
-        
+        this.blobs.putAll(m);
+
     }
 
     /**
@@ -174,15 +174,15 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public void clear() {
-        blobs.clear();
+        this.blobs.clear();
     }
-    
+
     /**
      * Gets the blob keyset.
      */
     @Override
     public Set<String> keySet() {
-        return blobs.keySet();
+        return this.blobs.keySet();
     }
 
     /**
@@ -190,7 +190,7 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public Collection<String> values() {
-        return blobs.values();
+        return this.blobs.values();
     }
 
     /**
@@ -198,14 +198,16 @@ public class Commit extends GitletObject implements Map<String, String> {
      */
     @Override
     public Set<java.util.Map.Entry<String, String>> entrySet() {
-        return blobs.entrySet();
+        return this.blobs.entrySet();
     }
-    
+
     /**
      * Iterates over the blobs.
-     * @param action The action.
+     * @param action
+     *            The action.
      */
-    public void forEach(BiConsumer<? super String, ? super String> action){
+    @Override
+    public void forEach(BiConsumer<? super String, ? super String> action) {
         this.blobs.forEach(action);
     }
 

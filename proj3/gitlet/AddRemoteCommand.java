@@ -2,7 +2,8 @@
  *
  */
 package gitlet;
-import static gitlet.ReferenceType.*;
+
+import static gitlet.ReferenceType.REMOTE;
 
 /**
  * @author william
@@ -15,9 +16,9 @@ public class AddRemoteCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String remoteName =args[0];
+        String remoteName = args[0];
         String targetDir = args[1];
-        
+
         repo.refs().add(REMOTE, remoteName, new Reference(targetDir));
     }
 

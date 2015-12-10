@@ -27,7 +27,7 @@ public class Main {
         processor.add("rm-branch", new RemoveBranchCommand());
         processor.add("reset", new ResetCommand());
         processor.add("merge", new MergeCommand());
-        
+
         processor.add("add-remote", new AddRemoteCommand());
         processor.add("rm-remote", new RemoveRemoteCommand());
         processor.add("push", new PushCommand());

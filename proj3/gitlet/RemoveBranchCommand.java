@@ -3,7 +3,8 @@
  */
 package gitlet;
 
-import static gitlet.ReferenceType.*;
+import static gitlet.ReferenceType.BRANCH;
+import static gitlet.ReferenceType.HEAD;
 
 /**
  * @author william
