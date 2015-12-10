@@ -74,27 +74,4 @@ public class Reference implements Serializable {
     public ReferenceType targetType(){
         return this.targetType;
     }
-    
-    /**
-     * Overloads serial write object.
-     * @param out The output strea,/
-     * @throws IOException An IO Exception.
-     */
-    private void writeObject(ObjectOutputStream out) throws IOException{
-        out.writeBytes(target);
-        out.writeObject((targetType));
-    }
-    
-    /**
-     * Overloads the serializable read object.
-     * @param in The input stream.
-     * @throws IOException The IOException.
-     * @throws ClassNotFoundException
-     */
-    private void readObject(ObjectInputStream in)
-            throws IOException, ClassNotFoundException{
-        this.target = in.readUTF();
-        this.targetType = (ReferenceType)in.readObject();
-        
-    }
 }

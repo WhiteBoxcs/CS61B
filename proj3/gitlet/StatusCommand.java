@@ -3,6 +3,7 @@
  */
 package gitlet;
 
+import static gitlet.ReferenceType.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,13 +22,15 @@ public class StatusCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        String currentBranch = repo.getBranch();
+        String currentBranch = repo.refs().get(HEAD).target();
         System.out.println("=== Branches ===");
-        repo.refs().((branch) -> {
-            if (branch.equals(currentBranch)) {
+        
+        
+        repo.refs().forEach(BRANCH, (name, branch) -> {
+            if (name.equals(currentBranch)) {
                 System.out.print('*');
             }
-            System.out.println(branch);
+            System.out.println(name);
         });
 
         Index index = repo.index();

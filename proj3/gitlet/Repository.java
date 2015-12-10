@@ -60,7 +60,29 @@ public class Repository extends LazySerialManager<Serializable>{
 
     }
 
-
+    /**
+     * Gets the index.
+     * @return The index.
+     */
+    public Index index() {
+        return this.get(Index.class, INDEX);
+    }
+    /**
+     * Gets the objects in the repository.
+     * @return The manager which holds the objects.
+     */
+    public GitletObjectManager objects() {
+        return this.objectMan;
+    }
+    /**
+     * Gets the reference ma nager.
+     */
+    public ReferenceManager refs(){
+        return this.refMan;
+    }
+    
+    
+    
     /**
      * Initializes a repository if one does not already exist there.
      */
@@ -76,8 +98,9 @@ public class Repository extends LazySerialManager<Serializable>{
 
         String initialCommit = this.objects()
                 .add(new Commit("initial commit", LocalDateTime.now()));
-        this.addBranch("master", initialCommit);
-        this.setBranch("master");
+        
+        this.refs().add(BRANCH, "master", new Reference(initialCommit));
+        this.refs().add(HEAD, new Reference(BRANCH, "master"));
         this.setInitialCommit(initialCommit);
 
         this.add(INDEX, new Index());
@@ -171,15 +194,7 @@ public class Repository extends LazySerialManager<Serializable>{
         this.getCurrentBranch().setTarget(commitHash);
         return commitHash;
     }
-
-    /**
-     * Gets the index.
-     * @return The index.
-     */
-    public Index index() {
-        return this.get(Index.class, INDEX);
-    }
-
+    
     /**
      * Gets the head commit.
      * @return The hash for the head commit.
@@ -188,7 +203,6 @@ public class Repository extends LazySerialManager<Serializable>{
         Reference head = this.refs().get(HEAD);
         return this.refs().get(BRANCH, head.target());
     }
-
 
     /**
      * Sets the current branch in the head.`
@@ -199,56 +213,6 @@ public class Repository extends LazySerialManager<Serializable>{
     }
 
 
-    /**
-     * Adds a branch to the reference store at the current head commit.
-     * @param name
-     *            The name of the branch
-     * @param commit
-     *            the commit.
-     */
-    public void addBranch(String name, String commit) {
-        try {
-            Path branchPath = this.gitletDir.resolve(REFHEAD_DIR + name);
-            if (!Files.exists(branchPath.getParent())) {
-                Files.createDirectories(branchPath.getParent());
-            }
-
-            if (Files.exists(branchPath)) {
-                throw new IllegalArgumentException(
-                        "A branch with that name already exists.");
-            }
-
-            Files.write(branchPath, commit.getBytes());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Adds a branch at the head.
-     * @param name
-     *            The name of the branch.
-     */
-    public void addBranch(String name) {
-        this.addBranch(name, this.getHead());
-    }
-
-    /**
-     * Gets the objects in the repository.
-     * @return The manager which holds the objects.
-     */
-    public GitletObjectManager objects() {
-        return this.objectMan;
-    }
-
-    /**
-     * Gets the reference ma nager.
-     */
-    public ReferenceManager refs(){
-        return this.refMan;
-    }
-    
     /**
      * Opens a repository if the repository failed to open in the first place.
      */
@@ -270,18 +234,11 @@ public class Repository extends LazySerialManager<Serializable>{
         this.objectMan.close();
     }
 
-
     /** Gets the working directory */
     public Path getWorkingDir() {
         return this.workingDir;
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return this.name;
-    }
 
     public String initialCommit() {
         try {

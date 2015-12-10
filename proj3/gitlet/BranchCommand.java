@@ -2,6 +2,7 @@
  *
  */
 package gitlet;
+import static gitlet.ReferenceType.*;
 
 /**
  * @author william
@@ -14,7 +15,8 @@ public class BranchCommand implements Command {
      */
     @Override
     public void run(Repository repo, String[] args) {
-        repo.addBranch(args[0]);
+        String headCommit = repo.refs().resolve(HEAD);
+        repo.refs().add(BRANCH, args[0], new Reference(headCommit));
 
     }
 

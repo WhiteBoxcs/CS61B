@@ -4,6 +4,8 @@
 package gitlet;
 
 import java.nio.file.Path;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * @author william
@@ -46,7 +48,7 @@ public class ReferenceManager extends LazySerialManager<Reference> {
     public String resolve(ReferenceType type, String fileName){
         Reference cur =  this.get(Reference.class, type.getBaseDir() + fileName);
         while(cur.targetIsReference()){
-            cur = this.get(Reference.class, cur.target());
+            cur = this.get(cur.targetType(), cur.target());
         }
         
         return cur.target();
@@ -67,4 +69,16 @@ public class ReferenceManager extends LazySerialManager<Reference> {
         }
     }
 
+    /**
+     * Iterates over the references of a certain type within the manager.
+     * @param type The type of reference.
+     * @param action The action.
+     */
+    public void forEach(ReferenceType type,
+            BiConsumer<? super String, Reference> action){
+        this.forEach(Reference.class, (file, ref) -> {
+                if(file.startsWith(type.getBaseDir()))
+                        action.accept(file.replace(type.getBaseDir(), ""), ref);
+        });
+    }
 }
