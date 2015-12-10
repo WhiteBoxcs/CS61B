@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
@@ -41,6 +42,19 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
         super.forEach(type, hashedAction);
     };
 
+    @Override
+    public <S extends GitletObject> boolean contains(Class<?> type,
+            String hash) {
+        // TODO Auto-generated method stub
+        return super.contains(type, hashToFile(hash));
+    }
+    
+    @Override
+    public boolean contains(String hash) {
+        // TODO Auto-generated method stub
+        return super.contains(hashToFile(hash));
+    }
+    
     /**
      * Adds a gitlet object.
      * @param obj
@@ -53,6 +67,15 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
         return hash;
     }
 
+    /**
+     * Adds all gitlet objects of a certain type.
+     * @param objs
+     */
+    public void addAll(Collection<? extends GitletObject> objs){
+        for(GitletObject q : objs)
+            this.add(q);
+    }
+    
     /**
      * Removes a hash from the object store.
      */

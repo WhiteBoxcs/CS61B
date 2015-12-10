@@ -29,6 +29,7 @@ public class Main {
         
         processor.add("add-remote", new AddRemoteCommand());
         processor.add("rm-remote", new RemoveRemoteCommand());
+        processor.add("push", new PushCommand());
 
         Repository repo = new Repository(System.getProperty("user.dir"));
 

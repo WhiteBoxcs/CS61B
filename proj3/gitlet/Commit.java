@@ -208,4 +208,5 @@ public class Commit extends GitletObject implements Map<String, String> {
     public void forEach(BiConsumer<? super String, ? super String> action){
         this.blobs.forEach(action);
     }
+
 }
