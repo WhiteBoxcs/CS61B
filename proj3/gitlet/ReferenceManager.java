@@ -45,6 +45,17 @@ public class ReferenceManager extends LazySerialManager<Reference> {
         return this.get(type, type.toString());
     }
     
+    /**
+     * Determines if the reference manager contains a given file.
+     * @param branch
+     * @param name
+     * @return
+     */
+    public boolean contains(ReferenceType branch, String name) {
+        return this.contains(Reference.class, branch.getBaseDir() + name);
+    }
+    
+    
     public String resolve(ReferenceType type, String fileName){
         Reference cur =  this.get(Reference.class, type.getBaseDir() + fileName);
         while(cur.targetIsReference()){
@@ -81,4 +92,6 @@ public class ReferenceManager extends LazySerialManager<Reference> {
                         action.accept(file.replace(type.getBaseDir(), ""), ref);
         });
     }
+
+
 }

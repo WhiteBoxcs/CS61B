@@ -58,7 +58,7 @@ public class MergeCommand implements Command {
             System.out.println("Current branch fast-forwarded.");
         }
         if (splitHash.isEmpty()) {
-            splitHash = repo.initialCommit();
+            splitHash = repo.refs().resolve(TAG, "initial");
         }
 
         Commit split = repo.objects().get(Commit.class, splitHash);

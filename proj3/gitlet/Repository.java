@@ -101,7 +101,7 @@ public class Repository extends LazySerialManager<Serializable>{
         
         this.refs().add(BRANCH, "master", new Reference(initialCommit));
         this.refs().add(HEAD, new Reference(BRANCH, "master"));
-        this.setInitialCommit(initialCommit);
+        this.refs().add(TAG, "initial", new Reference(initialCommit));
 
         this.add(INDEX, new Index());
 
@@ -209,6 +209,7 @@ public class Repository extends LazySerialManager<Serializable>{
      * @param branch
      */
     public void setCurrentBranch(String branch) {
+        this.refs().get(BRANCH, branch);
         this.refs().get(HEAD).setTarget(branch);
     }
 
@@ -237,29 +238,6 @@ public class Repository extends LazySerialManager<Serializable>{
     /** Gets the working directory */
     public Path getWorkingDir() {
         return this.workingDir;
-    }
-
-
-    public String initialCommit() {
-        try {
-            Path branchPath = this.gitletDir.resolve(REFS_DIR + "init");
-            return Files.readAllLines(branchPath).get(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void setInitialCommit(String hash) {
-        try {
-            Path branchPath = this.gitletDir.resolve(REFS_DIR + "init");
-
-            Files.write(branchPath, hash.getBytes());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 

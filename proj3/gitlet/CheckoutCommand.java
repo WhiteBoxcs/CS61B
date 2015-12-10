@@ -53,15 +53,16 @@ public class CheckoutCommand implements Command {
      * @param branch
      *            The branch to which to changed.
      */
-    public static void checkoutBranch(Repository repo, String branch) {
+    public static void checkoutBranch(Repository repo, String branchName) {
+        Reference branch = repo.refs().get(BRANCH, branchName);
         if (branch.equals(repo.getCurrentBranch())) {
             throw new IllegalStateException(
                     "No need to checkout the current branch.");
         }
 
-        String commitHash = repo.refs().resolve(BRANCH, branch);
+        String commitHash = branch.target();
         repo.checkout(repo.objects().get(Commit.class, commitHash));
-        repo.setCurrentBranch(branch);
+        repo.setCurrentBranch(branchName);
         repo.getCurrentBranch().setTarget(commitHash);
 
     }
