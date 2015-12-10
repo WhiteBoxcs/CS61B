@@ -1,0 +1,66 @@
+I prelude1.inc
++ f.txt wug.txt
++ g.txt notwug.txt
+> add f.txt
+<<<
+> add g.txt
+<<<
+> commit "Here is a new commit."
+<<<
+> branch alternative
+<<<
++ h.txt wug2.txt
+> add h.txt
+<<<
+> rm g.txt
+<<<
++ f.txt wug2.txt
+> add f.txt
+<<<
+> commit "Add h.txt and remove g.txt, change f.txt"
+<<<
+> checkout alternative
+<<<
+> rm f.txt
+<<<
++ k.txt wug3.txt
+> add k.txt
+<<<
+> commit "Add k.txt and remove f.txt"
+<<<
+> checkout master
+<<<
+> log
+===
+${COMMIT_HEAD}
+${ARBLINES}
+<<<*
+D MASTER_HEAD "${1}"
+> merge alternative
+Encountered a merge conflict.
+<<<
+* g.txt
+= h.txt wug2.txt
+= k.txt wug3.txt
+= f.txt conflict1.txt
+> log
+===
+Commit ${MASTER_HEAD}
+${ARBLINES}
+<<<*
+> status
+=== Branches ===
+\*master
+alternative
+
+=== Staged Files ===
+k.txt
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+(f\.txt \(modified\)
+)?
+=== Untracked Files ===
+
+<<<*

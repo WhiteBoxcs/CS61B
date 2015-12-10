@@ -1,7 +1,7 @@
 package gitlet;
 
 import static org.junit.Assert.assertEquals;
-
+import static gitlet.ReferenceType.*;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -39,7 +39,8 @@ public class UnitTest {
     @Before
     public void setUp() {
         this.repo = new Repository(tempDir.getPath().toString());
-        this.repo.init();
+        if(!repo.isOpen())
+            this.repo.init();
     }
 
     @After
@@ -47,6 +48,24 @@ public class UnitTest {
         this.repo.close();
     }
 
+    @Test
+    public void refsTest(){
+        HashMap<String, String> firstBlobs = new HashMap<>();
+        firstBlobs.put("lol.file", "a");
+        firstBlobs.put("friend.file", "b");
+
+        assertEquals(this.repo.refs().resolve(TAG, "initial"), this.repo.getCurrentBranch().target());
+        assertEquals(this.repo.refs().resolve(TAG, "initial"), this.repo.refs().resolve(HEAD));
+        
+        String root = this.repo.addCommitAtHead("ROOT!", firstBlobs);
+        assertEquals(root, this.repo.refs().resolve(HEAD));
+    }
+    
+    @Test
+    public void objTest(){
+        
+    }
+    
     /**
      * Tests for a split point.
      */
@@ -68,7 +87,7 @@ public class UnitTest {
 
         prev = root;
         String right = "";
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < 28; i++) {
             Commit com = new Commit("RIGHT" + i, LocalDateTime.now(), prev,
                     firstBlobs);
             right = prev = this.repo.objects().put(com);

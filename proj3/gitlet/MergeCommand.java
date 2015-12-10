@@ -106,7 +106,8 @@ public class MergeCommand implements Command {
                 }
             } else if (!otherHash.equals(headHash)) {
                 if (headHash == null) {
-                    inConflict.add(file);
+                    if(!otherHash.equals(splitHash))
+                        inConflict.add(file);
                 } else if (headHash.equals(splitHash)) {
                     toCheckout.add(file);
                 } else if (!otherHash.equals(headHash)) {
@@ -215,7 +216,7 @@ public class MergeCommand implements Command {
 
                 // unstage the file.
                 if (index.getBlobs().containsKey(file)) {
-                    index.remove(file, false);
+                    index.unstage(file);
                 }
 
             } catch (IOException e) {

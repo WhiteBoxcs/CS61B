@@ -1,0 +1,43 @@
+I prelude1.inc
++ fatuma.file wug.txt
++ godonioloiayeaz.txt notwug.txt
+> add fatuma.file
+<<<
+> add godonioloiayeaz.txt
+<<<
+> commit "Here is a new commit."
+<<<
+> branch alternative
+<<<
++ h.txt wug2.txt
+> add h.txt
+<<<
+> rm godonioloiayeaz.txt
+<<<
+> commit "Add h.txt and remove godonioloiayeaz.txt"
+<<<
+> checkout alternative
+<<<
+> rm fatuma.file
+<<<
++ k.txt wug3.txt
+> add k.txt
+<<<
+> commit "Add k.txt and remove fatuma.file"
+<<<
+> checkout master
+<<<
+> merge alternative
+<<<
+* fatuma.file
+* godonioloiayeaz.txt
+= h.txt wug2.txt
+= k.txt wug3.txt
+> log
+===
+${COMMIT_HEAD}
+Merged master with alternative\.
+
+${ARBLINES}
+<<<*
+I blank2.inc

@@ -1,0 +1,12 @@
+I prelude1.inc
++ f.txt wug.txt
++ g.txt notwug.txt
+> add f.txt
+<<<
+> add g.txt
+<<<
+> commit "Here is a new commit."
+<<<
+> add f.txt
+<<<
+I blank.inc

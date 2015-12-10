@@ -97,7 +97,9 @@ public class Index implements Serializable {
             String removedHash = this.removed.remove(fileName);
             this.blobs.put(fileName, removedHash);
         } else{
-            this.staged.put(fileName, hash);
+            if(!this.blobs.containsKey(fileName)
+                    || !this.blobs.get(fileName).equals(hash))
+                this.staged.put(fileName, hash);
             this.blobs.put(fileName, hash);
         }
 
@@ -117,6 +119,14 @@ public class Index implements Serializable {
 
         this.staged.remove(fileName);
         this.blobs.remove(fileName);
+    }
+    
+    public void unstage(String fileName){
+        if (!this.blobs.containsKey(fileName)) {
+            throw new IllegalStateException("No reason to remove the file.");
+        }
+
+        this.staged.remove(fileName);
     }
 
     /**
