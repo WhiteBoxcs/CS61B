@@ -8,12 +8,6 @@ package gitlet;
  */
 public class InitCommand implements Command {
 
-    /**
-     *
-     */
-    public InitCommand() {
-    }
-
     /*
      * (non-Javadoc)
      * @see gitlet.Command#run(java.lang.String[])

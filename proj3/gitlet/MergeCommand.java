@@ -68,7 +68,7 @@ public class MergeCommand implements Command {
         boolean conflicts = mergeCompare(repo, head, other, split);
         if (!conflicts) {
             repo.addCommitAtHead(
-                    "Merged " + repo.getCurrentBranch() + " with " + branch + ".",
+                    "Merged " + repo.refs().get(HEAD).target() + " with " + branch + ".",
                     repo.index().blobsFromStage());
         } else {
             throw new IllegalStateException("Encountered a merge conflict.");
@@ -260,7 +260,7 @@ public class MergeCommand implements Command {
      * @param history
      * @return
      */
-    private static Collection<String> getHistory(Repository repo, String start,
+    public static Collection<String> getHistory(Repository repo, String start,
             Collection<String> history) {
         String cur = start;
         while (!cur.isEmpty()) {

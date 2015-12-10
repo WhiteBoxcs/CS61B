@@ -76,7 +76,7 @@ public class ReferenceManager extends LazySerialManager<Reference> {
         } catch(IllegalArgumentException e){
             throw new IllegalArgumentException("A "
                     + type.toString().toLowerCase()
-                    + "with that name does not exist.");
+                    + " with that name does not exist.");
         }
     }
 
