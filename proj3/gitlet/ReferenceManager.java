@@ -93,5 +93,10 @@ public class ReferenceManager extends LazySerialManager<Reference> {
         });
     }
 
+    @Override
+    protected boolean niceSerialization() {
+        return false;
+    }
+
 
 }

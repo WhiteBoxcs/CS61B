@@ -132,4 +132,9 @@ public class GitletObjectManager extends LazySerialManager<GitletObject> {
     private static String fileToHash(String file) {
         return file.replaceFirst("/", "");
     }
+
+    @Override
+    protected boolean niceSerialization() {
+        return false;
+    }
 }

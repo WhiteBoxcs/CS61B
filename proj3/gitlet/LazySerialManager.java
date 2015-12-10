@@ -3,6 +3,8 @@
  */
 package gitlet;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * @author william Represents a general file object manager.
  */
-public class LazySerialManager<T extends Serializable>
+public abstract class LazySerialManager<T extends Serializable>
         implements Iterable<T> {
 
     /**
@@ -151,6 +153,10 @@ public class LazySerialManager<T extends Serializable>
             e.printStackTrace();
         }
     }
+    
+    
+    protected abstract boolean niceSerialization(); 
+    
     
     /**
      * Opens a lazy serial manager.
@@ -306,7 +312,14 @@ public class LazySerialManager<T extends Serializable>
             InputStream fin = Files.newInputStream(filePath);
             ObjectInputStream oin = new ObjectInputStream(fin);
 
-            Object unsafe = oin.readObject();
+            Object unsafe;
+            if(this.niceSerialization()){
+                XMLDecoder e = new XMLDecoder(oin);
+                unsafe = e.readObject();
+                e.close();
+            }
+            else
+                unsafe = oin.readObject();
 
             S loaded = type.cast(unsafe);
 
@@ -338,7 +351,14 @@ public class LazySerialManager<T extends Serializable>
             InputStream fin = Files.newInputStream(filePath);
             ObjectInputStream oin = new ObjectInputStream(fin);
 
-            Object unsafe = oin.readObject();
+            Object unsafe;
+            if(this.niceSerialization()){
+                XMLDecoder e = new XMLDecoder(oin);
+                unsafe = e.readObject();
+                e.close();
+            }
+            else
+                unsafe = oin.readObject();
 
             T loaded = (T) unsafe;
 
@@ -371,7 +391,13 @@ public class LazySerialManager<T extends Serializable>
             }
             OutputStream fin = Files.newOutputStream(filePath);
             ObjectOutputStream oin = new ObjectOutputStream(fin);
-            oin.writeObject(object);
+            if(this.niceSerialization()){
+                XMLEncoder e = new XMLEncoder(oin);
+                e.writeObject(object);
+                e.close();
+            }
+            else
+                oin.writeObject(object);
             oin.close();
             fin.close();
 

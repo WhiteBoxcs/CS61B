@@ -44,6 +44,11 @@ public class Reference implements Serializable {
         this(ReferenceType.NONE, target);
     }
     
+    public Reference(){
+        this.target = "";
+        this.targetType = ReferenceType.NONE;
+    }
+    
     /**
      * Gets the target of this reference.
      * @return The target.

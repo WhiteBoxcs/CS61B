@@ -13,7 +13,7 @@ import static gitlet.ReferenceType.*;
  * Represents a Gitlet repository.
  * @author william
  */
-public class Repository extends LazySerialManager<Serializable>{
+public class Repository extends LazySerialManager<Serializable> {
     private static final String GITLET_DIR = ".gitlet";
     private static final String INDEX = "index";
     private static final String OBJ_DIR = "objects/";
@@ -38,7 +38,7 @@ public class Repository extends LazySerialManager<Serializable>{
      * Manages all of the references.
      */
     private ReferenceManager refMan;
-    
+
     /**
      * Declares a repository at the workingDIR.
      * @param workingDir
@@ -50,8 +50,9 @@ public class Repository extends LazySerialManager<Serializable>{
         super(Paths.get(workingDir).resolve(GITLET_DIR));
         this.workingDir = this.getBaseDirectory().getParent();
         this.gitletDir = this.getBaseDirectory();
-        
-        this.objectMan = new GitletObjectManager(this.gitletDir.resolve(OBJ_DIR));
+
+        this.objectMan =
+                new GitletObjectManager(this.gitletDir.resolve(OBJ_DIR));
         this.refMan = new ReferenceManager(this.gitletDir.resolve(REFS_DIR));
 
         if (Files.exists(this.gitletDir)) {
@@ -67,6 +68,7 @@ public class Repository extends LazySerialManager<Serializable>{
     public Index index() {
         return this.get(Index.class, INDEX);
     }
+
     /**
      * Gets the objects in the repository.
      * @return The manager which holds the objects.
@@ -74,15 +76,14 @@ public class Repository extends LazySerialManager<Serializable>{
     public GitletObjectManager objects() {
         return this.objectMan;
     }
+
     /**
      * Gets the reference ma nager.
      */
-    public ReferenceManager refs(){
+    public ReferenceManager refs() {
         return this.refMan;
     }
-    
-    
-    
+
     /**
      * Initializes a repository if one does not already exist there.
      */
@@ -98,7 +99,7 @@ public class Repository extends LazySerialManager<Serializable>{
 
         String initialCommit = this.objects()
                 .add(new Commit("initial commit", LocalDateTime.now()));
-        
+
         this.refs().add(BRANCH, "master", new Reference(initialCommit));
         this.refs().add(HEAD, new Reference(BRANCH, "master"));
         this.refs().add(TAG, "initial", new Reference(initialCommit));
@@ -190,11 +191,11 @@ public class Repository extends LazySerialManager<Serializable>{
         LocalDateTime now = LocalDateTime.now();
         String commitHash =
                 this.objects().add(new Commit(message, now, headHash, blobs));
-        
+
         this.getCurrentBranch().setTarget(commitHash);
         return commitHash;
     }
-    
+
     /**
      * Gets the head commit.
      * @return The hash for the head commit.
@@ -212,7 +213,6 @@ public class Repository extends LazySerialManager<Serializable>{
         this.refs().get(BRANCH, branch);
         this.refs().get(HEAD).setTarget(branch);
     }
-
 
     /**
      * Opens a repository if the repository failed to open in the first place.
@@ -240,5 +240,10 @@ public class Repository extends LazySerialManager<Serializable>{
         return this.workingDir;
     }
 
+    
+    @Override
+    protected boolean niceSerialization() {
+        return false;
+    }
 
 }

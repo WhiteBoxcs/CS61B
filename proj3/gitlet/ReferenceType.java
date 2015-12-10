@@ -7,9 +7,9 @@ package gitlet;
  */
 public enum ReferenceType{
     HEAD(""),
-    BRANCH("refs/branch/"),
-    REMOTE("refs/remote/"),
-    TAG("refs/tags/"),
+    BRANCH("branches/"),
+    REMOTE("remotes/"),
+    TAG("tags/"),
     NONE("");
     
     /**
